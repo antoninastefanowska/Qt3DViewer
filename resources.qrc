@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/shaders">
+        <file>randomshader.frag</file>
+        <file>randomshader.vert</file>
+        <file>lambertshader.frag</file>
+        <file>lambertshader.vert</file>
+        <file>normalshader.frag</file>
+        <file>normalshader.vert</file>
+        <file>positionshader.frag</file>
+        <file>positionshader.vert</file>
+    </qresource>
+</RCC>
