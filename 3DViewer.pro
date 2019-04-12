@@ -31,6 +31,7 @@ QT += core gui \
 
 SOURCES += \
         cylinder.cpp \
+        light.cpp \
         main.cpp \
         mainwindow.cpp \
         model.cpp \
@@ -41,10 +42,12 @@ SOURCES += \
 
 HEADERS += \
         cylinder.hpp \
+        light.hpp \
         mainwindow.hpp \
         model.hpp \
         myglwidget.hpp \
         shaderprogram.hpp \
+        shadertype.hpp \
         triangle.hpp \
         vertex.hpp
 

@@ -8,11 +8,11 @@ using glm::vec3;
 class Vertex
 {
 private:
-    vec3 coords, normal;
+    vec3 position, normal;
 public:
     Vertex();
-    Vertex(vec3 coords);
-    vec3 getCoords();
+    Vertex(vec3 position);
+    vec3 getPosition();
     vec3 getNormal();
     void setNormal(vec3 normal);
 };

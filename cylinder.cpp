@@ -81,30 +81,27 @@ void Cylinder::generateVertices()
         vertex.setNormal(normal);
 
         normalsData.push_back(vertex.getNormal());
-        verticesData.push_back(vertex.getCoords());
+        verticesData.push_back(vertex.getPosition());
     }
 
     loadVerticesData(verticesData, normalsData);
 }
 
-void Cylinder::changeN(int dn)
+void Cylinder::changeN(int n)
 {
-    if (n + dn <= 0) return;
-    n += dn;
+    this->n = n;
     generateVertices();
     generateColors();
 }
 
-void Cylinder::changeRadius(float dradius)
+void Cylinder::changeRadius(float radius)
 {
-    if (radius + dradius <= 0) return;
-    radius += dradius;
+    this->radius = radius;
     generateVertices();
 }
 
-void Cylinder::changeHeight(float dheight)
+void Cylinder::changeHeight(float height)
 {
-    if (height + dheight <= 0) return;
-    height += dheight;
+    this->height = height;
     generateVertices();
 }

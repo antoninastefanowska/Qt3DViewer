@@ -11,6 +11,6 @@ uniform mat4 projection;
 
 void main()
 {
-        gl_Position = projection * view * model * vec4(vertexPosition_modelspace, 1);
-        vertexNormal = vertexNormal_modelspace;
+    gl_Position = projection * view * model * vec4(vertexPosition_modelspace, 1);
+    vertexNormal = vertexNormal_modelspace;
 }

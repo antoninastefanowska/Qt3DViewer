@@ -15,9 +15,9 @@ public:
 
     void generateVertices();
 
-    void changeN(int dn);
-    void changeRadius(float dradius);
-    void changeHeight(float dHeight);
+    void changeN(int n);
+    void changeRadius(float radius);
+    void changeHeight(float height);
 };
 
 #endif // CYLINDER_HPP

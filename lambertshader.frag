@@ -7,13 +7,13 @@ out vec3 color;
 
 void main()
 {
-        const vec3 materialColor = vec3(1.0, 0.0, 0.0);
-        const vec3 lightColor = vec3(1.0);
+    const vec3 materialColor = vec3(1.0, 0.0, 0.0);
+    const vec3 lightColor = vec3(1.0);
 
-        vec3 n = normalize(normal);
-        vec3 l = normalize(lightVector);
+    vec3 n = normalize(normal);
+    vec3 l = normalize(lightVector);
 
-        float cosTheta = clamp(dot(n, l), 0.0, 1.0);
+    float cosTheta = clamp(dot(n, l), 0.0, 1.0);
 
-        color = materialColor * lightColor * cosTheta;
+    color = materialColor * lightColor * cosTheta;
 }

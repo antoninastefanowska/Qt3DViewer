@@ -5,5 +5,5 @@ out vec3 color;
 
 void main()
 {
-        color = vertexNormal;
+    color = vertexNormal;
 }

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
 #include <time.h>
 #include <filesystem>
 
@@ -14,6 +15,8 @@
 
 #include "triangle.hpp"
 #include "shaderprogram.hpp"
+#include "shadertype.hpp"
+#include "light.hpp"
 
 using namespace std;
 
@@ -27,23 +30,26 @@ class Model : public QOpenGLFunctions
 {
 private:
     mat4 model, view, projection;
-    vec3 lightPosition;
     GLuint verticesID, normalsID, modelID, viewID, projectionID, lightPositionID, vertexArrayID, colorsID;
-    ShaderProgram shaderProgram;
+    Light* light;
+    ShaderProgram* currentShaderProgram;
+    map<ShaderType, ShaderProgram*> shaderPrograms;
+
+    void loadAllShaders();
 
 protected:
     int vertexNumber;
-
-public:
-    Model();
-
-    void init();
 
     virtual void generateVertices() = 0;
     void generateColors();
     void loadVerticesData(vector<vec3> verticesData, vector<vec3> normalsData);
 
+public:
+    Model();
+
+    void init();
     void frame();
+    Light* getLight();
 
     void rotateX(float angle);
     void rotateY(float angle);
@@ -53,9 +59,8 @@ public:
     void translateY(float distance);
     void translateZ(float distance);
 
-    void moveLightX(float distance);
-    void moveLightY(float distance);
-    void moveLightZ(float distance);
+    void switchShader(ShaderType shaderType);
+    void changePerspectiveRatio(float ratio);
 };
 
 #endif // MODEL_HPP

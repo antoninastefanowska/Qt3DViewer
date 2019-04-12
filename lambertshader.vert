@@ -13,9 +13,9 @@ uniform vec3 lightPosition;
 
 void main()
 {
-        gl_Position = projection * view * model * vec4(vertexPosition_modelspace, 1);
+    gl_Position = projection * view * model * vec4(vertexPosition_modelspace, 1);
 
-        vec4 vertexPosition_modelviewspace = view * model * vec4(vertexPosition_modelspace, 1);
-        lightVector = vec3(lightPosition - vertexPosition_modelviewspace);
-        normal = vertexNormal_modelspace;
+    vec4 vertexPosition_modelviewspace = view * model * vec4(vertexPosition_modelspace, 1);
+    lightVector = vec3(lightPosition - vertexPosition_modelviewspace);
+    normal = vertexNormal_modelspace;
 }

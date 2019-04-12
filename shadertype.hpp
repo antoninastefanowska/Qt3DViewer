@@ -1,0 +1,12 @@
+#ifndef SHADERTYPE_HPP
+#define SHADERTYPE_HPP
+
+enum ShaderType
+{
+    RANDOM_SHADER,
+    POSITION_SHADER,
+    NORMAL_SHADER,
+    LAMBERT_SHADER
+};
+
+#endif // SHADERTYPE_HPP

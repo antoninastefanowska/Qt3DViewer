@@ -15,8 +15,8 @@ void Triangle::calculateNormal()
 {
     vec3 edge1, edge2;
 
-    edge1 = v2.getCoords() - v1.getCoords();
-    edge2 = v3.getCoords() - v1.getCoords();
+    edge1 = v2.getPosition() - v1.getPosition();
+    edge2 = v3.getPosition() - v1.getPosition();
 
     normal = cross(edge1, edge2);
     normal = normalize(normal);
@@ -29,7 +29,7 @@ vec3 Triangle::getNormal()
 
 bool Triangle::contains(Vertex v)
 {
-    if (v1.getCoords() == v.getCoords() || v2.getCoords() == v.getCoords() || v3.getCoords() == v.getCoords())
+    if (v1.getPosition() == v.getPosition() || v2.getPosition() == v.getPosition() || v3.getPosition() == v.getPosition())
         return true;
     else
         return false;

@@ -20,18 +20,42 @@ void Model::init()
     );
     projection = perspective(radians(45.0f), 1.0f, 0.1f, 100.0f);
 
-    lightPosition = vec3(100.0, 100.0, 100.0);
+    light = new Light(vec3(0.0f, 0.0f, 0.0f));
 
-    shaderProgram.init();
-    shaderProgram.loadShader("randomshader.vert", GL_VERTEX_SHADER);
-    shaderProgram.loadShader("randomshader.frag", GL_FRAGMENT_SHADER);
-    shaderProgram.linkProgram();
+    loadAllShaders();
+    switchShader(POSITION_SHADER);
+}
 
-    modelID = glGetUniformLocation(shaderProgram.getProgramID(), "model");
-    viewID = glGetUniformLocation(shaderProgram.getProgramID(), "view");
-    projectionID = glGetUniformLocation(shaderProgram.getProgramID(), "projection");
+void Model::loadAllShaders()
+{
+    ShaderProgram* shaderProgram = new ShaderProgram();
+    shaderProgram->init();
 
-    lightPositionID = glGetUniformLocation(shaderProgram.getProgramID(), "lightPosition");
+    shaderProgram->loadShader("randomshader.vert", GL_VERTEX_SHADER);
+    shaderProgram->loadShader("randomshader.frag", GL_FRAGMENT_SHADER);
+    shaderProgram->linkProgram();
+    shaderPrograms[RANDOM_SHADER] = shaderProgram;
+
+    shaderProgram = new ShaderProgram();
+    shaderProgram->init();
+    shaderProgram->loadShader("positionshader.vert", GL_VERTEX_SHADER);
+    shaderProgram->loadShader("positionshader.frag", GL_FRAGMENT_SHADER);
+    shaderProgram->linkProgram();
+    shaderPrograms[POSITION_SHADER] = shaderProgram;
+
+    shaderProgram = new ShaderProgram();
+    shaderProgram->init();
+    shaderProgram->loadShader("normalshader.vert", GL_VERTEX_SHADER);
+    shaderProgram->loadShader("normalshader.frag", GL_FRAGMENT_SHADER);
+    shaderProgram->linkProgram();
+    shaderPrograms[NORMAL_SHADER] = shaderProgram;
+
+    shaderProgram = new ShaderProgram();
+    shaderProgram->init();
+    shaderProgram->loadShader("lambertshader.vert", GL_VERTEX_SHADER);
+    shaderProgram->loadShader("lambertshader.frag", GL_FRAGMENT_SHADER);
+    shaderProgram->linkProgram();
+    shaderPrograms[LAMBERT_SHADER] = shaderProgram;
 }
 
 void Model::generateColors()
@@ -67,13 +91,13 @@ void Model::frame()
     glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glUseProgram(shaderProgram.getProgramID());
+    glUseProgram(currentShaderProgram->getProgramID());
 
     glUniformMatrix4fv(modelID, 1, GL_FALSE, &model[0][0]);
     glUniformMatrix4fv(viewID, 1, GL_FALSE, &view[0][0]);
     glUniformMatrix4fv(projectionID, 1, GL_FALSE, &projection[0][0]);
 
-    glUniform3f(lightPositionID, lightPosition.x, lightPosition.y, lightPosition.z);
+    glUniform3f(lightPositionID, light->getPosition().x, light->getPosition().y, light->getPosition().z);
 
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, verticesID);
@@ -92,6 +116,11 @@ void Model::frame()
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(2);
+}
+
+Light* Model::getLight()
+{
+    return light;
 }
 
 void Model::rotateX(float angle)
@@ -124,20 +153,17 @@ void Model::translateZ(float distance)
     model = translate(model, vec3(0.0f, 0.0f, distance));
 }
 
-void Model::moveLightX(float distance)
+void Model::switchShader(ShaderType shaderType)
 {
-    mat4 tr = translate(mat4(1.0f), vec3(distance, 0.0f, 0.0f));
-    lightPosition = vec3(tr * vec4(lightPosition, 1.0f));
+    currentShaderProgram = shaderPrograms[shaderType];
+
+    modelID = glGetUniformLocation(currentShaderProgram->getProgramID(), "model");
+    viewID = glGetUniformLocation(currentShaderProgram->getProgramID(), "view");
+    projectionID = glGetUniformLocation(currentShaderProgram->getProgramID(), "projection");
+    lightPositionID = glGetUniformLocation(currentShaderProgram->getProgramID(), "lightPosition");
 }
 
-void Model::moveLightY(float distance)
+void Model::changePerspectiveRatio(float ratio)
 {
-    mat4 tr = translate(mat4(1.0f), vec3(0.0f, distance, 0.0f));
-    lightPosition = vec3(tr * vec4(lightPosition, 1.0f));
-}
-
-void Model::moveLightZ(float distance)
-{
-    mat4 tr = translate(mat4(1.0f), vec3(0.0f, 0.0f, distance));
-    lightPosition = vec3(tr * vec4(lightPosition, 1.0f));
+    projection = perspective(radians(45.0f), ratio, 0.1f, 100.0f);
 }

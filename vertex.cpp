@@ -4,13 +4,13 @@ Vertex::Vertex() { }
 
 Vertex::Vertex(vec3 coords)
 {
-    this->coords = coords;
+    this->position = coords;
     this->normal = vec3(0.0f);
 }
 
-vec3 Vertex::getCoords()
+vec3 Vertex::getPosition()
 {
-    return coords;
+    return position;
 }
 
 vec3 Vertex::getNormal()
