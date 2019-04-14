@@ -9,6 +9,8 @@ void main()
 {
     const vec3 material = vec3(1.0, 0.0, 0.0);
     const vec3 lightColor = vec3(1.0);
+    const vec3 specular = vec3(0.8);
+
     vec3 ambient = material * vec3(0.2);
 
     vec3 n = normalize(normal);
@@ -17,4 +19,5 @@ void main()
     float cosTheta = clamp(dot(n, l), 0.0, 1.0);
 
     color = cosTheta * material * lightColor + ambient;
+    color += pow(cosTheta, 100) * specular;
 }

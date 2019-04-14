@@ -4,8 +4,8 @@ MyGLWidget::MyGLWidget(QWidget *parent) : QOpenGLWidget(parent) { }
 
 void MyGLWidget::initializeGL()
 {
-    cylinder = Cylinder(72, 2.0, 8.0);
-    cylinder.init();
+    model = Cylinder(72, 2.0, 8.0);
+    model.init();
 
     prevTransX = 0;
     prevTransY = 0;
@@ -22,18 +22,23 @@ void MyGLWidget::initializeGL()
 
 void MyGLWidget::paintGL()
 {
-    cylinder.frame();
+    model.frame();
 }
 
 void MyGLWidget::resizeGL(int width, int height)
 {
-    cylinder.changePerspectiveRatio((float)width / (float)height);
+    model.changePerspectiveRatio((float)width / (float)height);
+}
+
+Cylinder MyGLWidget::getModel()
+{
+    return model;
 }
 
 void MyGLWidget::translateX(int value)
 {
     int distance = value - prevTransX;
-    cylinder.translateX((float)distance);
+    model.translateX((float)distance);
     prevTransX = value;
     update();
 }
@@ -41,7 +46,7 @@ void MyGLWidget::translateX(int value)
 void MyGLWidget::translateY(int value)
 {
     int distance = value - prevTransY;
-    cylinder.translateY((float)distance);
+    model.translateY((float)distance);
     prevTransY = value;
     update();
 }
@@ -49,7 +54,7 @@ void MyGLWidget::translateY(int value)
 void MyGLWidget::translateZ(int value)
 {
     int distance = value - prevTransZ;
-    cylinder.translateZ((float)distance);
+    model.translateZ((float)distance);
     prevTransZ = value;
     update();
 }
@@ -57,7 +62,7 @@ void MyGLWidget::translateZ(int value)
 void MyGLWidget::rotateX(int value)
 {
     int angle = value - prevRotX;
-    cylinder.rotateX((float)angle);
+    model.rotateX((float)angle);
     prevRotX = value;
     update();
 }
@@ -65,7 +70,7 @@ void MyGLWidget::rotateX(int value)
 void MyGLWidget::rotateY(int value)
 {
     int angle = value - prevRotY;
-    cylinder.rotateY((float)angle);
+    model.rotateY((float)angle);
     prevRotY = value;
     update();
 }
@@ -73,39 +78,57 @@ void MyGLWidget::rotateY(int value)
 void MyGLWidget::rotateZ(int value)
 {
     int angle = value - prevRotZ;
-    cylinder.rotateZ((float)angle);
+    model.rotateZ((float)angle);
     prevRotZ = value;
     update();
 }
 
 void MyGLWidget::switchToRandomShader()
 {
-    cylinder.switchShader(RANDOM_SHADER);
+    model.switchShader(RANDOM_SHADER);
     update();
 }
 
 void MyGLWidget::switchToPositionShader()
 {
-    cylinder.switchShader(POSITION_SHADER);
+    model.switchShader(POSITION_SHADER);
     update();
 }
 
 void MyGLWidget::switchToNormalShader()
 {
-    cylinder.switchShader(NORMAL_SHADER);
+    model.switchShader(NORMAL_SHADER);
     update();
 }
 
 void MyGLWidget::switchToLambertShader()
 {
-    cylinder.switchShader(LAMBERT_SHADER);
+    model.switchShader(LAMBERT_SHADER);
+    update();
+}
+
+void MyGLWidget::switchToPhongShader()
+{
+    model.switchShader(PHONG_SHADER);
+    update();
+}
+
+void MyGLWidget::switchToTextureShader()
+{
+    model.switchShader(TEXTURE_SHADER);
+    update();
+}
+
+void MyGLWidget::switchToCombinedShader()
+{
+    model.switchShader(COMBINED_SHADER);
     update();
 }
 
 void MyGLWidget::moveLightX(int value)
 {
     int distance = value - prevLightX;
-    cylinder.getLight()->translateX((float)distance);
+    model.getLight()->translateX((float)distance);
     prevLightX = value;
     update();
 }
@@ -113,7 +136,7 @@ void MyGLWidget::moveLightX(int value)
 void MyGLWidget::moveLightY(int value)
 {
     int distance = value - prevLightY;
-    cylinder.getLight()->translateY((float)distance);
+    model.getLight()->translateY((float)distance);
     prevLightY = value;
     update();
 }
@@ -121,25 +144,36 @@ void MyGLWidget::moveLightY(int value)
 void MyGLWidget::moveLightZ(int value)
 {
     int distance = value - prevLightZ;
-    cylinder.getLight()->translateZ((float)distance);
+    model.getLight()->translateZ((float)distance);
     prevLightZ = value;
     update();
 }
 
 void MyGLWidget::changeN(int value)
 {
-    cylinder.changeN(value);
+    model.changeN(value);
     update();
 }
 
 void MyGLWidget::changeRadius(int value)
 {
-    cylinder.changeRadius((float)value);
+    model.changeRadius((float)value);
     update();
 }
 
 void MyGLWidget::changeHeight(int value)
 {
-    cylinder.changeHeight((float)value);
+    model.changeHeight((float)value);
     update();
+}
+
+void MyGLWidget::recompileShaders()
+{
+    model.reloadShaders();
+    update();
+}
+
+void MyGLWidget::close()
+{
+    model.cleanUp();
 }

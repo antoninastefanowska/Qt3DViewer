@@ -1,7 +1,7 @@
 #version 330 core
 
-layout(location = 0) in vec3 vertexPosition_modelspace;
-layout(location = 1) in vec3 vertexNormal_modelspace;
+layout(location = 0) in vec3 vertexPositionLoaded;
+layout(location = 1) in vec3 vertexNormalLoaded;
 
 out vec3 vertexNormal;
 
@@ -11,6 +11,6 @@ uniform mat4 projection;
 
 void main()
 {
-    gl_Position = projection * view * model * vec4(vertexPosition_modelspace, 1);
-    vertexNormal = vertexNormal_modelspace;
+    gl_Position = projection * view * model * vec4(vertexPositionLoaded, 1);
+    vertexNormal = vertexNormalLoaded;
 }

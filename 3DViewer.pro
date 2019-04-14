@@ -37,6 +37,7 @@ SOURCES += \
         model.cpp \
         myglwidget.cpp \
         shaderprogram.cpp \
+        texture.cpp \
         triangle.cpp \
         vertex.cpp
 
@@ -48,6 +49,7 @@ HEADERS += \
         myglwidget.hpp \
         shaderprogram.hpp \
         shadertype.hpp \
+        texture.hpp \
         triangle.hpp \
         vertex.hpp
 
@@ -60,17 +62,28 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
+    combinedshader.frag \
+    combinedshader.vert \
     lambertshader.frag \
     lambertshader.vert \
     normalshader.frag \
     normalshader.vert \
+    phongshader.frag \
+    phongshader.vert \
     positionshader.frag \
     positionshader.vert \
     randomshader.frag \
-    randomshader.vert
+    randomshader.vert \
+    squares.bmp \
+    stars.bmp \
+    textureshader.frag \
+    textureshader.vert \
+    resources.qrc
 
 INCLUDEPATH += $$PWD/dependencies/include
 DEPENDPATH += $$PWD/dependencies/include
 
-RESOURCES += \
-    resources.qrc
+#RESOURCES += \
+    #resources.qrc
+
+LIBS += -lOpenGL32

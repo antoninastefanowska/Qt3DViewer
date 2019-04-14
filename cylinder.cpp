@@ -15,6 +15,7 @@ void Cylinder::generateVertices()
     float angle = radians((float)360 / n);
 
     vector<vec3> verticesData, normalsData;
+    vector<vec2> uvData;
     vector<Triangle> triangles;
     vector<Vertex> vertices;
 
@@ -22,6 +23,7 @@ void Cylinder::generateVertices()
 
     verticesData.reserve(vertexNumber);
     normalsData.reserve(vertexNumber);
+    uvData.reserve(vertexNumber);
     vertices.reserve(vertexNumber);
     triangles.reserve(n * 4);
 
@@ -31,38 +33,51 @@ void Cylinder::generateVertices()
         vec3 v1, v2, v3, v4, v5, v6;
         for (int k = 0; k < 2; k++)
         {
+            Vertex vertex1, vertex2, vertex3;
             GLfloat z = k ? -height / 2.0f : height / 2.0f;
 
             v1.x = v1.y = 0.0f;
             v1.z = z;
-            vertices.push_back(Vertex(v1));
+            vertex1 = Vertex(v1);
+            vertex1.calculateUVPlanar();
+            vertices.push_back(vertex1);
 
             v2.x = prevX;
             v2.y = prevY;
             v2.z = z;
-            vertices.push_back(Vertex(v2));
+            vertex2 = Vertex(v2);
+            vertex2.calculateUVPlanar();
+            vertices.push_back(vertex2);
 
             v3.x = i == n - 1 ? radius : v2.x * cos(angle) - v2.y * sin(angle);
             v3.y = i == n - 1 ? 0.0f : v2.x * sin(angle) + v2.y * cos(angle);
             v3.z = z;
-            vertices.push_back(Vertex(v3));
-            triangles.push_back(Triangle(Vertex(v1), Vertex(v2), Vertex(v3)));
+            vertex3 = Vertex(v3);
+            vertex3.calculateUVPlanar();
+            vertices.push_back(vertex3);
+            triangles.push_back(Triangle(vertex1, vertex2, vertex3));
 
             v4.x = v2.x;
             v4.y = v2.y;
             v4.z = z;
-            vertices.push_back(Vertex(v4));
+            vertex1 = Vertex(v4);
+            vertex1.calculateUVCylindrical();
+            vertices.push_back(vertex1);
 
             v5.x = v3.x;
             v5.y = v3.y;
             v5.z = z;
-            vertices.push_back(Vertex(v5));
+            vertex2 = Vertex(v5);
+            vertex2.calculateUVCylindrical();
+            vertices.push_back(vertex2);
 
             v6.x = k ? v3.x : v2.x;
             v6.y = k ? v3.y : v2.y;
             v6.z = -z;
-            vertices.push_back(Vertex(v6));
-            triangles.push_back(Triangle(Vertex(v4), Vertex(v5), Vertex(v6)));
+            vertex3 = Vertex(v6);
+            vertex3.calculateUVCylindrical();
+            vertices.push_back(vertex3);
+            triangles.push_back(Triangle(vertex1, vertex2, vertex3));
         }
         prevX = v3.x;
         prevY = v3.y;
@@ -82,9 +97,10 @@ void Cylinder::generateVertices()
 
         normalsData.push_back(vertex.getNormal());
         verticesData.push_back(vertex.getPosition());
+        uvData.push_back(vertex.getUV());
     }
 
-    loadVerticesData(verticesData, normalsData);
+    loadVerticesData(verticesData, normalsData, uvData);
 }
 
 void Cylinder::changeN(int n)

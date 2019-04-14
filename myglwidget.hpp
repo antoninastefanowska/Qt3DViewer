@@ -14,7 +14,7 @@ class MyGLWidget : public QOpenGLWidget
     Q_OBJECT
 
 private:
-    Cylinder cylinder;
+    Cylinder model;
     int prevTransX, prevTransY, prevTransZ, prevRotX, prevRotY, prevRotZ, prevLightX, prevLightY, prevLightZ;
     QPoint prevPos;
 
@@ -24,6 +24,7 @@ private:
 
 public:
     explicit MyGLWidget(QWidget *parent = 0);
+    Cylinder getModel();
 
 public slots:
     void translateX(int value);
@@ -38,6 +39,10 @@ public slots:
     void switchToPositionShader();
     void switchToNormalShader();
     void switchToLambertShader();
+    void switchToPhongShader();
+    void switchToTextureShader();
+    void switchToCombinedShader();
+    void recompileShaders();
 
     void moveLightX(int value);
     void moveLightY(int value);
@@ -46,6 +51,8 @@ public slots:
     void changeN(int value);
     void changeRadius(int value);
     void changeHeight(int value);
+
+    void close();
 };
 
 #endif // MYGLWIDGET_HPP

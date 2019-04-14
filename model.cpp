@@ -21,19 +21,23 @@ void Model::init()
     projection = perspective(radians(45.0f), 1.0f, 0.1f, 100.0f);
 
     light = new Light(vec3(0.0f, 0.0f, 0.0f));
+    texture = new Texture();
+    texture->init();
+    texture->loadTexture("stars.bmp");
 
-    loadAllShaders();
+    loadShaders();
     switchShader(POSITION_SHADER);
 }
 
-void Model::loadAllShaders()
+void Model::loadShaders()
 {
     ShaderProgram* shaderProgram = new ShaderProgram();
-    shaderProgram->init();
 
+    shaderProgram->init();
     shaderProgram->loadShader("randomshader.vert", GL_VERTEX_SHADER);
     shaderProgram->loadShader("randomshader.frag", GL_FRAGMENT_SHADER);
     shaderProgram->linkProgram();
+    shaderProgram->setType(RANDOM_SHADER);
     shaderPrograms[RANDOM_SHADER] = shaderProgram;
 
     shaderProgram = new ShaderProgram();
@@ -41,6 +45,7 @@ void Model::loadAllShaders()
     shaderProgram->loadShader("positionshader.vert", GL_VERTEX_SHADER);
     shaderProgram->loadShader("positionshader.frag", GL_FRAGMENT_SHADER);
     shaderProgram->linkProgram();
+    shaderProgram->setType(POSITION_SHADER);
     shaderPrograms[POSITION_SHADER] = shaderProgram;
 
     shaderProgram = new ShaderProgram();
@@ -48,6 +53,7 @@ void Model::loadAllShaders()
     shaderProgram->loadShader("normalshader.vert", GL_VERTEX_SHADER);
     shaderProgram->loadShader("normalshader.frag", GL_FRAGMENT_SHADER);
     shaderProgram->linkProgram();
+    shaderProgram->setType(NORMAL_SHADER);
     shaderPrograms[NORMAL_SHADER] = shaderProgram;
 
     shaderProgram = new ShaderProgram();
@@ -55,8 +61,35 @@ void Model::loadAllShaders()
     shaderProgram->loadShader("lambertshader.vert", GL_VERTEX_SHADER);
     shaderProgram->loadShader("lambertshader.frag", GL_FRAGMENT_SHADER);
     shaderProgram->linkProgram();
+    shaderProgram->setType(LAMBERT_SHADER);
     shaderPrograms[LAMBERT_SHADER] = shaderProgram;
+
+    shaderProgram = new ShaderProgram();
+    shaderProgram->init();
+    shaderProgram->loadShader("phongshader.vert", GL_VERTEX_SHADER);
+    shaderProgram->loadShader("phongshader.frag", GL_FRAGMENT_SHADER);
+    shaderProgram->linkProgram();
+    shaderProgram->setType(PHONG_SHADER);
+    shaderPrograms[PHONG_SHADER] = shaderProgram;
+
+    shaderProgram = new ShaderProgram();
+    shaderProgram->init();
+    shaderProgram->loadShader("textureshader.vert", GL_VERTEX_SHADER);
+    shaderProgram->loadShader("textureshader.frag", GL_FRAGMENT_SHADER);
+    shaderProgram->linkProgram();
+    shaderProgram->setType(TEXTURE_SHADER);
+    shaderPrograms[TEXTURE_SHADER] = shaderProgram;
+
+    shaderProgram = new ShaderProgram();
+    shaderProgram->init();
+    shaderProgram->loadShader("combinedshader.vert", GL_VERTEX_SHADER);
+    shaderProgram->loadShader("combinedshader.frag", GL_FRAGMENT_SHADER);
+    shaderProgram->linkProgram();
+    shaderProgram->setType(COMBINED_SHADER);
+    shaderPrograms[COMBINED_SHADER] = shaderProgram;
 }
+
+void Model::generateVertices() { }
 
 void Model::generateColors()
 {
@@ -75,7 +108,7 @@ void Model::generateColors()
     glBufferData(GL_ARRAY_BUFFER, colorsData.size() * sizeof(vec3), &colorsData[0], GL_STATIC_DRAW);
 }
 
-void Model::loadVerticesData(vector<vec3> verticesData, vector<vec3> normalsData)
+void Model::loadVerticesData(vector<vec3> verticesData, vector<vec3> normalsData, vector<vec2> uvData)
 {
     glGenBuffers(1, &verticesID);
     glBindBuffer(GL_ARRAY_BUFFER, verticesID);
@@ -84,6 +117,10 @@ void Model::loadVerticesData(vector<vec3> verticesData, vector<vec3> normalsData
     glGenBuffers(1, &normalsID);
     glBindBuffer(GL_ARRAY_BUFFER, normalsID);
     glBufferData(GL_ARRAY_BUFFER, normalsData.size() * sizeof(vec3), &normalsData[0], GL_STATIC_DRAW);
+
+    glGenBuffers(1, &uvID);
+    glBindBuffer(GL_ARRAY_BUFFER, uvID);
+    glBufferData(GL_ARRAY_BUFFER, uvData.size() * sizeof(vec2), &uvData[0], GL_STATIC_DRAW);
 }
 
 void Model::frame()
@@ -99,6 +136,9 @@ void Model::frame()
 
     glUniform3f(lightPositionID, light->getPosition().x, light->getPosition().y, light->getPosition().z);
 
+    glBindTexture(GL_TEXTURE_2D, texture->getTextureDataID());
+    glUniform1i(textureID, 0);
+
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, verticesID);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
@@ -111,11 +151,16 @@ void Model::frame()
     glBindBuffer(GL_ARRAY_BUFFER, colorsID);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
+    glEnableVertexAttribArray(3);
+    glBindBuffer(GL_ARRAY_BUFFER, uvID);
+    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
     glDrawArrays(GL_TRIANGLES, 0, vertexNumber);
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(2);
+    glDisableVertexAttribArray(3);
 }
 
 Light* Model::getLight()
@@ -161,9 +206,49 @@ void Model::switchShader(ShaderType shaderType)
     viewID = glGetUniformLocation(currentShaderProgram->getProgramID(), "view");
     projectionID = glGetUniformLocation(currentShaderProgram->getProgramID(), "projection");
     lightPositionID = glGetUniformLocation(currentShaderProgram->getProgramID(), "lightPosition");
+    textureID = glGetUniformLocation(currentShaderProgram->getProgramID(), "textureSampler");
 }
 
 void Model::changePerspectiveRatio(float ratio)
 {
     projection = perspective(radians(45.0f), ratio, 0.1f, 100.0f);
+}
+
+void Model::reloadShaders()
+{
+    ShaderType currentShaderType = currentShaderProgram->getType();
+    glDeleteProgram(currentShaderProgram->getProgramID());
+    delete currentShaderProgram;
+
+
+
+    for (pair<ShaderType, ShaderProgram*> shaderPair : shaderPrograms)
+    {
+        GLuint shaderProgramID = shaderPair.second->getProgramID();
+        glDeleteProgram(shaderProgramID);
+        delete shaderPair.second;
+    }
+    shaderPrograms.clear();
+
+    loadShaders();
+    switchShader(currentShaderType);
+}
+
+void Model::cleanUp()
+{
+    for (pair<ShaderType, ShaderProgram*> shaderPair : shaderPrograms)
+    {
+        GLuint shaderProgramID = shaderPair.second->getProgramID();
+        glDeleteProgram(shaderProgramID);
+        delete shaderPair.second;
+    }
+    shaderPrograms.clear();
+
+    glDeleteBuffers(1, &verticesID);
+    glDeleteBuffers(1, &normalsID);
+    glDeleteBuffers(1, &uvID);
+    glDeleteBuffers(1, &colorsID);
+    glDeleteTextures(1, &textureID);
+
+    delete light;
 }

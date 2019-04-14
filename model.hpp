@@ -17,9 +17,11 @@
 #include "shaderprogram.hpp"
 #include "shadertype.hpp"
 #include "light.hpp"
+#include "texture.hpp"
 
 using namespace std;
 
+using glm::vec2;
 using glm::vec3;
 using glm::vec4;
 using glm::mat4;
@@ -30,19 +32,20 @@ class Model : public QOpenGLFunctions
 {
 private:
     mat4 model, view, projection;
-    GLuint verticesID, normalsID, modelID, viewID, projectionID, lightPositionID, vertexArrayID, colorsID;
+    GLuint verticesID, normalsID, modelID, viewID, projectionID, lightPositionID, vertexArrayID, colorsID, uvID, textureID;
     Light* light;
     ShaderProgram* currentShaderProgram;
     map<ShaderType, ShaderProgram*> shaderPrograms;
 
-    void loadAllShaders();
+    void loadShaders();
 
 protected:
     int vertexNumber;
+    Texture* texture;
 
-    virtual void generateVertices() = 0;
+    virtual void generateVertices();
     void generateColors();
-    void loadVerticesData(vector<vec3> verticesData, vector<vec3> normalsData);
+    void loadVerticesData(vector<vec3> verticesData, vector<vec3> normalsData, vector<vec2> uvData);
 
 public:
     Model();
@@ -61,6 +64,8 @@ public:
 
     void switchShader(ShaderType shaderType);
     void changePerspectiveRatio(float ratio);
+    void reloadShaders();
+    void cleanUp();
 };
 
 #endif // MODEL_HPP

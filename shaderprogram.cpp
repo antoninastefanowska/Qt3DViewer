@@ -1,6 +1,6 @@
 #include "shaderprogram.hpp"
 
-const string ShaderProgram::BASE_PATH = ":/shaders/";
+const string ShaderProgram::BASE_PATH = "C:/Users/HP/Documents/Qt/Projects/3DViewer/";
 
 void ShaderProgram::init()
 {
@@ -19,10 +19,11 @@ void ShaderProgram::loadShader(string filename, GLenum type)
         QTextStream str(&shaderFile);
         QString content = str.readAll();
         shaderCode = content.toUtf8().constData();
+        shaderFile.close();
     }
     else
     {
-        cout << "Blad otwarcia pliku." << endl;
+        cout << "Blad otwarcia pliku" << endl;
         getchar();
         return;
     }
@@ -49,7 +50,7 @@ void ShaderProgram::loadShader(string filename, GLenum type)
 
 void ShaderProgram::linkProgram()
 {
-    cout << "Konsolidowanie programu." << endl;
+    cout << "Konsolidowanie programu" << endl;
 
     GLint result = GL_FALSE;
     int infoLogLength;
@@ -80,4 +81,14 @@ void ShaderProgram::linkProgram()
 GLuint ShaderProgram::getProgramID()
 {
     return programID;
+}
+
+ShaderType ShaderProgram::getType()
+{
+    return type;
+}
+
+void ShaderProgram::setType(ShaderType type)
+{
+    this->type = type;
 }
