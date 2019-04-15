@@ -85,43 +85,43 @@ void MyGLWidget::rotateZ(int value)
 
 void MyGLWidget::switchToRandomShader()
 {
-    model.switchShader(RANDOM_SHADER);
+    model.switchShaderProgram("randomshader");
     update();
 }
 
 void MyGLWidget::switchToPositionShader()
 {
-    model.switchShader(POSITION_SHADER);
+    model.switchShaderProgram("positionshader");
     update();
 }
 
 void MyGLWidget::switchToNormalShader()
 {
-    model.switchShader(NORMAL_SHADER);
+    model.switchShaderProgram("normalshader");
     update();
 }
 
 void MyGLWidget::switchToLambertShader()
 {
-    model.switchShader(LAMBERT_SHADER);
+    model.switchShaderProgram("lambertshader");
     update();
 }
 
 void MyGLWidget::switchToPhongShader()
 {
-    model.switchShader(PHONG_SHADER);
+    model.switchShaderProgram("phongshader");
     update();
 }
 
 void MyGLWidget::switchToTextureShader()
 {
-    model.switchShader(TEXTURE_SHADER);
+    model.switchShaderProgram("textureshader");
     update();
 }
 
 void MyGLWidget::switchToCombinedShader()
 {
-    model.switchShader(COMBINED_SHADER);
+    model.switchShaderProgram("combinedshader");
     update();
 }
 
@@ -167,9 +167,21 @@ void MyGLWidget::changeHeight(int value)
     update();
 }
 
-void MyGLWidget::recompileShaders()
+void MyGLWidget::recompileShader()
 {
-    model.reloadShaders();
+    model.reloadCurrentShaderProgram();
+    update();
+}
+
+void MyGLWidget::switchTexture(QString value)
+{
+    model.switchTexture(value.toUtf8().constData());
+    update();
+}
+
+void MyGLWidget::scaleTexture(int value)
+{
+    model.scaleTexture((float)value / 10.0);
     update();
 }
 

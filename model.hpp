@@ -15,7 +15,6 @@
 
 #include "triangle.hpp"
 #include "shaderprogram.hpp"
-#include "shadertype.hpp"
 #include "light.hpp"
 #include "texture.hpp"
 
@@ -32,18 +31,18 @@ class Model : public QOpenGLFunctions
 {
 private:
     mat4 model, view, projection;
-    GLuint verticesID, normalsID, modelID, viewID, projectionID, lightPositionID, vertexArrayID, colorsID, uvID, textureID;
+    GLuint verticesID, normalsID, modelID, viewID, projectionID, lightPositionID, vertexArrayID, colorsID, uvID, textureID; 
     Light* light;
-    ShaderProgram* currentShaderProgram;
-    map<ShaderType, ShaderProgram*> shaderPrograms;
+    map<string, ShaderProgram*> shaderPrograms;
+    string currentShaderProgramName;
 
-    void loadShaders();
+    void loadShaderProgram(string name);
 
 protected:
     int vertexNumber;
     Texture* texture;
 
-    virtual void generateVertices();
+    virtual void generateVertices() = 0;
     void generateColors();
     void loadVerticesData(vector<vec3> verticesData, vector<vec3> normalsData, vector<vec2> uvData);
 
@@ -53,6 +52,7 @@ public:
     void init();
     void frame();
     Light* getLight();
+    Texture* getTexture();
 
     void rotateX(float angle);
     void rotateY(float angle);
@@ -62,9 +62,11 @@ public:
     void translateY(float distance);
     void translateZ(float distance);
 
-    void switchShader(ShaderType shaderType);
+    void switchShaderProgram(string name);
+    void reloadCurrentShaderProgram();
+    void switchTexture(string filename);
     void changePerspectiveRatio(float ratio);
-    void reloadShaders();
+    void scaleTexture(float factor);
     void cleanUp();
 };
 

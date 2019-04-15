@@ -48,7 +48,6 @@ HEADERS += \
         model.hpp \
         myglwidget.hpp \
         shaderprogram.hpp \
-        shadertype.hpp \
         texture.hpp \
         triangle.hpp \
         vertex.hpp
@@ -62,6 +61,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
+    checkered.bmp \
     combinedshader.frag \
     combinedshader.vert \
     lambertshader.frag \

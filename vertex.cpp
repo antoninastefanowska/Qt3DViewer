@@ -24,19 +24,19 @@ void Vertex::setNormal(vec3 normal)
     this->normal = normal;
 }
 
-void Vertex::calculateUVPlanar()
+void Vertex::calculateUVPlanar(float scale)
 {
-    uv.x = 0.5 * position.x;
-    uv.y = 0.5 * position.y;
+    uv.x = scale * position.x;
+    uv.y = scale * position.y;
 }
 
-void Vertex::calculateUVCylindrical()
+void Vertex::calculateUVCylindrical(float scale)
 {
     GLfloat phi;
 
     phi = atan2(position.y, position.x);
-    uv.x = 0.5 * phi;
-    uv.y = 0.5 * position.z;
+    uv.x = scale * phi;
+    uv.y = scale * position.z;
 }
 
 vec2 Vertex::getUV()

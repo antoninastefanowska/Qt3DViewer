@@ -7,7 +7,6 @@
 #include <QPoint>
 
 #include "cylinder.hpp"
-#include "shadertype.hpp"
 
 class MyGLWidget : public QOpenGLWidget
 {
@@ -42,7 +41,7 @@ public slots:
     void switchToPhongShader();
     void switchToTextureShader();
     void switchToCombinedShader();
-    void recompileShaders();
+    void recompileShader();
 
     void moveLightX(int value);
     void moveLightY(int value);
@@ -51,6 +50,9 @@ public slots:
     void changeN(int value);
     void changeRadius(int value);
     void changeHeight(int value);
+
+    void switchTexture(QString value);
+    void scaleTexture(int value);
 
     void close();
 };

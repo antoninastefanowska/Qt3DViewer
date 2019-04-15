@@ -22,8 +22,8 @@ public:
     vec3 getNormal();
     void setNormal(vec3 normal);
 
-    void calculateUVPlanar();
-    void calculateUVCylindrical();
+    void calculateUVPlanar(float scale);
+    void calculateUVCylindrical(float scale);
 
     vec2 getUV();
     void setUV(vec2 uv);

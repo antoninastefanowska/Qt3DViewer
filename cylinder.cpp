@@ -39,21 +39,21 @@ void Cylinder::generateVertices()
             v1.x = v1.y = 0.0f;
             v1.z = z;
             vertex1 = Vertex(v1);
-            vertex1.calculateUVPlanar();
+            vertex1.calculateUVPlanar(texture->getScale());
             vertices.push_back(vertex1);
 
             v2.x = prevX;
             v2.y = prevY;
             v2.z = z;
             vertex2 = Vertex(v2);
-            vertex2.calculateUVPlanar();
+            vertex2.calculateUVPlanar(texture->getScale());
             vertices.push_back(vertex2);
 
             v3.x = i == n - 1 ? radius : v2.x * cos(angle) - v2.y * sin(angle);
             v3.y = i == n - 1 ? 0.0f : v2.x * sin(angle) + v2.y * cos(angle);
             v3.z = z;
             vertex3 = Vertex(v3);
-            vertex3.calculateUVPlanar();
+            vertex3.calculateUVPlanar(texture->getScale());
             vertices.push_back(vertex3);
             triangles.push_back(Triangle(vertex1, vertex2, vertex3));
 
@@ -61,21 +61,21 @@ void Cylinder::generateVertices()
             v4.y = v2.y;
             v4.z = z;
             vertex1 = Vertex(v4);
-            vertex1.calculateUVCylindrical();
+            vertex1.calculateUVCylindrical(texture->getScale());
             vertices.push_back(vertex1);
 
             v5.x = v3.x;
             v5.y = v3.y;
             v5.z = z;
             vertex2 = Vertex(v5);
-            vertex2.calculateUVCylindrical();
+            vertex2.calculateUVCylindrical(texture->getScale());
             vertices.push_back(vertex2);
 
             v6.x = k ? v3.x : v2.x;
             v6.y = k ? v3.y : v2.y;
             v6.z = -z;
             vertex3 = Vertex(v6);
-            vertex3.calculateUVCylindrical();
+            vertex3.calculateUVCylindrical(texture->getScale());
             vertices.push_back(vertex3);
             triangles.push_back(Triangle(vertex1, vertex2, vertex3));
         }

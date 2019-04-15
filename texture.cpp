@@ -15,6 +15,7 @@ void Texture::loadTexture(string filename)
     data = image.bits();
     width = image.width();
     height = image.height();
+    scale = 0.5;
 
     glGenTextures(1, &textureDataID);
     glBindTexture(GL_TEXTURE_2D, textureDataID);
@@ -43,4 +44,14 @@ int Texture::getWidth()
 int Texture::getHeight()
 {
     return height;
+}
+
+float Texture::getScale()
+{
+    return scale;
+}
+
+void Texture::setScale(float scale)
+{
+    this->scale = scale;
 }

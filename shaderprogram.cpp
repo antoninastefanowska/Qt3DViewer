@@ -82,13 +82,3 @@ GLuint ShaderProgram::getProgramID()
 {
     return programID;
 }
-
-ShaderType ShaderProgram::getType()
-{
-    return type;
-}
-
-void ShaderProgram::setType(ShaderType type)
-{
-    this->type = type;
-}

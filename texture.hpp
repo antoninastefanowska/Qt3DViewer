@@ -14,6 +14,7 @@ private:
     static const string BASE_PATH;
     unsigned char* data;
     int width, height;
+    float scale;
     GLuint textureDataID;
 
 public:
@@ -22,6 +23,8 @@ public:
     GLuint getTextureDataID();
     int getWidth();
     int getHeight();
+    float getScale();
+    void setScale(float scale);
 };
 
 #endif // TEXTURE_HPP
