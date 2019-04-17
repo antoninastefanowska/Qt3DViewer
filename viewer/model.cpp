@@ -14,7 +14,7 @@ void Model::init()
     texture->init();
     texture->loadTexture("checkered.bmp");
 
-    generateVertices();
+    createModel();
     generateColors();
 
     model = mat4(1.0f);
@@ -57,24 +57,9 @@ void Model::generateColors()
         colorsData.push_back(vec3(r1, r2, r3));
     }
 
-    glGenBuffers(1, &colorsID);
-    glBindBuffer(GL_ARRAY_BUFFER, colorsID);
+    glGenBuffers(1, &colorsHandle);
+    glBindBuffer(GL_ARRAY_BUFFER, colorsHandle);
     glBufferData(GL_ARRAY_BUFFER, colorsData.size() * sizeof(vec3), &colorsData[0], GL_STATIC_DRAW);
-}
-
-void Model::loadVerticesData(vector<vec3> verticesData, vector<vec3> normalsData, vector<vec2> uvData)
-{
-    glGenBuffers(1, &verticesID);
-    glBindBuffer(GL_ARRAY_BUFFER, verticesID);
-    glBufferData(GL_ARRAY_BUFFER, verticesData.size() * sizeof(vec3), &verticesData[0], GL_STATIC_DRAW);
-
-    glGenBuffers(1, &normalsID);
-    glBindBuffer(GL_ARRAY_BUFFER, normalsID);
-    glBufferData(GL_ARRAY_BUFFER, normalsData.size() * sizeof(vec3), &normalsData[0], GL_STATIC_DRAW);
-
-    glGenBuffers(1, &uvID);
-    glBindBuffer(GL_ARRAY_BUFFER, uvID);
-    glBufferData(GL_ARRAY_BUFFER, uvData.size() * sizeof(vec2), &uvData[0], GL_STATIC_DRAW);
 }
 
 void Model::frame()
@@ -86,29 +71,29 @@ void Model::frame()
 
     glUseProgram(currentShaderProgram->getProgramID());
 
-    glUniformMatrix4fv(modelID, 1, GL_FALSE, &model[0][0]);
-    glUniformMatrix4fv(viewID, 1, GL_FALSE, &view[0][0]);
-    glUniformMatrix4fv(projectionID, 1, GL_FALSE, &projection[0][0]);
+    glUniformMatrix4fv(modelMatrixHandle, 1, GL_FALSE, &model[0][0]);
+    glUniformMatrix4fv(viewMatrixHandle, 1, GL_FALSE, &view[0][0]);
+    glUniformMatrix4fv(projectionMatrixHandle, 1, GL_FALSE, &projection[0][0]);
 
-    glUniform3f(lightPositionID, light->getPosition().x, light->getPosition().y, light->getPosition().z);
+    glUniform3f(lightPositionHandle, light->getPosition().x, light->getPosition().y, light->getPosition().z);
 
     glBindTexture(GL_TEXTURE_2D, texture->getTextureDataID());
-    glUniform1i(textureID, 0);
+    glUniform1i(textureHandle, 0);
 
     glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, verticesID);
+    glBindBuffer(GL_ARRAY_BUFFER, verticesHandle);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
     glEnableVertexAttribArray(1);
-    glBindBuffer(GL_ARRAY_BUFFER, normalsID);
+    glBindBuffer(GL_ARRAY_BUFFER, normalsHandle);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
     glEnableVertexAttribArray(2);
-    glBindBuffer(GL_ARRAY_BUFFER, colorsID);
+    glBindBuffer(GL_ARRAY_BUFFER, colorsHandle);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
     glEnableVertexAttribArray(3);
-    glBindBuffer(GL_ARRAY_BUFFER, uvID);
+    glBindBuffer(GL_ARRAY_BUFFER, uvHandle);
     glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
     glDrawArrays(GL_TRIANGLES, 0, vertexNumber);
@@ -164,11 +149,11 @@ void Model::switchShaderProgram(string name)
     ShaderProgram* currentShaderProgram = shaderPrograms[name];
     currentShaderProgramName = name;
 
-    modelID = glGetUniformLocation(currentShaderProgram->getProgramID(), "model");
-    viewID = glGetUniformLocation(currentShaderProgram->getProgramID(), "view");
-    projectionID = glGetUniformLocation(currentShaderProgram->getProgramID(), "projection");
-    lightPositionID = glGetUniformLocation(currentShaderProgram->getProgramID(), "lightPosition");
-    textureID = glGetUniformLocation(currentShaderProgram->getProgramID(), "textureSampler");
+    modelMatrixHandle = glGetUniformLocation(currentShaderProgram->getProgramID(), "model");
+    viewMatrixHandle = glGetUniformLocation(currentShaderProgram->getProgramID(), "view");
+    projectionMatrixHandle = glGetUniformLocation(currentShaderProgram->getProgramID(), "projection");
+    lightPositionHandle = glGetUniformLocation(currentShaderProgram->getProgramID(), "lightPosition");
+    textureHandle = glGetUniformLocation(currentShaderProgram->getProgramID(), "textureSampler");
 }
 
 void Model::switchTexture(string filename)
@@ -193,7 +178,7 @@ void Model::changePerspectiveRatio(float ratio)
 void Model::scaleTexture(float factor)
 {
     texture->setScale(factor);
-    generateVertices();
+    createModel();
 }
 
 void Model::cleanUp()
@@ -206,11 +191,11 @@ void Model::cleanUp()
     }
     shaderPrograms.clear();
 
-    glDeleteBuffers(1, &verticesID);
-    glDeleteBuffers(1, &normalsID);
-    glDeleteBuffers(1, &uvID);
-    glDeleteBuffers(1, &colorsID);
-    glDeleteTextures(1, &textureID);
+    glDeleteBuffers(1, &verticesHandle);
+    glDeleteBuffers(1, &normalsHandle);
+    glDeleteBuffers(1, &uvHandle);
+    glDeleteBuffers(1, &colorsHandle);
+    glDeleteTextures(1, &textureHandle);
 
     delete texture;
     delete light;

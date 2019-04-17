@@ -1,6 +1,6 @@
 #include "shaderprogram.hpp"
 
-const string ShaderProgram::BASE_PATH = "C:/Users/HP/Documents/Qt/Projects/3DViewer/";
+const string ShaderProgram::BASE_PATH = "C:/Users/HP/Documents/Qt/Projects/3DViewer/resources/shaders/";
 
 void ShaderProgram::init()
 {

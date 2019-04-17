@@ -13,7 +13,6 @@
 
 #include <QOpenGLFunctions>
 
-#include "triangle.hpp"
 #include "shaderprogram.hpp"
 #include "light.hpp"
 #include "texture.hpp"
@@ -31,7 +30,7 @@ class Model : public QOpenGLFunctions
 {
 private:
     mat4 model, view, projection;
-    GLuint verticesID, normalsID, modelID, viewID, projectionID, lightPositionID, vertexArrayID, colorsID, uvID, textureID; 
+    GLuint modelMatrixHandle, viewMatrixHandle, projectionMatrixHandle, lightPositionHandle, colorsHandle, textureHandle;
     Light* light;
     map<string, ShaderProgram*> shaderPrograms;
     string currentShaderProgramName;
@@ -40,11 +39,11 @@ private:
 
 protected:
     int vertexNumber;
+    GLuint verticesHandle, normalsHandle, uvHandle;
     Texture* texture;
 
-    virtual void generateVertices() = 0;
+    virtual void createModel() = 0;
     void generateColors();
-    void loadVerticesData(vector<vec3> verticesData, vector<vec3> normalsData, vector<vec2> uvData);
 
 public:
     Model();

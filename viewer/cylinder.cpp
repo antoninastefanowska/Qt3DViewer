@@ -10,7 +10,7 @@ Cylinder::Cylinder(int n, float radius, float height)
 }
 
 
-void Cylinder::generateVertices()
+void Cylinder::createModel()
 {
     float angle = radians((float)360 / n);
 
@@ -100,24 +100,40 @@ void Cylinder::generateVertices()
         uvData.push_back(vertex.getUV());
     }
 
-    loadVerticesData(verticesData, normalsData, uvData);
+    loadDataToBuffers(verticesData, normalsData, uvData);
 }
+
+void Cylinder::loadDataToBuffers(vector<vec3> verticesData, vector<vec3> normalsData, vector<vec2> uvData)
+{
+    glGenBuffers(1, &verticesHandle);
+    glBindBuffer(GL_ARRAY_BUFFER, verticesHandle);
+    glBufferData(GL_ARRAY_BUFFER, verticesData.size() * sizeof(vec3), &verticesData[0], GL_STATIC_DRAW);
+
+    glGenBuffers(1, &normalsHandle);
+    glBindBuffer(GL_ARRAY_BUFFER, normalsHandle);
+    glBufferData(GL_ARRAY_BUFFER, normalsData.size() * sizeof(vec3), &normalsData[0], GL_STATIC_DRAW);
+
+    glGenBuffers(1, &uvHandle);
+    glBindBuffer(GL_ARRAY_BUFFER, uvHandle);
+    glBufferData(GL_ARRAY_BUFFER, uvData.size() * sizeof(vec2), &uvData[0], GL_STATIC_DRAW);
+}
+
 
 void Cylinder::changeN(int n)
 {
     this->n = n;
-    generateVertices();
+    createModel();
     generateColors();
 }
 
 void Cylinder::changeRadius(float radius)
 {
     this->radius = radius;
-    generateVertices();
+    createModel();
 }
 
 void Cylinder::changeHeight(float height)
 {
     this->height = height;
-    generateVertices();
+    createModel();
 }

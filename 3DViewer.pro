@@ -30,30 +30,32 @@ QT += core gui \
       opengl
 
 SOURCES += \
-        cylinder.cpp \
-        light.cpp \
-        main.cpp \
-        mainwindow.cpp \
-        model.cpp \
-        myglwidget.cpp \
-        shaderprogram.cpp \
-        texture.cpp \
-        triangle.cpp \
-        vertex.cpp
+    main.cpp \
+    mainwindow.cpp \
+    myglwidget.cpp \
+    viewer/cylinder.cpp \
+    viewer/light.cpp \
+    viewer/loadedmodel.cpp \
+    viewer/model.cpp \
+    viewer/shaderprogram.cpp \
+    viewer/texture.cpp \
+    viewer/triangle.cpp \
+    viewer/vertex.cpp
 
 HEADERS += \
-        cylinder.hpp \
-        light.hpp \
-        mainwindow.hpp \
-        model.hpp \
-        myglwidget.hpp \
-        shaderprogram.hpp \
-        texture.hpp \
-        triangle.hpp \
-        vertex.hpp
+    mainwindow.hpp \
+    myglwidget.hpp \
+    viewer/cylinder.hpp \
+    viewer/light.hpp \
+    viewer/loadedmodel.hpp \
+    viewer/model.hpp \
+    viewer/shaderprogram.hpp \
+    viewer/texture.hpp \
+    viewer/triangle.hpp \
+    viewer/vertex.hpp
 
 FORMS += \
-        mainwindow.ui
+    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -61,29 +63,29 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    checkered.bmp \
-    combinedshader.frag \
-    combinedshader.vert \
-    lambertshader.frag \
-    lambertshader.vert \
-    normalshader.frag \
-    normalshader.vert \
-    phongshader.frag \
-    phongshader.vert \
-    positionshader.frag \
-    positionshader.vert \
-    randomshader.frag \
-    randomshader.vert \
-    squares.bmp \
-    stars.bmp \
-    textureshader.frag \
-    textureshader.vert \
+    resources/shaders/combinedshader.frag \
+    resources/shaders/combinedshader.vert \
+    resources/shaders/lambertshader.frag \
+    resources/shaders/lambertshader.vert \
+    resources/shaders/normalshader.frag \
+    resources/shaders/normalshader.vert \
+    resources/shaders/phongshader.frag \
+    resources/shaders/phongshader.vert \
+    resources/shaders/positionshader.frag \
+    resources/shaders/positionshader.vert \
+    resources/shaders/randomshader.frag \
+    resources/shaders/randomshader.vert \
+    resources/shaders/textureshader.frag \
+    resources/shaders/textureshader.vert \
+    resources/textures/checkered.bmp \
+    resources/textures/squares.bmp \
+    resources/textures/stars.bmp \
     resources.qrc
 
 INCLUDEPATH += $$PWD/dependencies/include
 DEPENDPATH += $$PWD/dependencies/include
 
+LIBS += -lOpenGL32
+
 #RESOURCES += \
     #resources.qrc
-
-LIBS += -lOpenGL32

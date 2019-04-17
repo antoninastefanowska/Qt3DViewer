@@ -4,7 +4,6 @@
 #include <QApplication>
 
 #include "myglwidget.hpp"
-#include "model.hpp"
 
 using namespace std;
 

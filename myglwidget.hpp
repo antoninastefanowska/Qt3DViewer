@@ -6,7 +6,7 @@
 #include <QOpenGLContext>
 #include <QPoint>
 
-#include "cylinder.hpp"
+#include "viewer/cylinder.hpp"
 
 class MyGLWidget : public QOpenGLWidget
 {
