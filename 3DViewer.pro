@@ -38,6 +38,7 @@ SOURCES += \
     viewer/loadedmodel.cpp \
     viewer/material.cpp \
     viewer/model.cpp \
+    viewer/scene.cpp \
     viewer/shaderprogram.cpp \
     viewer/texture.cpp \
     viewer/triangle.cpp \
@@ -51,6 +52,7 @@ HEADERS += \
     viewer/loadedmodel.hpp \
     viewer/material.hpp \
     viewer/model.hpp \
+    viewer/scene.hpp \
     viewer/shaderprogram.hpp \
     viewer/texture.hpp \
     viewer/triangle.hpp \

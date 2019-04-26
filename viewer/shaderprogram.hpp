@@ -17,11 +17,17 @@ private:
     static const string BASE_PATH;
     vector<GLuint> shaderHandles;
     GLuint programHandle;
+    string name;
 
-public:
-    void init();
     void loadShader(string filename, GLenum type);
     void linkProgram();
+
+public:
+    ShaderProgram();
+    ShaderProgram(string name);
+    void init();
+    void createProgram();
+    void reloadProgram();
     GLuint getProgramHandle();
 };
 

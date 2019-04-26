@@ -4,10 +4,10 @@ const string Material::BASE_PATH = "C:/Users/HP/Documents/Qt/Projects/3DViewer/r
 
 Material::Material()
 {
-    ka = vec3(1.0);
-    kd = vec3(1.0);
-    ks = vec3(1.0);
-    ke = vec3(1.0);
+    ka = vec3(0.0f);
+    kd = vec3(0.0f);
+    ks = vec3(0.0f);
+    ke = vec3(0.0f);
 }
 
 Material::~Material()

@@ -2,6 +2,13 @@
 
 const string ShaderProgram::BASE_PATH = "C:/Users/HP/Documents/Qt/Projects/3DViewer/resources/shaders/";
 
+ShaderProgram::ShaderProgram() { }
+
+ShaderProgram::ShaderProgram(string name)
+{
+    this->name = name;
+}
+
 void ShaderProgram::init()
 {
     initializeOpenGLFunctions();
@@ -76,6 +83,19 @@ void ShaderProgram::linkProgram()
     }
 
     shaderHandles.clear();
+}
+
+void ShaderProgram::createProgram()
+{
+    loadShader(name + ".vert", GL_VERTEX_SHADER);
+    loadShader(name + ".frag", GL_FRAGMENT_SHADER);
+    linkProgram();
+}
+
+void ShaderProgram::reloadProgram()
+{
+    glDeleteProgram(programHandle);
+    createProgram();
 }
 
 GLuint ShaderProgram::getProgramHandle()

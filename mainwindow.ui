@@ -677,20 +677,8 @@
                  <item>
                   <widget class="QRadioButton" name="radioButton_10">
                    <property name="text">
-                    <string>Załadowany z pliku</string>
+                    <string>Plik &quot;monkey.obj&quot;</string>
                    </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QComboBox" name="comboBox_2">
-                   <property name="enabled">
-                    <bool>false</bool>
-                   </property>
-                   <item>
-                    <property name="text">
-                     <string>monkey.obj</string>
-                    </property>
-                   </item>
                   </widget>
                  </item>
                 </layout>
@@ -871,7 +859,7 @@
     <slot>switchTexture(QString)</slot>
     <slot>switchToMTLShader()</slot>
     <slot>switchToCylinderModel()</slot>
-    <slot>switchToLoadedModel(QString)</slot>
+    <slot>switchToLoadedModelMonkey()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -1093,7 +1081,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>848</x>
-     <y>244</y>
+     <y>218</y>
     </hint>
     <hint type="destinationlabel">
      <x>535</x>
@@ -1109,7 +1097,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>964</x>
-     <y>244</y>
+     <y>218</y>
     </hint>
     <hint type="destinationlabel">
      <x>520</x>
@@ -1237,7 +1225,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>732</x>
-     <y>244</y>
+     <y>218</y>
     </hint>
     <hint type="destinationlabel">
      <x>545</x>
@@ -1264,32 +1252,16 @@
   <connection>
    <sender>radioButton_10</sender>
    <signal>toggled(bool)</signal>
-   <receiver>comboBox_2</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>721</x>
-     <y>133</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>725</x>
-     <y>153</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>comboBox_2</sender>
-   <signal>activated(QString)</signal>
    <receiver>myGLWidget</receiver>
-   <slot>switchToLoadedModel(QString)</slot>
+   <slot>switchToLoadedModelMonkey()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>701</x>
-     <y>160</y>
+     <x>694</x>
+     <y>128</y>
     </hint>
     <hint type="destinationlabel">
-     <x>574</x>
-     <y>148</y>
+     <x>556</x>
+     <y>143</y>
     </hint>
    </hints>
   </connection>

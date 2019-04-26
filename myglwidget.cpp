@@ -4,9 +4,9 @@ MyGLWidget::MyGLWidget(QWidget *parent) : QOpenGLWidget(parent) { }
 
 void MyGLWidget::initializeGL()
 {
-    //model = new Cylinder(72, 2.0, 8.0);
-    model = new LoadedModel("monkey.obj");
-    model->init();
+    Model* model = new Cylinder(72, 2.0, 8.0);
+    scene = new Scene(model);
+    scene->init();
 
     prevTransX = 0;
     prevTransY = 0;
@@ -23,23 +23,18 @@ void MyGLWidget::initializeGL()
 
 void MyGLWidget::paintGL()
 {
-    model->draw();
+    scene->draw();
 }
 
 void MyGLWidget::resizeGL(int width, int height)
 {
-    model->changePerspectiveRatio((float)width / (float)height);
-}
-
-Model* MyGLWidget::getModel()
-{
-    return model;
+    scene->changePerspectiveRatio((float)width / (float)height);
 }
 
 void MyGLWidget::translateX(int value)
 {
     int distance = value - prevTransX;
-    model->translateX((float)distance);
+    scene->getModel()->translateX((float)distance);
     prevTransX = value;
     update();
 }
@@ -47,7 +42,7 @@ void MyGLWidget::translateX(int value)
 void MyGLWidget::translateY(int value)
 {
     int distance = value - prevTransY;
-    model->translateY((float)distance);
+    scene->getModel()->translateY((float)distance);
     prevTransY = value;
     update();
 }
@@ -55,7 +50,7 @@ void MyGLWidget::translateY(int value)
 void MyGLWidget::translateZ(int value)
 {
     int distance = value - prevTransZ;
-    model->translateZ((float)distance);
+    scene->getModel()->translateZ((float)distance);
     prevTransZ = value;
     update();
 }
@@ -63,7 +58,7 @@ void MyGLWidget::translateZ(int value)
 void MyGLWidget::rotateX(int value)
 {
     int angle = value - prevRotX;
-    model->rotateX((float)angle);
+    scene->getModel()->rotateX((float)angle);
     prevRotX = value;
     update();
 }
@@ -71,7 +66,7 @@ void MyGLWidget::rotateX(int value)
 void MyGLWidget::rotateY(int value)
 {
     int angle = value - prevRotY;
-    model->rotateY((float)angle);
+    scene->getModel()->rotateY((float)angle);
     prevRotY = value;
     update();
 }
@@ -79,86 +74,77 @@ void MyGLWidget::rotateY(int value)
 void MyGLWidget::rotateZ(int value)
 {
     int angle = value - prevRotZ;
-    model->rotateZ((float)angle);
+    scene->getModel()->rotateZ((float)angle);
     prevRotZ = value;
     update();
 }
 
 void MyGLWidget::switchToRandomShader()
 {
-    model->switchShaderProgram("randomshader");
+    scene->switchShaderProgram("randomshader");
     update();
 }
 
 void MyGLWidget::switchToPositionShader()
 {
-    model->switchShaderProgram("positionshader");
+    scene->switchShaderProgram("positionshader");
     update();
 }
 
 void MyGLWidget::switchToNormalShader()
 {
-    model->switchShaderProgram("normalshader");
+    scene->switchShaderProgram("normalshader");
     update();
 }
 
 void MyGLWidget::switchToLambertShader()
 {
-    model->switchShaderProgram("lambertshader");
+    scene->switchShaderProgram("lambertshader");
     update();
 }
 
 void MyGLWidget::switchToPhongShader()
 {
-    model->switchShaderProgram("phongshader");
+    scene->switchShaderProgram("phongshader");
     update();
 }
 
 void MyGLWidget::switchToTextureShader()
 {
-    model->switchShaderProgram("textureshader");
+    scene->switchShaderProgram("textureshader");
     update();
 }
 
 void MyGLWidget::switchToCombinedShader()
 {
-    model->switchShaderProgram("combinedshader");
+    scene->switchShaderProgram("combinedshader");
     update();
 }
 
 void MyGLWidget::switchToMTLShader()
 {
-    model->switchShaderProgram("mtlshader");
+    scene->switchShaderProgram("mtlshader");
     update();
 }
 
 void MyGLWidget::switchToCylinderModel()
 {
-    cout << "switch to cylinder" << endl;
-    /*
-    model->cleanUp();
-    delete model;
-    model = new Cylinder(72, 2.0, 8.0);
-    model->init();
-    update(); */
+    Model* model = new Cylinder(72, 2.0, 8.0);
+    scene->switchModel(model);
+    update();
 }
 
-void MyGLWidget::switchToLoadedModel(QString value)
+void MyGLWidget::switchToLoadedModelMonkey()
 {
-    cout << "switch to loaded model" << endl;
-    cout << value.toUtf8().constData() << endl;
-    /*
-    model->cleanUp();
-    delete model;
-    model = new LoadedModel(value.toUtf8().constData());
-    model->init();
-    update(); */
+    Model* model = new LoadedModel("monkey.obj");
+    scene->switchModel(model);
+    update();
 }
 
 void MyGLWidget::moveLightX(int value)
 {
     int distance = value - prevLightX;
-    model->getLight()->translateX((float)distance);
+    scene->getLight()->translateX((float)distance);
     prevLightX = value;
     update();
 }
@@ -166,7 +152,7 @@ void MyGLWidget::moveLightX(int value)
 void MyGLWidget::moveLightY(int value)
 {
     int distance = value - prevLightY;
-    model->getLight()->translateY((float)distance);
+    scene->getLight()->translateY((float)distance);
     prevLightY = value;
     update();
 }
@@ -174,14 +160,14 @@ void MyGLWidget::moveLightY(int value)
 void MyGLWidget::moveLightZ(int value)
 {
     int distance = value - prevLightZ;
-    model->getLight()->translateZ((float)distance);
+    scene->getLight()->translateZ((float)distance);
     prevLightZ = value;
     update();
 }
 
 void MyGLWidget::changeN(int value)
 {
-    Cylinder* cylinder = dynamic_cast<Cylinder*>(model);
+    Cylinder* cylinder = dynamic_cast<Cylinder*>(scene->getModel());
     if (cylinder)
     {
         cylinder->changeN(value);
@@ -191,7 +177,7 @@ void MyGLWidget::changeN(int value)
 
 void MyGLWidget::changeRadius(int value)
 {
-    Cylinder* cylinder = dynamic_cast<Cylinder*>(model);
+    Cylinder* cylinder = dynamic_cast<Cylinder*>(scene->getModel());
     if (cylinder)
     {
         cylinder->changeRadius((float)value);
@@ -201,7 +187,7 @@ void MyGLWidget::changeRadius(int value)
 
 void MyGLWidget::changeHeight(int value)
 {
-    Cylinder* cylinder = dynamic_cast<Cylinder*>(model);
+    Cylinder* cylinder = dynamic_cast<Cylinder*>(scene->getModel());
     if (cylinder)
     {
         cylinder->changeHeight((float)value);
@@ -211,19 +197,19 @@ void MyGLWidget::changeHeight(int value)
 
 void MyGLWidget::recompileShader()
 {
-    model->reloadCurrentShaderProgram();
+    scene->getModel()->getShaderProgram()->reloadProgram();
     update();
 }
 
 void MyGLWidget::switchTexture(QString value)
 {
-    model->getMaterial()->switchTexture(value.toUtf8().constData());
+    scene->getModel()->getMaterial()->switchTexture(value.toUtf8().constData());
     update();
 }
 
 void MyGLWidget::scaleTexture(int value)
 {
-    Cylinder* cylinder = dynamic_cast<Cylinder*>(model);
+    Cylinder* cylinder = dynamic_cast<Cylinder*>(scene->getModel());
     if (cylinder)
     {
         cylinder->changeUVScale((float)value / 10.0);
@@ -233,6 +219,5 @@ void MyGLWidget::scaleTexture(int value)
 
 void MyGLWidget::close()
 {
-    model->cleanUp();
-    delete model;
+    delete scene;
 }

@@ -30,13 +30,9 @@ using glm::perspective;
 class Model : public QOpenGLFunctions
 {
 private:
-    mat4 model, view, projection;
-    GLuint modelMatrixHandle, viewMatrixHandle, projectionMatrixHandle, colorsHandle, indicesHandle, verticesHandle, normalsHandle, uvHandle;
-    Light* light;
-    map<string, ShaderProgram*> shaderPrograms;
-    string currentShaderProgramName;
-
-    void loadShaderProgram(string name);
+    mat4 model;
+    GLuint modelMatrixHandle, colorsHandle, indicesHandle, verticesHandle, normalsHandle, uvHandle;
+    ShaderProgram* shaderProgram;
 
 protected:
     int indicesNumber;
@@ -48,11 +44,14 @@ protected:
 
 public:
     Model();
+    ~Model();
 
     void init();
     void draw();
-    Light* getLight();
     Material* getMaterial();
+    ShaderProgram* getShaderProgram();
+
+    void setShaderProgram(ShaderProgram* shaderProgram);
 
     void rotateX(float angle);
     void rotateY(float angle);
@@ -61,11 +60,6 @@ public:
     void translateX(float distance);
     void translateY(float distance);
     void translateZ(float distance);
-
-    void switchShaderProgram(string name);
-    void reloadCurrentShaderProgram();
-    void changePerspectiveRatio(float ratio);
-    void cleanUp();
 };
 
 #endif // MODEL_HPP

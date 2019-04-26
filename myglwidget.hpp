@@ -10,6 +10,7 @@
 
 #include "viewer/cylinder.hpp"
 #include "viewer/loadedmodel.hpp"
+#include "viewer/scene.hpp"
 
 using namespace std;
 
@@ -18,7 +19,7 @@ class MyGLWidget : public QOpenGLWidget
     Q_OBJECT
 
 private:
-    Model* model;
+    Scene* scene;
     int prevTransX, prevTransY, prevTransZ, prevRotX, prevRotY, prevRotZ, prevLightX, prevLightY, prevLightZ;
 
     void initializeGL();
@@ -27,7 +28,6 @@ private:
 
 public:
     explicit MyGLWidget(QWidget *parent = 0);
-    Model* getModel();
 
 public slots:
     void translateX(int value);
@@ -49,7 +49,7 @@ public slots:
     void recompileShader();
 
     void switchToCylinderModel();
-    void switchToLoadedModel(QString value);
+    void switchToLoadedModelMonkey();
 
     void moveLightX(int value);
     void moveLightY(int value);
