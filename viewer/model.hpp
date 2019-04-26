@@ -5,7 +5,7 @@
 #include <vector>
 #include <map>
 #include <time.h>
-#include <filesystem>
+#include <string>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -15,7 +15,7 @@
 
 #include "shaderprogram.hpp"
 #include "light.hpp"
-#include "texture.hpp"
+#include "material.hpp"
 
 using namespace std;
 
@@ -32,26 +32,27 @@ private:
     mat4 model, view, projection;
     GLuint modelMatrixHandle, viewMatrixHandle, projectionMatrixHandle, lightPositionHandle, colorsHandle, textureHandle;
     Light* light;
-    map<string, ShaderProgram*> shaderPrograms;
-    string currentShaderProgramName;
 
     void loadShaderProgram(string name);
 
 protected:
     int vertexNumber;
     GLuint verticesHandle, normalsHandle, uvHandle;
-    Texture* texture;
+    Material* material;
+    map<string, ShaderProgram*> shaderPrograms;
+    string currentShaderProgramName;
 
     virtual void createModel() = 0;
+    virtual void loadDataToBuffers(vector<vec3> verticesData, vector<vec3> normalsData, vector<vec2> uvData);
     void generateColors();
 
 public:
     Model();
 
     void init();
-    void frame();
+    void draw();
     Light* getLight();
-    Texture* getTexture();
+    Material* getMaterial();
 
     void rotateX(float angle);
     void rotateY(float angle);
@@ -63,10 +64,11 @@ public:
 
     void switchShaderProgram(string name);
     void reloadCurrentShaderProgram();
-    void switchTexture(string filename);
     void changePerspectiveRatio(float ratio);
-    void scaleTexture(float factor);
     void cleanUp();
+
+    virtual void completeHandles() = 0;
+    virtual void completeDrawing() = 0;
 };
 
 #endif // MODEL_HPP

@@ -14,17 +14,14 @@ private:
     static const string BASE_PATH;
     unsigned char* data;
     int width, height;
-    float scale;
-    GLuint textureDataID;
+    GLuint textureDataHandle;
 
 public:
     void init();
     void loadTexture(string filename);
-    GLuint getTextureDataID();
+    GLuint getTextureDataHandle();
     int getWidth();
     int getHeight();
-    float getScale();
-    void setScale(float scale);
 };
 
 #endif // TEXTURE_HPP

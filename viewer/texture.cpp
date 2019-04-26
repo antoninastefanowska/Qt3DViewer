@@ -15,10 +15,9 @@ void Texture::loadTexture(string filename)
     data = image.bits();
     width = image.width();
     height = image.height();
-    scale = 0.5;
 
-    glGenTextures(1, &textureDataID);
-    glBindTexture(GL_TEXTURE_2D, textureDataID);
+    glGenTextures(1, &textureDataHandle);
+    glBindTexture(GL_TEXTURE_2D, textureDataHandle);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -31,9 +30,9 @@ void Texture::loadTexture(string filename)
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 }
 
-GLuint Texture::getTextureDataID()
+GLuint Texture::getTextureDataHandle()
 {
-    return textureDataID;
+    return textureDataHandle;
 }
 
 int Texture::getWidth()
@@ -44,14 +43,4 @@ int Texture::getWidth()
 int Texture::getHeight()
 {
     return height;
-}
-
-float Texture::getScale()
-{
-    return scale;
-}
-
-void Texture::setScale(float scale)
-{
-    this->scale = scale;
 }

@@ -48,3 +48,21 @@ void Vertex::setUV(vec2 uv)
 {
     this->uv = uv;
 }
+
+bool Vertex::isSimilar(Vertex vertex)
+{
+    if (distance(this->position, vertex.position) < 0.01f && distance(this->normal, vertex.normal) < 0.01f && distance(this->uv, vertex.uv) < 0.01f)
+        return true;
+    else
+        return false;
+}
+
+int Vertex::getSimilarVertexIndex(vector<Vertex> vertices)
+{
+    for (unsigned int i = 0; i < vertices.size(); i++)
+    {
+        if (isSimilar(vertices[i]))
+            return i;
+    }
+    return -1;
+}

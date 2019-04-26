@@ -7,18 +7,22 @@ Cylinder::Cylinder(int n, float radius, float height)
     this->n = n;
     this->radius = radius;
     this->height = height;
+    this->uvScale = 0.5;
 }
 
-
 void Cylinder::createModel()
-{
-    float angle = radians((float)360 / n);
-
+{    
     vector<vec3> verticesData, normalsData;
     vector<vec2> uvData;
     vector<Triangle> triangles;
     vector<Vertex> vertices;
 
+    Texture* texture = new Texture();
+    texture->init();
+    texture->loadTexture("checkered.png");
+    material->setTexture(texture);
+
+    float angle = radians((float)360 / n);
     vertexNumber = n * 12;
 
     verticesData.reserve(vertexNumber);
@@ -39,21 +43,21 @@ void Cylinder::createModel()
             v1.x = v1.y = 0.0f;
             v1.z = z;
             vertex1 = Vertex(v1);
-            vertex1.calculateUVPlanar(texture->getScale());
+            vertex1.calculateUVPlanar(uvScale);
             vertices.push_back(vertex1);
 
             v2.x = prevX;
             v2.y = prevY;
             v2.z = z;
             vertex2 = Vertex(v2);
-            vertex2.calculateUVPlanar(texture->getScale());
+            vertex2.calculateUVPlanar(uvScale);
             vertices.push_back(vertex2);
 
             v3.x = i == n - 1 ? radius : v2.x * cos(angle) - v2.y * sin(angle);
             v3.y = i == n - 1 ? 0.0f : v2.x * sin(angle) + v2.y * cos(angle);
             v3.z = z;
             vertex3 = Vertex(v3);
-            vertex3.calculateUVPlanar(texture->getScale());
+            vertex3.calculateUVPlanar(uvScale);
             vertices.push_back(vertex3);
             triangles.push_back(Triangle(vertex1, vertex2, vertex3));
 
@@ -61,21 +65,21 @@ void Cylinder::createModel()
             v4.y = v2.y;
             v4.z = z;
             vertex1 = Vertex(v4);
-            vertex1.calculateUVCylindrical(texture->getScale());
+            vertex1.calculateUVCylindrical(uvScale);
             vertices.push_back(vertex1);
 
             v5.x = v3.x;
             v5.y = v3.y;
             v5.z = z;
             vertex2 = Vertex(v5);
-            vertex2.calculateUVCylindrical(texture->getScale());
+            vertex2.calculateUVCylindrical(uvScale);
             vertices.push_back(vertex2);
 
             v6.x = k ? v3.x : v2.x;
             v6.y = k ? v3.y : v2.y;
             v6.z = -z;
             vertex3 = Vertex(v6);
-            vertex3.calculateUVCylindrical(texture->getScale());
+            vertex3.calculateUVCylindrical(uvScale);
             vertices.push_back(vertex3);
             triangles.push_back(Triangle(vertex1, vertex2, vertex3));
         }
@@ -103,22 +107,6 @@ void Cylinder::createModel()
     loadDataToBuffers(verticesData, normalsData, uvData);
 }
 
-void Cylinder::loadDataToBuffers(vector<vec3> verticesData, vector<vec3> normalsData, vector<vec2> uvData)
-{
-    glGenBuffers(1, &verticesHandle);
-    glBindBuffer(GL_ARRAY_BUFFER, verticesHandle);
-    glBufferData(GL_ARRAY_BUFFER, verticesData.size() * sizeof(vec3), &verticesData[0], GL_STATIC_DRAW);
-
-    glGenBuffers(1, &normalsHandle);
-    glBindBuffer(GL_ARRAY_BUFFER, normalsHandle);
-    glBufferData(GL_ARRAY_BUFFER, normalsData.size() * sizeof(vec3), &normalsData[0], GL_STATIC_DRAW);
-
-    glGenBuffers(1, &uvHandle);
-    glBindBuffer(GL_ARRAY_BUFFER, uvHandle);
-    glBufferData(GL_ARRAY_BUFFER, uvData.size() * sizeof(vec2), &uvData[0], GL_STATIC_DRAW);
-}
-
-
 void Cylinder::changeN(int n)
 {
     this->n = n;
@@ -136,4 +124,15 @@ void Cylinder::changeHeight(float height)
 {
     this->height = height;
     createModel();
+}
+
+void Cylinder::changeUVScale(float scale)
+{
+    this->uvScale = scale;
+    createModel();
+}
+
+void Cylinder::completeDrawing()
+{
+    glDrawArrays(GL_TRIANGLES, 0, vertexNumber);
 }

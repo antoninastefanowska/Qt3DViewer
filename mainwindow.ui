@@ -39,7 +39,7 @@
          </sizepolicy>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tab_3">
          <property name="enabled">
@@ -422,6 +422,13 @@
                    </property>
                   </widget>
                  </item>
+                 <item>
+                  <widget class="QRadioButton" name="radioButton_8">
+                   <property name="text">
+                    <string>MTL Shader</string>
+                   </property>
+                  </widget>
+                 </item>
                 </layout>
                </item>
               </layout>
@@ -605,17 +612,17 @@
                   <widget class="QComboBox" name="comboBox">
                    <item>
                     <property name="text">
-                     <string>checkered.bmp</string>
+                     <string>checkered.png</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>stars.bmp</string>
+                     <string>stars.png</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>squares.bmp</string>
+                     <string>squares.png</string>
                     </property>
                    </item>
                   </widget>
@@ -824,6 +831,7 @@
     <slot>scaleTexture(int)</slot>
     <slot>recompileShader()</slot>
     <slot>switchTexture(QString)</slot>
+    <slot>switchToMTLShader()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -997,7 +1005,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>964</x>
-     <y>316</y>
+     <y>339</y>
     </hint>
     <hint type="destinationlabel">
      <x>506</x>
@@ -1013,7 +1021,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>964</x>
-     <y>363</y>
+     <y>386</y>
     </hint>
     <hint type="destinationlabel">
      <x>480</x>
@@ -1029,7 +1037,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>964</x>
-     <y>410</y>
+     <y>433</y>
     </hint>
     <hint type="destinationlabel">
      <x>559</x>
@@ -1156,8 +1164,8 @@
    <slot>recompileShader()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>685</x>
-     <y>481</y>
+     <x>964</x>
+     <y>516</y>
     </hint>
     <hint type="destinationlabel">
      <x>499</x>
@@ -1178,6 +1186,22 @@
     <hint type="destinationlabel">
      <x>492</x>
      <y>107</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButton_8</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>myGLWidget</receiver>
+   <slot>switchToMTLShader()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>662</x>
+     <y>271</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>521</x>
+     <y>288</y>
     </hint>
    </hints>
   </connection>

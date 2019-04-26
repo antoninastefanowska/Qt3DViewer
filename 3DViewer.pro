@@ -36,6 +36,7 @@ SOURCES += \
     viewer/cylinder.cpp \
     viewer/light.cpp \
     viewer/loadedmodel.cpp \
+    viewer/material.cpp \
     viewer/model.cpp \
     viewer/shaderprogram.cpp \
     viewer/texture.cpp \
@@ -48,6 +49,7 @@ HEADERS += \
     viewer/cylinder.hpp \
     viewer/light.hpp \
     viewer/loadedmodel.hpp \
+    viewer/material.hpp \
     viewer/model.hpp \
     viewer/shaderprogram.hpp \
     viewer/texture.hpp \
@@ -63,10 +65,14 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
+    resources/models/monkey.mtl \
+    resources/models/monkey.obj \
     resources/shaders/combinedshader.frag \
     resources/shaders/combinedshader.vert \
     resources/shaders/lambertshader.frag \
     resources/shaders/lambertshader.vert \
+    resources/shaders/mtlshader.frag \
+    resources/shaders/mtlshader.vert \
     resources/shaders/normalshader.frag \
     resources/shaders/normalshader.vert \
     resources/shaders/phongshader.frag \
@@ -77,9 +83,9 @@ DISTFILES += \
     resources/shaders/randomshader.vert \
     resources/shaders/textureshader.frag \
     resources/shaders/textureshader.vert \
-    resources/textures/checkered.bmp \
-    resources/textures/squares.bmp \
-    resources/textures/stars.bmp \
+    resources/textures/checkered.png \
+    resources/textures/squares.png \
+    resources/textures/stars.png \
     resources.qrc
 
 INCLUDEPATH += $$PWD/dependencies/include

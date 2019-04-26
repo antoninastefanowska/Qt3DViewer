@@ -7,13 +7,14 @@
 #include <QPoint>
 
 #include "viewer/cylinder.hpp"
+#include "viewer/loadedmodel.hpp"
 
 class MyGLWidget : public QOpenGLWidget
 {
     Q_OBJECT
 
 private:
-    Cylinder model;
+    Model* model;
     int prevTransX, prevTransY, prevTransZ, prevRotX, prevRotY, prevRotZ, prevLightX, prevLightY, prevLightZ;
     QPoint prevPos;
 
@@ -23,7 +24,7 @@ private:
 
 public:
     explicit MyGLWidget(QWidget *parent = 0);
-    Cylinder getModel();
+    Model* getModel();
 
 public slots:
     void translateX(int value);
@@ -41,6 +42,7 @@ public slots:
     void switchToPhongShader();
     void switchToTextureShader();
     void switchToCombinedShader();
+    void switchToMTLShader();
     void recompileShader();
 
     void moveLightX(int value);

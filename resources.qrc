@@ -1,22 +1,23 @@
 <RCC>
     <qresource prefix="/shaders">
-        <file>randomshader.frag</file>
-        <file>randomshader.vert</file>
-        <file>lambertshader.frag</file>     
-        <file>lambertshader.vert</file>
-        <file>normalshader.frag</file>
-        <file>normalshader.vert</file>
-        <file>positionshader.frag</file>
-        <file>positionshader.vert</file>
-        <file>textureshader.frag</file>
-        <file>textureshader.vert</file>
-        <file>combinedshader.frag</file>       
-        <file>combinedshader.vert</file>
-        <file>phongshader.frag</file>
-        <file>phongshader.vert</file>
+        <file>resources/shaders/combinedshader.frag</file>
+        <file>resources/shaders/combinedshader.vert</file>
+        <file>resources/shaders/lambertshader.frag</file>
+        <file>resources/shaders/lambertshader.vert</file>
+        <file>resources/shaders/normalshader.frag</file>
+        <file>resources/shaders/normalshader.vert</file>
+        <file>resources/shaders/phongshader.frag</file>
+        <file>resources/shaders/phongshader.vert</file>
+        <file>resources/shaders/positionshader.frag</file>
+        <file>resources/shaders/positionshader.vert</file>
+        <file>resources/shaders/randomshader.frag</file>
+        <file>resources/shaders/randomshader.vert</file>
+        <file>resources/shaders/textureshader.frag</file>
+        <file>resources/shaders/textureshader.vert</file>
     </qresource>
     <qresource prefix="/textures">
-        <file>stars.bmp</file>
-        <file>squares.bmp</file>
+        <file>resources/textures/checkered.bmp</file>
+        <file>resources/textures/stars.bmp</file>
     </qresource>
+    <qresource prefix="/models"/>
 </RCC>

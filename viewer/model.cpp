@@ -10,9 +10,7 @@ void Model::init()
     glDepthFunc(GL_LESS);
 
     light = new Light(vec3(0.0f, 0.0f, 0.0f));
-    texture = new Texture();
-    texture->init();
-    texture->loadTexture("checkered.bmp");
+    material = new Material();
 
     createModel();
     generateColors();
@@ -32,8 +30,25 @@ void Model::init()
     loadShaderProgram("phongshader");
     loadShaderProgram("textureshader");
     loadShaderProgram("combinedshader");
+    loadShaderProgram("mtlshader");
     switchShaderProgram("positionshader");
 }
+
+void Model::loadDataToBuffers(vector<vec3> verticesData, vector<vec3> normalsData, vector<vec2> uvData)
+{
+    glGenBuffers(1, &verticesHandle);
+    glBindBuffer(GL_ARRAY_BUFFER, verticesHandle);
+    glBufferData(GL_ARRAY_BUFFER, verticesData.size() * sizeof(vec3), &verticesData[0], GL_STATIC_DRAW);
+
+    glGenBuffers(1, &normalsHandle);
+    glBindBuffer(GL_ARRAY_BUFFER, normalsHandle);
+    glBufferData(GL_ARRAY_BUFFER, normalsData.size() * sizeof(vec3), &normalsData[0], GL_STATIC_DRAW);
+
+    glGenBuffers(1, &uvHandle);
+    glBindBuffer(GL_ARRAY_BUFFER, uvHandle);
+    glBufferData(GL_ARRAY_BUFFER, uvData.size() * sizeof(vec2), &uvData[0], GL_STATIC_DRAW);
+}
+
 
 void Model::loadShaderProgram(string name)
 {
@@ -62,7 +77,7 @@ void Model::generateColors()
     glBufferData(GL_ARRAY_BUFFER, colorsData.size() * sizeof(vec3), &colorsData[0], GL_STATIC_DRAW);
 }
 
-void Model::frame()
+void Model::draw()
 {
     ShaderProgram* currentShaderProgram = shaderPrograms[currentShaderProgramName];
 
@@ -77,7 +92,7 @@ void Model::frame()
 
     glUniform3f(lightPositionHandle, light->getPosition().x, light->getPosition().y, light->getPosition().z);
 
-    glBindTexture(GL_TEXTURE_2D, texture->getTextureDataID());
+    glBindTexture(GL_TEXTURE_2D, material->getTexture()->getTextureDataHandle());
     glUniform1i(textureHandle, 0);
 
     glEnableVertexAttribArray(0);
@@ -96,7 +111,9 @@ void Model::frame()
     glBindBuffer(GL_ARRAY_BUFFER, uvHandle);
     glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-    glDrawArrays(GL_TRIANGLES, 0, vertexNumber);
+    completeDrawing();
+
+    //glDrawArrays(GL_TRIANGLES, 0, vertexNumber);
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
@@ -109,9 +126,9 @@ Light* Model::getLight()
     return light;
 }
 
-Texture* Model::getTexture()
+Material* Model::getMaterial()
 {
-    return texture;
+    return material;
 }
 
 void Model::rotateX(float angle)
@@ -154,11 +171,8 @@ void Model::switchShaderProgram(string name)
     projectionMatrixHandle = glGetUniformLocation(currentShaderProgram->getProgramID(), "projection");
     lightPositionHandle = glGetUniformLocation(currentShaderProgram->getProgramID(), "lightPosition");
     textureHandle = glGetUniformLocation(currentShaderProgram->getProgramID(), "textureSampler");
-}
 
-void Model::switchTexture(string filename)
-{
-    texture->loadTexture(filename);
+    completeHandles();
 }
 
 void Model::reloadCurrentShaderProgram()
@@ -173,12 +187,6 @@ void Model::reloadCurrentShaderProgram()
 void Model::changePerspectiveRatio(float ratio)
 {
     projection = perspective(radians(45.0f), ratio, 0.1f, 100.0f);
-}
-
-void Model::scaleTexture(float factor)
-{
-    texture->setScale(factor);
-    createModel();
 }
 
 void Model::cleanUp()
@@ -197,6 +205,6 @@ void Model::cleanUp()
     glDeleteBuffers(1, &colorsHandle);
     glDeleteTextures(1, &textureHandle);
 
-    delete texture;
+    delete material;
     delete light;
 }
