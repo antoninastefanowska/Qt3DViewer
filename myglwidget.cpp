@@ -132,6 +132,29 @@ void MyGLWidget::switchToMTLShader()
     update();
 }
 
+void MyGLWidget::switchToCylinderModel()
+{
+    cout << "switch to cylinder" << endl;
+    /*
+    model->cleanUp();
+    delete model;
+    model = new Cylinder(72, 2.0, 8.0);
+    model->init();
+    update(); */
+}
+
+void MyGLWidget::switchToLoadedModel(QString value)
+{
+    cout << "switch to loaded model" << endl;
+    cout << value.toUtf8().constData() << endl;
+    /*
+    model->cleanUp();
+    delete model;
+    model = new LoadedModel(value.toUtf8().constData());
+    model->init();
+    update(); */
+}
+
 void MyGLWidget::moveLightX(int value)
 {
     int distance = value - prevLightX;

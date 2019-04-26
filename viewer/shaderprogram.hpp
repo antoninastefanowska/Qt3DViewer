@@ -15,14 +15,14 @@ class ShaderProgram : public QOpenGLFunctions
 {
 private:
     static const string BASE_PATH;
-    vector<GLuint> shaderIDs;
-    GLuint programID;
+    vector<GLuint> shaderHandles;
+    GLuint programHandle;
 
 public:
     void init();
     void loadShader(string filename, GLenum type);
     void linkProgram();
-    GLuint getProgramID();
+    GLuint getProgramHandle();
 };
 
 #endif // SHADERPROGRAM_HPP

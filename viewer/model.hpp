@@ -16,6 +16,7 @@
 #include "shaderprogram.hpp"
 #include "light.hpp"
 #include "material.hpp"
+#include "vertex.hpp"
 
 using namespace std;
 
@@ -30,20 +31,19 @@ class Model : public QOpenGLFunctions
 {
 private:
     mat4 model, view, projection;
-    GLuint modelMatrixHandle, viewMatrixHandle, projectionMatrixHandle, lightPositionHandle, colorsHandle, textureHandle;
+    GLuint modelMatrixHandle, viewMatrixHandle, projectionMatrixHandle, colorsHandle, indicesHandle, verticesHandle, normalsHandle, uvHandle;
     Light* light;
+    map<string, ShaderProgram*> shaderPrograms;
+    string currentShaderProgramName;
 
     void loadShaderProgram(string name);
 
 protected:
-    int vertexNumber;
-    GLuint verticesHandle, normalsHandle, uvHandle;
+    int indicesNumber;
     Material* material;
-    map<string, ShaderProgram*> shaderPrograms;
-    string currentShaderProgramName;
 
     virtual void createModel() = 0;
-    virtual void loadDataToBuffers(vector<vec3> verticesData, vector<vec3> normalsData, vector<vec2> uvData);
+    void loadDataToBuffers(vector<Vertex> vertices);
     void generateColors();
 
 public:
@@ -66,9 +66,6 @@ public:
     void reloadCurrentShaderProgram();
     void changePerspectiveRatio(float ratio);
     void cleanUp();
-
-    virtual void completeHandles() = 0;
-    virtual void completeDrawing() = 0;
 };
 
 #endif // MODEL_HPP

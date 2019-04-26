@@ -45,7 +45,7 @@ void ShaderProgram::loadShader(string filename, GLenum type)
         cout << &shaderErrorMessage[0] << endl;
     }
 
-    shaderIDs.push_back(shaderID);
+    shaderHandles.push_back(shaderID);
 }
 
 void ShaderProgram::linkProgram()
@@ -54,31 +54,31 @@ void ShaderProgram::linkProgram()
 
     GLint result = GL_FALSE;
     int infoLogLength;
-    programID = glCreateProgram();
+    programHandle = glCreateProgram();
 
-    for (GLuint shaderID : shaderIDs)
-        glAttachShader(programID, shaderID);
-    glLinkProgram(programID);
+    for (GLuint shaderID : shaderHandles)
+        glAttachShader(programHandle, shaderID);
+    glLinkProgram(programHandle);
 
-    glGetProgramiv(programID, GL_LINK_STATUS, &result);
-    glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &infoLogLength);
+    glGetProgramiv(programHandle, GL_LINK_STATUS, &result);
+    glGetProgramiv(programHandle, GL_INFO_LOG_LENGTH, &infoLogLength);
     if (infoLogLength > 0)
     {
         vector<char> programErrorMessage(infoLogLength + 1);
-        glGetProgramInfoLog(programID, infoLogLength, NULL, &programErrorMessage[0]);
+        glGetProgramInfoLog(programHandle, infoLogLength, NULL, &programErrorMessage[0]);
         cout << &programErrorMessage[0] << endl;
     }
 
-    for (GLuint shaderID : shaderIDs)
+    for (GLuint shaderID : shaderHandles)
     {
-        glDetachShader(programID, shaderID);
+        glDetachShader(programHandle, shaderID);
         glDeleteShader(shaderID);
     }
 
-    shaderIDs.clear();
+    shaderHandles.clear();
 }
 
-GLuint ShaderProgram::getProgramID()
+GLuint ShaderProgram::getProgramHandle()
 {
-    return programID;
+    return programHandle;
 }

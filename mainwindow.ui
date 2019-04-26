@@ -39,7 +39,7 @@
          </sizepolicy>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="tab_3">
          <property name="enabled">
@@ -657,6 +657,48 @@
           <item row="0" column="0">
            <layout class="QVBoxLayout" name="verticalLayout_10">
             <item>
+             <widget class="QGroupBox" name="groupBox_9">
+              <property name="title">
+               <string>Model</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_15">
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_11">
+                 <item>
+                  <widget class="QRadioButton" name="radioButton_9">
+                   <property name="text">
+                    <string>Walec</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QRadioButton" name="radioButton_10">
+                   <property name="text">
+                    <string>Załadowany z pliku</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QComboBox" name="comboBox_2">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>monkey.obj</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
              <widget class="QGroupBox" name="groupBox_5">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -669,42 +711,11 @@
               </property>
               <layout class="QGridLayout" name="gridLayout_9">
                <item row="0" column="0">
-                <layout class="QHBoxLayout" name="horizontalLayout_4">
+                <layout class="QVBoxLayout" name="verticalLayout_14">
                  <item>
-                  <layout class="QVBoxLayout" name="verticalLayout_11">
-                   <item>
-                    <widget class="QLabel" name="label_10">
-                     <property name="text">
-                      <string>Liczba wierzchołków</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QSpinBox" name="spinBox">
-                     <property name="minimum">
-                      <number>2</number>
-                     </property>
-                     <property name="maximum">
-                      <number>100</number>
-                     </property>
-                     <property name="value">
-                      <number>72</number>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                </layout>
-               </item>
-               <item row="0" column="1">
-                <layout class="QVBoxLayout" name="verticalLayout_12">
-                 <item>
-                  <widget class="QLabel" name="label_11">
+                  <widget class="QLabel" name="label_10">
                    <property name="text">
-                    <string>Promień podstawy</string>
+                    <string>Liczba wierzchołków</string>
                    </property>
                    <property name="alignment">
                     <set>Qt::AlignCenter</set>
@@ -712,15 +723,15 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QSpinBox" name="spinBox_2">
+                  <widget class="QSpinBox" name="spinBox">
                    <property name="minimum">
-                    <number>1</number>
+                    <number>2</number>
                    </property>
                    <property name="maximum">
                     <number>100</number>
                    </property>
                    <property name="value">
-                    <number>2</number>
+                    <number>72</number>
                    </property>
                   </widget>
                  </item>
@@ -748,6 +759,33 @@
                    </property>
                    <property name="value">
                     <number>8</number>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item row="0" column="1">
+                <layout class="QVBoxLayout" name="verticalLayout_12">
+                 <item>
+                  <widget class="QLabel" name="label_11">
+                   <property name="text">
+                    <string>Promień podstawy</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBox_2">
+                   <property name="minimum">
+                    <number>1</number>
+                   </property>
+                   <property name="maximum">
+                    <number>100</number>
+                   </property>
+                   <property name="value">
+                    <number>2</number>
                    </property>
                   </widget>
                  </item>
@@ -832,6 +870,8 @@
     <slot>recompileShader()</slot>
     <slot>switchTexture(QString)</slot>
     <slot>switchToMTLShader()</slot>
+    <slot>switchToCylinderModel()</slot>
+    <slot>switchToLoadedModel(QString)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -1046,30 +1086,14 @@
    </hints>
   </connection>
   <connection>
-   <sender>spinBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>myGLWidget</receiver>
-   <slot>changeN(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>692</x>
-     <y>131</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>545</x>
-     <y>109</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>spinBox_2</sender>
    <signal>valueChanged(int)</signal>
    <receiver>myGLWidget</receiver>
    <slot>changeRadius(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>780</x>
-     <y>135</y>
+     <x>848</x>
+     <y>244</y>
     </hint>
     <hint type="destinationlabel">
      <x>535</x>
@@ -1084,8 +1108,8 @@
    <slot>changeHeight(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>928</x>
-     <y>135</y>
+     <x>964</x>
+     <y>244</y>
     </hint>
     <hint type="destinationlabel">
      <x>520</x>
@@ -1202,6 +1226,70 @@
     <hint type="destinationlabel">
      <x>521</x>
      <y>288</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>myGLWidget</receiver>
+   <slot>changeN(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>732</x>
+     <y>244</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>545</x>
+     <y>109</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButton_9</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>myGLWidget</receiver>
+   <slot>switchToCylinderModel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>670</x>
+     <y>107</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>545</x>
+     <y>127</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButton_10</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>comboBox_2</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>721</x>
+     <y>133</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>725</x>
+     <y>153</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboBox_2</sender>
+   <signal>activated(QString)</signal>
+   <receiver>myGLWidget</receiver>
+   <slot>switchToLoadedModel(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>701</x>
+     <y>160</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>574</x>
+     <y>148</y>
     </hint>
    </hints>
   </connection>

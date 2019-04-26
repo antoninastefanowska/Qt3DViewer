@@ -11,9 +11,7 @@ Cylinder::Cylinder(int n, float radius, float height)
 }
 
 void Cylinder::createModel()
-{    
-    vector<vec3> verticesData, normalsData;
-    vector<vec2> uvData;
+{
     vector<Triangle> triangles;
     vector<Vertex> vertices;
 
@@ -23,12 +21,8 @@ void Cylinder::createModel()
     material->setTexture(texture);
 
     float angle = radians((float)360 / n);
-    vertexNumber = n * 12;
 
-    verticesData.reserve(vertexNumber);
-    normalsData.reserve(vertexNumber);
-    uvData.reserve(vertexNumber);
-    vertices.reserve(vertexNumber);
+    vertices.reserve(n * 12);
     triangles.reserve(n * 4);
 
     GLfloat prevX = radius, prevY = 0.0f;
@@ -87,24 +81,23 @@ void Cylinder::createModel()
         prevY = v3.y;
     }
 
-    for (Vertex vertex : vertices)
+    calculateNormals(vertices, triangles);
+    loadDataToBuffers(vertices);
+}
+
+void Cylinder::calculateNormals(vector<Vertex> &vertices, vector<Triangle> triangles)
+{
+    for (Vertex &vertex : vertices)
     {
         vec3 normal = vec3(0.0f);
         for (Triangle triangle : triangles)
         {
-
             if (triangle.contains(vertex))
                 normal += triangle.getNormal();
         }
         normal = normalize(normal);
         vertex.setNormal(normal);
-
-        normalsData.push_back(vertex.getNormal());
-        verticesData.push_back(vertex.getPosition());
-        uvData.push_back(vertex.getUV());
     }
-
-    loadDataToBuffers(verticesData, normalsData, uvData);
 }
 
 void Cylinder::changeN(int n)
@@ -130,9 +123,4 @@ void Cylinder::changeUVScale(float scale)
 {
     this->uvScale = scale;
     createModel();
-}
-
-void Cylinder::completeDrawing()
-{
-    glDrawArrays(GL_TRIANGLES, 0, vertexNumber);
 }

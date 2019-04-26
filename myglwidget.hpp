@@ -1,6 +1,8 @@
 #ifndef MYGLWIDGET_HPP
 #define MYGLWIDGET_HPP
 
+#include <iostream>
+
 #include <QtOpenGL>
 #include <QOpenGLWidget>
 #include <QOpenGLContext>
@@ -9,6 +11,8 @@
 #include "viewer/cylinder.hpp"
 #include "viewer/loadedmodel.hpp"
 
+using namespace std;
+
 class MyGLWidget : public QOpenGLWidget
 {
     Q_OBJECT
@@ -16,7 +20,6 @@ class MyGLWidget : public QOpenGLWidget
 private:
     Model* model;
     int prevTransX, prevTransY, prevTransZ, prevRotX, prevRotY, prevRotZ, prevLightX, prevLightY, prevLightZ;
-    QPoint prevPos;
 
     void initializeGL();
     void paintGL();
@@ -44,6 +47,9 @@ public slots:
     void switchToCombinedShader();
     void switchToMTLShader();
     void recompileShader();
+
+    void switchToCylinderModel();
+    void switchToLoadedModel(QString value);
 
     void moveLightX(int value);
     void moveLightY(int value);

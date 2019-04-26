@@ -9,10 +9,11 @@ LoadedModel::LoadedModel(string filename)
 
 void LoadedModel::createModel()
 {
-    vector<unsigned int> verticesIndices, uvIndices, normalsIndices;
-    vector<vec3> readVertices, readNormals, verticesData, normalsData;
-    vector<vec2> readUV, uvData;
-    vector<Vertex> verticesIn, verticesOut;
+    vector<unsigned short> verticesIndices, uvIndices, normalsIndices;
+    vector<vec3> readVertices, readNormals;
+    vector<vec2> readUV;
+    vector<Vertex> vertices;
+
     string mtlFilename;
 
     cout << "Otwieranie pliku: " << filename << endl;
@@ -84,13 +85,7 @@ void LoadedModel::createModel()
 
     objFile.close();
 
-    verticesData.reserve(verticesIndices.size());
-    normalsData.reserve(normalsIndices.size());
-    uvData.reserve(uvIndices.size());
-
-    verticesIn.reserve(verticesIndices.size());
-
-    cout << verticesIndices.size() << ' ' << normalsIndices.size() << ' ' << uvIndices.size() << endl;
+    vertices.reserve(verticesIndices.size());
 
     for (unsigned int i = 0; i < verticesIndices.size(); i++)
     {
@@ -105,89 +100,10 @@ void LoadedModel::createModel()
         Vertex vertex = Vertex(vertexPosition);
         vertex.setNormal(vertexNormal);
         vertex.setUV(vertexUV);
-        verticesIn.push_back(vertex);
-        //vec3 vertex = readVertices[vertexIndex - 1];
-        //verticesData.push_back(vertex);
-    }
-
-    /*
-    for (unsigned int i = 0; i < normalsIndices.size(); i++)
-    {
-        unsigned int normalIndex = normalsIndices[i];
-        vec3 normal = readNormals[normalIndex - 1];
-        normalsData.push_back(normal);
-    }
-
-    for (unsigned int i = 0; i < uvIndices.size(); i++)
-    {
-        unsigned int uvIndex = uvIndices[i];
-        vec2 uv = readUV[uvIndex - 1];
-        uvData.push_back(uv);
-    } */
-
-    for (Vertex vertex : verticesIn)
-    {
-        int foundIndex = vertex.getSimilarVertexIndex(verticesOut);
-        if (foundIndex != -1)
-            indices.push_back(foundIndex);
-        else
-        {
-            verticesData.push_back(vertex.getPosition());
-            normalsData.push_back(vertex.getNormal());
-            uvData.push_back(vertex.getUV());
-            verticesOut.push_back(vertex);
-            indices.push_back((unsigned short)verticesOut.size() - 1);
-        }
+        vertices.push_back(vertex);
     }
 
     material->loadMTL(mtlFilename);
 
-    vertexNumber = verticesData.size();
-
-    cout << "tu jestem 1" << endl;
-
-    loadDataToBuffers(verticesData, normalsData, uvData);
-
-    cout << "tu jestem 2" << endl;
-}
-
-void LoadedModel::loadDataToBuffers(vector<vec3> verticesData, vector<vec3> normalsData, vector<vec2> uvData)
-{
-    glGenBuffers(1, &verticesHandle);
-    glBindBuffer(GL_ARRAY_BUFFER, verticesHandle);
-    glBufferData(GL_ARRAY_BUFFER, verticesData.size() * sizeof(vec3), &verticesData[0], GL_STATIC_DRAW);
-
-    glGenBuffers(1, &normalsHandle);
-    glBindBuffer(GL_ARRAY_BUFFER, normalsHandle);
-    glBufferData(GL_ARRAY_BUFFER, normalsData.size() * sizeof(vec3), &normalsData[0], GL_STATIC_DRAW);
-
-    glGenBuffers(1, &uvHandle);
-    glBindBuffer(GL_ARRAY_BUFFER, uvHandle);
-    glBufferData(GL_ARRAY_BUFFER, uvData.size() * sizeof(vec2), &uvData[0], GL_STATIC_DRAW);
-
-    glGenBuffers(1, &indicesHandle);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesHandle);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned short), &indices[0], GL_STATIC_DRAW);
-
-}
-
-void LoadedModel::completeHandles()
-{
-    ShaderProgram* currentShaderProgram = shaderPrograms[currentShaderProgramName];
-
-    kaHandle = glGetUniformLocation(currentShaderProgram->getProgramID(), "ka");
-    kdHandle = glGetUniformLocation(currentShaderProgram->getProgramID(), "kd");
-    ksHandle = glGetUniformLocation(currentShaderProgram->getProgramID(), "ks");
-    keHandle = glGetUniformLocation(currentShaderProgram->getProgramID(), "ke");
-}
-
-void LoadedModel::completeDrawing()
-{
-    glUniform3f(kaHandle, material->ka.x, material->ka.y, material->ka.z);
-    glUniform3f(kdHandle, material->kd.x, material->kd.y, material->kd.z);
-    glUniform3f(ksHandle, material->ks.x, material->ks.y, material->ks.z);
-    glUniform3f(keHandle, material->ke.x, material->ke.y, material->ke.z);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesHandle);
-    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_SHORT, (void*)0);
+    loadDataToBuffers(vertices);
 }

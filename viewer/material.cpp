@@ -15,6 +15,11 @@ Material::~Material()
     delete texture;
 }
 
+void Material::init()
+{
+    initializeOpenGLFunctions();
+}
+
 void Material::loadMTL(string filename)
 {
     cout << "Otwieranie pliku: " << filename << endl;
@@ -72,9 +77,12 @@ void Material::loadMTL(string filename)
     mtlFile.close();
 }
 
-Texture* Material::getTexture()
+void Material::createHandles(ShaderProgram* shaderProgram)
 {
-    return texture;
+    kaHandle = glGetUniformLocation(shaderProgram->getProgramHandle(), "ka");
+    kdHandle = glGetUniformLocation(shaderProgram->getProgramHandle(), "kd");
+    ksHandle = glGetUniformLocation(shaderProgram->getProgramHandle(), "ks");
+    keHandle = glGetUniformLocation(shaderProgram->getProgramHandle(), "ke");
 }
 
 void Material::setTexture(Texture* texture)
@@ -85,4 +93,14 @@ void Material::setTexture(Texture* texture)
 void Material::switchTexture(string filename)
 {
     texture->loadTexture(filename);
+}
+
+void Material::draw()
+{
+    glUniform3f(kaHandle, ka.x, ka.y, ka.z);
+    glUniform3f(kdHandle, kd.x, kd.y, kd.z);
+    glUniform3f(ksHandle, ks.x, ks.y, ks.z);
+    glUniform3f(keHandle, ke.x, ke.y, ke.z);
+
+    texture->draw();
 }

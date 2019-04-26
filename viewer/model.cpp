@@ -10,7 +10,9 @@ void Model::init()
     glDepthFunc(GL_LESS);
 
     light = new Light(vec3(0.0f, 0.0f, 0.0f));
+    light->init();
     material = new Material();
+    material->init();
 
     createModel();
     generateColors();
@@ -34,8 +36,31 @@ void Model::init()
     switchShaderProgram("positionshader");
 }
 
-void Model::loadDataToBuffers(vector<vec3> verticesData, vector<vec3> normalsData, vector<vec2> uvData)
+void Model::loadDataToBuffers(vector<Vertex> vertices)
 {
+    vector<Vertex> verticesOut;
+    vector<vec3> verticesData, normalsData;
+    vector<vec2> uvData;
+    vector<unsigned short> indicesData;
+
+    indicesData.reserve(vertices.size());
+
+    for (Vertex vertex : vertices)
+    {
+        int foundIndex = vertex.getSimilarVertexIndex(verticesOut);
+        if (foundIndex != -1)
+            indicesData.push_back(foundIndex);
+        else
+        {
+            verticesData.push_back(vertex.getPosition());
+            normalsData.push_back(vertex.getNormal());
+            uvData.push_back(vertex.getUV());
+            verticesOut.push_back(vertex);
+            indicesData.push_back((unsigned short)verticesOut.size() - 1);
+        }
+    }
+    indicesNumber = indicesData.size();
+
     glGenBuffers(1, &verticesHandle);
     glBindBuffer(GL_ARRAY_BUFFER, verticesHandle);
     glBufferData(GL_ARRAY_BUFFER, verticesData.size() * sizeof(vec3), &verticesData[0], GL_STATIC_DRAW);
@@ -47,8 +72,12 @@ void Model::loadDataToBuffers(vector<vec3> verticesData, vector<vec3> normalsDat
     glGenBuffers(1, &uvHandle);
     glBindBuffer(GL_ARRAY_BUFFER, uvHandle);
     glBufferData(GL_ARRAY_BUFFER, uvData.size() * sizeof(vec2), &uvData[0], GL_STATIC_DRAW);
-}
 
+    glGenBuffers(1, &indicesHandle);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesHandle);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesData.size() * sizeof(unsigned short), &indicesData[0], GL_STATIC_DRAW);
+
+}
 
 void Model::loadShaderProgram(string name)
 {
@@ -63,10 +92,10 @@ void Model::loadShaderProgram(string name)
 void Model::generateColors()
 {
     vector<vec3> colorsData;
-    colorsData.reserve(vertexNumber);
+    colorsData.reserve(indicesNumber);
     srand(time(NULL));
 
-    for (int i = 0; i < vertexNumber; i++)
+    for (int i = 0; i < indicesNumber; i++)
     {
         float r1 = ((double)rand() / RAND_MAX), r2 = ((double)rand() / RAND_MAX), r3 = ((double)rand() / RAND_MAX);
         colorsData.push_back(vec3(r1, r2, r3));
@@ -84,16 +113,11 @@ void Model::draw()
     glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glUseProgram(currentShaderProgram->getProgramID());
+    glUseProgram(currentShaderProgram->getProgramHandle());
 
     glUniformMatrix4fv(modelMatrixHandle, 1, GL_FALSE, &model[0][0]);
     glUniformMatrix4fv(viewMatrixHandle, 1, GL_FALSE, &view[0][0]);
     glUniformMatrix4fv(projectionMatrixHandle, 1, GL_FALSE, &projection[0][0]);
-
-    glUniform3f(lightPositionHandle, light->getPosition().x, light->getPosition().y, light->getPosition().z);
-
-    glBindTexture(GL_TEXTURE_2D, material->getTexture()->getTextureDataHandle());
-    glUniform1i(textureHandle, 0);
 
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, verticesHandle);
@@ -111,9 +135,11 @@ void Model::draw()
     glBindBuffer(GL_ARRAY_BUFFER, uvHandle);
     glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-    completeDrawing();
+    light->draw();
+    material->draw();
 
-    //glDrawArrays(GL_TRIANGLES, 0, vertexNumber);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesHandle);
+    glDrawElements(GL_TRIANGLES, indicesNumber, GL_UNSIGNED_SHORT, (void*)0);
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
@@ -166,19 +192,18 @@ void Model::switchShaderProgram(string name)
     ShaderProgram* currentShaderProgram = shaderPrograms[name];
     currentShaderProgramName = name;
 
-    modelMatrixHandle = glGetUniformLocation(currentShaderProgram->getProgramID(), "model");
-    viewMatrixHandle = glGetUniformLocation(currentShaderProgram->getProgramID(), "view");
-    projectionMatrixHandle = glGetUniformLocation(currentShaderProgram->getProgramID(), "projection");
-    lightPositionHandle = glGetUniformLocation(currentShaderProgram->getProgramID(), "lightPosition");
-    textureHandle = glGetUniformLocation(currentShaderProgram->getProgramID(), "textureSampler");
+    modelMatrixHandle = glGetUniformLocation(currentShaderProgram->getProgramHandle(), "model");
+    viewMatrixHandle = glGetUniformLocation(currentShaderProgram->getProgramHandle(), "view");
+    projectionMatrixHandle = glGetUniformLocation(currentShaderProgram->getProgramHandle(), "projection");
 
-    completeHandles();
+    light->createHandles(currentShaderProgram);
+    material->createHandles(currentShaderProgram);
 }
 
 void Model::reloadCurrentShaderProgram()
 {
     ShaderProgram* currentShaderProgram = shaderPrograms[currentShaderProgramName];
-    glDeleteProgram(currentShaderProgram->getProgramID());
+    glDeleteProgram(currentShaderProgram->getProgramHandle());
     delete currentShaderProgram;
     loadShaderProgram(currentShaderProgramName);
     switchShaderProgram(currentShaderProgramName);
@@ -193,7 +218,7 @@ void Model::cleanUp()
 {
     for (pair<string, ShaderProgram*> shaderPair : shaderPrograms)
     {
-        GLuint shaderProgramID = shaderPair.second->getProgramID();
+        GLuint shaderProgramID = shaderPair.second->getProgramHandle();
         glDeleteProgram(shaderProgramID);
         delete shaderPair.second;
     }
@@ -203,7 +228,6 @@ void Model::cleanUp()
     glDeleteBuffers(1, &normalsHandle);
     glDeleteBuffers(1, &uvHandle);
     glDeleteBuffers(1, &colorsHandle);
-    glDeleteTextures(1, &textureHandle);
 
     delete material;
     delete light;

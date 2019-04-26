@@ -2,6 +2,13 @@
 
 const string Texture::BASE_PATH = "C:/Users/HP/Documents/Qt/Projects/3DViewer/resources/textures/";
 
+Texture::Texture() { }
+
+Texture::~Texture()
+{
+    glDeleteTextures(1, &samplerHandle);
+}
+
 void Texture::init()
 {
     initializeOpenGLFunctions();
@@ -16,8 +23,8 @@ void Texture::loadTexture(string filename)
     width = image.width();
     height = image.height();
 
-    glGenTextures(1, &textureDataHandle);
-    glBindTexture(GL_TEXTURE_2D, textureDataHandle);
+    glGenTextures(1, &dataHandle);
+    glBindTexture(GL_TEXTURE_2D, dataHandle);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -30,9 +37,9 @@ void Texture::loadTexture(string filename)
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 }
 
-GLuint Texture::getTextureDataHandle()
+void Texture::createHandles(ShaderProgram* shaderProgram)
 {
-    return textureDataHandle;
+    samplerHandle = glGetUniformLocation(shaderProgram->getProgramHandle(), "textureSampler");
 }
 
 int Texture::getWidth()
@@ -43,4 +50,10 @@ int Texture::getWidth()
 int Texture::getHeight()
 {
     return height;
+}
+
+void Texture::draw()
+{
+    glBindTexture(GL_TEXTURE_2D, dataHandle);
+    glUniform1i(samplerHandle, 0);
 }
