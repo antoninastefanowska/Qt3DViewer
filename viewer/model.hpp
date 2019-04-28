@@ -50,8 +50,9 @@ public:
     void draw();
     Material* getMaterial();
     ShaderProgram* getShaderProgram();
-
     void setShaderProgram(ShaderProgram* shaderProgram);
+    mat4 getModelMatrix();
+    void setModelMatrix(mat4 model);
 
     void rotateX(float angle);
     void rotateY(float angle);

@@ -14,10 +14,16 @@
         <file>resources/shaders/randomshader.vert</file>
         <file>resources/shaders/textureshader.frag</file>
         <file>resources/shaders/textureshader.vert</file>
+        <file>resources/shaders/mtlshader.frag</file>
+        <file>resources/shaders/mtlshader.vert</file>
     </qresource>
     <qresource prefix="/textures">
-        <file>resources/textures/checkered.bmp</file>
-        <file>resources/textures/stars.bmp</file>
+        <file>resources/textures/checkered.png</file>
+        <file>resources/textures/squares.png</file>
+        <file>resources/textures/stars.png</file>
     </qresource>
-    <qresource prefix="/models"/>
+    <qresource prefix="/models">
+        <file>resources/models/monkey.mtl</file>
+        <file>resources/models/monkey.obj</file>
+    </qresource>
 </RCC>

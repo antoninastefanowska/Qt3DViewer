@@ -19,6 +19,8 @@ void MyGLWidget::initializeGL()
     prevLightX = 0;
     prevLightY = 0;
     prevLightZ = 0;
+
+    currentLoadedModelName = "monkey.obj";
 }
 
 void MyGLWidget::paintGL()
@@ -127,18 +129,30 @@ void MyGLWidget::switchToMTLShader()
     update();
 }
 
-void MyGLWidget::switchToCylinderModel()
+void MyGLWidget::switchToCylinderModel(bool value)
 {
-    Model* model = new Cylinder(72, 2.0, 8.0);
-    scene->switchModel(model);
-    update();
+    if (value)
+    {
+        Model* model = new Cylinder(72, 2.0, 8.0);
+        scene->switchModel(model);
+        update();
+    }
 }
 
-void MyGLWidget::switchToLoadedModelMonkey()
+void MyGLWidget::switchToLoadedModel(bool value)
 {
-    Model* model = new LoadedModel("monkey.obj");
-    scene->switchModel(model);
-    update();
+    if (value)
+    {
+        Model* model = new LoadedModel(currentLoadedModelName);
+        scene->switchModel(model);
+        update();
+    }
+}
+
+void MyGLWidget::changeLoadedModel(QString value)
+{
+    currentLoadedModelName = value.toUtf8().constData();
+    switchToLoadedModel(true);
 }
 
 void MyGLWidget::moveLightX(int value)

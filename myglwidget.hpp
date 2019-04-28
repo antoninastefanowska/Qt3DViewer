@@ -21,6 +21,7 @@ class MyGLWidget : public QOpenGLWidget
 private:
     Scene* scene;
     int prevTransX, prevTransY, prevTransZ, prevRotX, prevRotY, prevRotZ, prevLightX, prevLightY, prevLightZ;
+    string currentLoadedModelName;
 
     void initializeGL();
     void paintGL();
@@ -48,8 +49,9 @@ public slots:
     void switchToMTLShader();
     void recompileShader();
 
-    void switchToCylinderModel();
-    void switchToLoadedModelMonkey();
+    void switchToCylinderModel(bool value);
+    void switchToLoadedModel(bool value);
+    void changeLoadedModel(QString value);
 
     void moveLightX(int value);
     void moveLightY(int value);

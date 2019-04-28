@@ -677,7 +677,7 @@
                  <item>
                   <widget class="QRadioButton" name="radioButton_10">
                    <property name="text">
-                    <string>Plik &quot;monkey.obj&quot;</string>
+                    <string>Załadowany z pliku</string>
                    </property>
                   </widget>
                  </item>
@@ -783,6 +783,36 @@
              </widget>
             </item>
             <item>
+             <widget class="QGroupBox" name="groupBox_10">
+              <property name="title">
+               <string>Załadowany z pliku</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_17">
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_16">
+                 <item>
+                  <widget class="QComboBox" name="comboBox_2">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>monkey.obj</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>starwitch.obj</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
              <spacer name="verticalSpacer_3">
               <property name="orientation">
                <enum>Qt::Vertical</enum>
@@ -858,8 +888,9 @@
     <slot>recompileShader()</slot>
     <slot>switchTexture(QString)</slot>
     <slot>switchToMTLShader()</slot>
-    <slot>switchToCylinderModel()</slot>
-    <slot>switchToLoadedModelMonkey()</slot>
+    <slot>changeLoadedModel(QString)</slot>
+    <slot>switchToCylinderModel(bool)</slot>
+    <slot>switchToLoadedModel(bool)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -872,8 +903,8 @@
    <slot>translateX(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>696</x>
-     <y>116</y>
+     <x>712</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
      <x>496</x>
@@ -888,8 +919,8 @@
    <slot>translateY(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>700</x>
-     <y>153</y>
+     <x>724</x>
+     <y>167</y>
     </hint>
     <hint type="destinationlabel">
      <x>503</x>
@@ -904,8 +935,8 @@
    <slot>translateZ(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>756</x>
-     <y>208</y>
+     <x>724</x>
+     <y>214</y>
     </hint>
     <hint type="destinationlabel">
      <x>532</x>
@@ -920,8 +951,8 @@
    <slot>rotateX(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>665</x>
-     <y>291</y>
+     <x>724</x>
+     <y>296</y>
     </hint>
     <hint type="destinationlabel">
      <x>517</x>
@@ -936,8 +967,8 @@
    <slot>rotateY(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>710</x>
-     <y>334</y>
+     <x>724</x>
+     <y>343</y>
     </hint>
     <hint type="destinationlabel">
      <x>545</x>
@@ -952,8 +983,8 @@
    <slot>rotateZ(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>725</x>
-     <y>383</y>
+     <x>724</x>
+     <y>390</y>
     </hint>
     <hint type="destinationlabel">
      <x>506</x>
@@ -968,8 +999,8 @@
    <slot>switchToRandomShader()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>657</x>
-     <y>126</y>
+     <x>724</x>
+     <y>138</y>
     </hint>
     <hint type="destinationlabel">
      <x>474</x>
@@ -984,8 +1015,8 @@
    <slot>switchToPositionShader()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>658</x>
-     <y>110</y>
+     <x>712</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
      <x>541</x>
@@ -1000,8 +1031,8 @@
    <slot>switchToNormalShader()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>702</x>
-     <y>154</y>
+     <x>724</x>
+     <y>161</y>
     </hint>
     <hint type="destinationlabel">
      <x>569</x>
@@ -1016,8 +1047,8 @@
    <slot>switchToLambertShader()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>714</x>
-     <y>176</y>
+     <x>724</x>
+     <y>184</y>
     </hint>
     <hint type="destinationlabel">
      <x>564</x>
@@ -1032,7 +1063,7 @@
    <slot>moveLightX(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>964</x>
+     <x>724</x>
      <y>339</y>
     </hint>
     <hint type="destinationlabel">
@@ -1048,7 +1079,7 @@
    <slot>moveLightY(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>964</x>
+     <x>724</x>
      <y>386</y>
     </hint>
     <hint type="destinationlabel">
@@ -1064,7 +1095,7 @@
    <slot>moveLightZ(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>964</x>
+     <x>724</x>
      <y>433</y>
     </hint>
     <hint type="destinationlabel">
@@ -1112,7 +1143,7 @@
    <slot>switchToTextureShader()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>964</x>
+     <x>724</x>
      <y>230</y>
     </hint>
     <hint type="destinationlabel">
@@ -1128,8 +1159,8 @@
    <slot>switchToPhongShader()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>676</x>
-     <y>198</y>
+     <x>724</x>
+     <y>207</y>
     </hint>
     <hint type="destinationlabel">
      <x>444</x>
@@ -1144,8 +1175,8 @@
    <slot>switchToCombinedShader()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>721</x>
-     <y>249</y>
+     <x>724</x>
+     <y>253</y>
     </hint>
     <hint type="destinationlabel">
      <x>545</x>
@@ -1160,8 +1191,8 @@
    <slot>scaleTexture(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>811</x>
-     <y>170</y>
+     <x>722</x>
+     <y>181</y>
     </hint>
     <hint type="destinationlabel">
      <x>534</x>
@@ -1176,7 +1207,7 @@
    <slot>recompileShader()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>964</x>
+     <x>724</x>
      <y>516</y>
     </hint>
     <hint type="destinationlabel">
@@ -1192,8 +1223,8 @@
    <slot>switchTexture(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>728</x>
-     <y>107</y>
+     <x>712</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
      <x>492</x>
@@ -1208,8 +1239,8 @@
    <slot>switchToMTLShader()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>662</x>
-     <y>271</y>
+     <x>724</x>
+     <y>276</y>
     </hint>
     <hint type="destinationlabel">
      <x>521</x>
@@ -1236,16 +1267,112 @@
   <connection>
    <sender>radioButton_9</sender>
    <signal>toggled(bool)</signal>
-   <receiver>myGLWidget</receiver>
-   <slot>switchToCylinderModel()</slot>
+   <receiver>spinBox</receiver>
+   <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>670</x>
+     <x>644</x>
+     <y>106</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>679</x>
+     <y>216</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButton_9</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spinBox_2</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>744</x>
+     <y>106</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>783</x>
+     <y>213</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButton_9</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spinBox_3</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>888</x>
+     <y>114</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>907</x>
+     <y>210</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButton_10</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>comboBox_2</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>758</x>
+     <y>132</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>745</x>
+     <y>268</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboBox_2</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>myGLWidget</receiver>
+   <slot>changeLoadedModel(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>653</x>
+     <y>267</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>530</x>
+     <y>262</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButton_9</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>horizontalSlider</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>794</x>
      <y>107</y>
     </hint>
     <hint type="destinationlabel">
-     <x>545</x>
-     <y>127</y>
+     <x>794</x>
+     <y>170</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButton_9</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>myGLWidget</receiver>
+   <slot>switchToCylinderModel(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>642</x>
+     <y>101</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>546</x>
+     <y>80</y>
     </hint>
    </hints>
   </connection>
@@ -1253,15 +1380,15 @@
    <sender>radioButton_10</sender>
    <signal>toggled(bool)</signal>
    <receiver>myGLWidget</receiver>
-   <slot>switchToLoadedModelMonkey()</slot>
+   <slot>switchToLoadedModel(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>694</x>
-     <y>128</y>
+     <x>789</x>
+     <y>132</y>
     </hint>
     <hint type="destinationlabel">
-     <x>556</x>
-     <y>143</y>
+     <x>248</x>
+     <y>134</y>
     </hint>
    </hints>
   </connection>

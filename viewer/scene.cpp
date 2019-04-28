@@ -105,10 +105,13 @@ void Scene::switchShaderProgram(string name)
 void Scene::switchModel(Model* model)
 {
     ShaderProgram* shaderProgram = this->model->getShaderProgram();
+    mat4 modelMatrix = this->model->getModelMatrix();
+
     delete this->model;
     this->model = model;
     this->model->init();
     this->model->setShaderProgram(shaderProgram);
+    this->model->setModelMatrix(modelMatrix);
 }
 
 void Scene::changePerspectiveRatio(float ratio)

@@ -133,6 +133,16 @@ void Model::setShaderProgram(ShaderProgram* shaderProgram)
     material->createHandles(shaderProgram);
 }
 
+mat4 Model::getModelMatrix()
+{
+    return model;
+}
+
+void Model::setModelMatrix(mat4 model)
+{
+    this->model = model;
+}
+
 void Model::rotateX(float angle)
 {
     model = rotate(model, radians(angle), vec3(1.0f, 0.0f, 0.0f));

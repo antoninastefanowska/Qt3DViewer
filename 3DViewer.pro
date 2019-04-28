@@ -67,6 +67,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES += \
     resources/models/monkey.mtl \
     resources/models/monkey.obj \
+    resources/models/starwitch.mtl \
+    resources/models/starwitch.obj \
     resources/shaders/combinedshader.frag \
     resources/shaders/combinedshader.vert \
     resources/shaders/lambertshader.frag \
