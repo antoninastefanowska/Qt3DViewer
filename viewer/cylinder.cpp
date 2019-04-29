@@ -12,13 +12,6 @@ Cylinder::Cylinder(int n, float radius, float height)
 
 void Cylinder::createModel()
 {
-    vector<Vertex> vertices;
-    vertices = generateVertices(n, radius, height, uvScale);
-    loadDataToBuffers(vertices);
-}
-
-vector<Vertex> Cylinder::generateVertices(int n, float radius, float height, float uvScale)
-{
     vector<Triangle> triangles;
     vector<Vertex> vertices;
 
@@ -95,7 +88,8 @@ vector<Vertex> Cylinder::generateVertices(int n, float radius, float height, flo
     }
 
     calculateNormals(vertices, triangles);
-    return vertices;
+    loadDataToBuffers(vertices);
+    delete material;
 }
 
 void Cylinder::calculateNormals(vector<Vertex> &vertices, vector<Triangle> triangles)

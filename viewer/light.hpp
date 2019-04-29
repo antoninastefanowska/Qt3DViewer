@@ -19,8 +19,8 @@ using glm::translate;
 class Light : QOpenGLFunctions
 {
 private:
-    vec3 position;
-    GLuint positionHandle;
+    vec3 position, color;
+    GLuint positionHandle, colorHandle;
 
 public:
     Light();
@@ -32,6 +32,10 @@ public:
     void translateX(float distance);
     void translateY(float distance);
     void translateZ(float distance);
+
+    void changeColorRed(float value);
+    void changeColorGreen(float value);
+    void changeColorBlue(float value);
 
     void draw();
 };

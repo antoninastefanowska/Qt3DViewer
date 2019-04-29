@@ -57,6 +57,10 @@ public slots:
     void moveLightY(int value);
     void moveLightZ(int value);
 
+    void changeLightColorRed(int value);
+    void changeLightColorGreen(int value);
+    void changeLightColorBlue(int value);
+
     void changeN(int value);
     void changeRadius(int value);
     void changeHeight(int value);

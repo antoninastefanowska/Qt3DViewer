@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>600</height>
+    <width>1100</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="6,4">
+   <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="7,4">
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
@@ -352,7 +352,7 @@
          </attribute>
          <layout class="QGridLayout" name="gridLayout_4">
           <item row="0" column="0">
-           <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0">
+           <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0">
             <item>
              <widget class="QGroupBox" name="groupBox_3">
               <property name="sizePolicy">
@@ -366,66 +366,97 @@
               </property>
               <layout class="QGridLayout" name="gridLayout_5">
                <item row="0" column="0">
-                <layout class="QVBoxLayout" name="verticalLayout_5">
+                <layout class="QHBoxLayout" name="horizontalLayout_5">
                  <item>
-                  <widget class="QRadioButton" name="radioButton_3">
-                   <property name="text">
-                    <string>Position Shader</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
+                  <layout class="QVBoxLayout" name="verticalLayout_18">
+                   <item>
+                    <widget class="QRadioButton" name="radioButton_3">
+                     <property name="text">
+                      <string>Position Shader</string>
+                     </property>
+                     <property name="checked">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QRadioButton" name="radioButton_2">
+                     <property name="text">
+                      <string>Random Shader</string>
+                     </property>
+                     <property name="checked">
+                      <bool>false</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QRadioButton" name="radioButton">
+                     <property name="text">
+                      <string>Normal Shader</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QRadioButton" name="radioButton_4">
+                     <property name="text">
+                      <string>Lambert Shader</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton_2">
-                   <property name="text">
-                    <string>Random Shader</string>
-                   </property>
-                   <property name="checked">
-                    <bool>false</bool>
-                   </property>
-                  </widget>
+                  <layout class="QVBoxLayout" name="verticalLayout_5">
+                   <item>
+                    <widget class="QRadioButton" name="radioButton_6">
+                     <property name="text">
+                      <string>Phong Shader</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QRadioButton" name="radioButton_5">
+                     <property name="text">
+                      <string>Texture Shader</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QRadioButton" name="radioButton_7">
+                     <property name="text">
+                      <string>Combined Shader</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QRadioButton" name="radioButton_8">
+                     <property name="text">
+                      <string>MTL Shader</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
                  </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_6">
+              <property name="title">
+               <string>Debugowanie</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_7">
+               <item row="0" column="0">
+                <layout class="QVBoxLayout" name="verticalLayout_7" stretch="0">
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <item>
-                  <widget class="QRadioButton" name="radioButton">
+                  <widget class="QPushButton" name="pushButton">
                    <property name="text">
-                    <string>Normal Shader</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QRadioButton" name="radioButton_4">
-                   <property name="text">
-                    <string>Lambert Shader</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QRadioButton" name="radioButton_6">
-                   <property name="text">
-                    <string>Phong Shader</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QRadioButton" name="radioButton_5">
-                   <property name="text">
-                    <string>Texture Shader</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QRadioButton" name="radioButton_7">
-                   <property name="text">
-                    <string>Combined Shader</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QRadioButton" name="radioButton_8">
-                   <property name="text">
-                    <string>MTL Shader</string>
+                    <string>Rekompiluj aktualny shader</string>
                    </property>
                   </widget>
                  </item>
@@ -529,20 +560,79 @@
              </widget>
             </item>
             <item>
-             <widget class="QGroupBox" name="groupBox_6">
+             <widget class="QGroupBox" name="groupBox_11">
               <property name="title">
-               <string>Debugowanie</string>
+               <string>Kolor światła</string>
               </property>
-              <layout class="QGridLayout" name="gridLayout_7">
-               <item row="0" column="0">
-                <layout class="QVBoxLayout" name="verticalLayout_7" stretch="0">
-                 <property name="bottomMargin">
-                  <number>0</number>
-                 </property>
+              <layout class="QVBoxLayout" name="verticalLayout_20">
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_19">
                  <item>
-                  <widget class="QPushButton" name="pushButton">
+                  <widget class="QSlider" name="horizontalSlider_2">
+                   <property name="maximum">
+                    <number>10</number>
+                   </property>
+                   <property name="value">
+                    <number>5</number>
+                   </property>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_13">
                    <property name="text">
-                    <string>Rekompiluj aktualny shader</string>
+                    <string>R</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSlider" name="horizontalSlider_3">
+                   <property name="maximum">
+                    <number>10</number>
+                   </property>
+                   <property name="value">
+                    <number>5</number>
+                   </property>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_14">
+                   <property name="text">
+                    <string>G</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSlider" name="horizontalSlider_4">
+                   <property name="maximum">
+                    <number>10</number>
+                   </property>
+                   <property name="value">
+                    <number>5</number>
+                   </property>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_15">
+                   <property name="text">
+                    <string>B</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
                    </property>
                   </widget>
                  </item>
@@ -840,7 +930,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1000</width>
+     <width>1100</width>
      <height>21</height>
     </rect>
    </property>
@@ -891,6 +981,9 @@
     <slot>switchToTextureShader(bool)</slot>
     <slot>switchToCombinedShader(bool)</slot>
     <slot>switchToMTLShader(bool)</slot>
+    <slot>changeLightColorRed(int)</slot>
+    <slot>changeLightColorGreen(int)</slot>
+    <slot>changeLightColorBlue(int)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -999,8 +1092,8 @@
    <slot>moveLightX(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>724</x>
-     <y>339</y>
+     <x>964</x>
+     <y>313</y>
     </hint>
     <hint type="destinationlabel">
      <x>506</x>
@@ -1015,8 +1108,8 @@
    <slot>moveLightY(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>724</x>
-     <y>386</y>
+     <x>964</x>
+     <y>360</y>
     </hint>
     <hint type="destinationlabel">
      <x>480</x>
@@ -1031,8 +1124,8 @@
    <slot>moveLightZ(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>724</x>
-     <y>433</y>
+     <x>964</x>
+     <y>407</y>
     </hint>
     <hint type="destinationlabel">
      <x>559</x>
@@ -1095,8 +1188,8 @@
    <slot>recompileShader()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>724</x>
-     <y>516</y>
+     <x>964</x>
+     <y>250</y>
     </hint>
     <hint type="destinationlabel">
      <x>499</x>
@@ -1319,8 +1412,8 @@
    <slot>switchToPhongShader(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>660</x>
-     <y>198</y>
+     <x>963</x>
+     <y>116</y>
     </hint>
     <hint type="destinationlabel">
      <x>568</x>
@@ -1335,8 +1428,8 @@
    <slot>switchToTextureShader(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>667</x>
-     <y>222</y>
+     <x>963</x>
+     <y>139</y>
     </hint>
     <hint type="destinationlabel">
      <x>557</x>
@@ -1351,8 +1444,8 @@
    <slot>switchToCombinedShader(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>676</x>
-     <y>249</y>
+     <x>963</x>
+     <y>162</y>
     </hint>
     <hint type="destinationlabel">
      <x>528</x>
@@ -1367,8 +1460,8 @@
    <slot>switchToMTLShader(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>652</x>
-     <y>274</y>
+     <x>963</x>
+     <y>185</y>
     </hint>
     <hint type="destinationlabel">
      <x>536</x>
@@ -1389,6 +1482,54 @@
     <hint type="destinationlabel">
      <x>514</x>
      <y>154</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_2</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>myGLWidget</receiver>
+   <slot>changeLightColorRed(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>720</x>
+     <y>482</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>557</x>
+     <y>481</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_3</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>myGLWidget</receiver>
+   <slot>changeLightColorGreen(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>691</x>
+     <y>523</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>553</x>
+     <y>523</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_4</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>myGLWidget</receiver>
+   <slot>changeLightColorBlue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>633</x>
+     <y>567</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>567</x>
+     <y>569</y>
     </hint>
    </hints>
   </connection>

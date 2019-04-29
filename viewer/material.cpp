@@ -18,7 +18,7 @@ Material::Material(vec3 ambient, vec3 diffuse, vec3 specular, vec3 emission)
 
 Material::~Material()
 {
-    delete texture;
+    //delete texture;
 }
 
 void Material::setTexture(Texture* texture)

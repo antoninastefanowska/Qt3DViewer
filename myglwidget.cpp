@@ -203,6 +203,27 @@ void MyGLWidget::moveLightZ(int value)
     update();
 }
 
+void MyGLWidget::changeLightColorRed(int value)
+{
+    float red = (float)value / 10.0;
+    scene->getLight()->changeColorRed(red);
+    update();
+}
+
+void MyGLWidget::changeLightColorGreen(int value)
+{
+    float green = (float)value / 10.0;
+    scene->getLight()->changeColorGreen(green);
+    update();
+}
+
+void MyGLWidget::changeLightColorBlue(int value)
+{
+    float blue = (float)value / 10.0;
+    scene->getLight()->changeColorBlue(blue);
+    update();
+}
+
 void MyGLWidget::changeN(int value)
 {
     Cylinder* cylinder = dynamic_cast<Cylinder*>(scene->getModel());

@@ -29,6 +29,7 @@ void main()
     lightVector = vec3(view * vec4(lightPosition, 1)) - vertexPosition;
     normal = vec3(view * model * vec4(vertexNormalLoaded, 1));
     uv = vertexUVLoaded;
+
     ambientColor = vertexAmbientLoaded;
     diffuseColor = vertexDiffuseLoaded;
     specularColor = vertexSpecularLoaded;

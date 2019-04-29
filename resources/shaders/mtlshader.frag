@@ -3,6 +3,7 @@
 in vec3 normal;
 in vec3 lightVector;
 in vec2 uv;
+
 in vec3 ambientColor;
 in vec3 diffuseColor;
 in vec3 specularColor;
@@ -11,6 +12,7 @@ in vec3 emitColor;
 out vec3 color;
 
 uniform sampler2D textureSampler;
+uniform vec3 lightColor;
 
 void main()
 {
@@ -19,8 +21,6 @@ void main()
     vec3 ambient = ambientColor * material * vec3(0.2);
     vec3 specular = specularColor;
     vec3 emit = emitColor;
-
-    const vec3 lightColor = vec3(1.0);
 
     vec3 n = normalize(normal);
     vec3 l = normalize(lightVector);

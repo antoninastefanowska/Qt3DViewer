@@ -15,7 +15,6 @@ private:
     static const string BASE_PATH;
     string filename;
 
-    vector<Vertex> loadOBJ(string filename);
     map<string, Material*> loadMTL(string filename);
 
 public:

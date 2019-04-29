@@ -9,12 +9,6 @@ LoadedModel::LoadedModel(string filename)
 
 void LoadedModel::createModel()
 {   
-    vector<Vertex> vertices = loadOBJ(filename);
-    loadDataToBuffers(vertices);
-}
-
-vector<Vertex> LoadedModel::loadOBJ(string filename)
-{
     vector<unsigned short> verticesIndices, uvIndices, normalsIndices;
     vector<vec3> readVertices, readNormals;
     vector<vec2> readUV;
@@ -31,7 +25,7 @@ vector<Vertex> LoadedModel::loadOBJ(string filename)
     if (!objFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         cout << "Blad otwarcia pliku." << endl;
-        return vector<Vertex>();
+        return;
     }
     QTextStream stream(&objFile);
     QString line;
@@ -118,7 +112,10 @@ vector<Vertex> LoadedModel::loadOBJ(string filename)
         vertices.push_back(vertex);
     }
 
-    return vertices;
+    loadDataToBuffers(vertices);
+
+    for (pair<string, Material*> materialPair : materials)
+        delete materialPair.second;
 }
 
 map<string, Material*> LoadedModel::loadMTL(string filename)

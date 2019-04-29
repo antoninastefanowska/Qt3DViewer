@@ -44,7 +44,7 @@ protected:
 
 public:
     Model();
-    ~Model();
+    virtual ~Model();
 
     void init();
     void draw();
