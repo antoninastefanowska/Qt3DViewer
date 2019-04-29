@@ -15,24 +15,27 @@
 using namespace std;
 using glm::vec3;
 
-class Material : QOpenGLFunctions
+class Material
 {
 private:
-    static const string BASE_PATH;
     Texture* texture;
-    GLuint kaHandle, kdHandle, ksHandle, keHandle;
-    vec3 ka, kd, ks, ke;
+    vec3 ambient, diffuse, specular, emission;
 
 public:
     Material();
+    Material(vec3 ambient, vec3 diffuse, vec3 specular, vec3 emission);
     ~Material();
-    void init();
-    void loadMTL(string filename);
-    void createHandles(ShaderProgram* shaderProgram);
 
     void setTexture(Texture* texture);
-    void switchTexture(string filename);
-    void draw();
+
+    vec3 getAmbient();
+    void setAmbient(vec3 ambient);
+    vec3 getDiffuse();
+    void setDiffuse(vec3 diffuse);
+    vec3 getSpecular();
+    void setSpecular(vec3 specular);
+    vec3 getEmission();
+    void setEmission(vec3 emission);
 };
 
 #endif // MATERIAL_HPP

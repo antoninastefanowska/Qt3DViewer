@@ -12,13 +12,20 @@ Cylinder::Cylinder(int n, float radius, float height)
 
 void Cylinder::createModel()
 {
+    vector<Vertex> vertices;
+    vertices = generateVertices(n, radius, height, uvScale);
+    loadDataToBuffers(vertices);
+}
+
+vector<Vertex> Cylinder::generateVertices(int n, float radius, float height, float uvScale)
+{
     vector<Triangle> triangles;
     vector<Vertex> vertices;
 
-    Texture* texture = new Texture();
+    Material* material = new Material();
+    texture = new Texture();
     texture->init();
     texture->loadTexture("checkered.png");
-    material->setTexture(texture);
 
     float angle = radians((float)360 / n);
 
@@ -38,6 +45,7 @@ void Cylinder::createModel()
             v1.z = z;
             vertex1 = Vertex(v1);
             vertex1.calculateUVPlanar(uvScale);
+            vertex1.setMaterial(material);
             vertices.push_back(vertex1);
 
             v2.x = prevX;
@@ -45,6 +53,7 @@ void Cylinder::createModel()
             v2.z = z;
             vertex2 = Vertex(v2);
             vertex2.calculateUVPlanar(uvScale);
+            vertex2.setMaterial(material);
             vertices.push_back(vertex2);
 
             v3.x = i == n - 1 ? radius : v2.x * cos(angle) - v2.y * sin(angle);
@@ -52,6 +61,7 @@ void Cylinder::createModel()
             v3.z = z;
             vertex3 = Vertex(v3);
             vertex3.calculateUVPlanar(uvScale);
+            vertex3.setMaterial(material);
             vertices.push_back(vertex3);
             triangles.push_back(Triangle(vertex1, vertex2, vertex3));
 
@@ -60,6 +70,7 @@ void Cylinder::createModel()
             v4.z = z;
             vertex1 = Vertex(v4);
             vertex1.calculateUVCylindrical(uvScale);
+            vertex1.setMaterial(material);
             vertices.push_back(vertex1);
 
             v5.x = v3.x;
@@ -67,6 +78,7 @@ void Cylinder::createModel()
             v5.z = z;
             vertex2 = Vertex(v5);
             vertex2.calculateUVCylindrical(uvScale);
+            vertex2.setMaterial(material);
             vertices.push_back(vertex2);
 
             v6.x = k ? v3.x : v2.x;
@@ -74,6 +86,7 @@ void Cylinder::createModel()
             v6.z = -z;
             vertex3 = Vertex(v6);
             vertex3.calculateUVCylindrical(uvScale);
+            vertex3.setMaterial(material);
             vertices.push_back(vertex3);
             triangles.push_back(Triangle(vertex1, vertex2, vertex3));
         }
@@ -82,7 +95,7 @@ void Cylinder::createModel()
     }
 
     calculateNormals(vertices, triangles);
-    loadDataToBuffers(vertices);
+    return vertices;
 }
 
 void Cylinder::calculateNormals(vector<Vertex> &vertices, vector<Triangle> triangles)

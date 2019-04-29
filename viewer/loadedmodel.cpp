@@ -8,13 +8,21 @@ LoadedModel::LoadedModel(string filename)
 }
 
 void LoadedModel::createModel()
+{   
+    vector<Vertex> vertices = loadOBJ(filename);
+    loadDataToBuffers(vertices);
+}
+
+vector<Vertex> LoadedModel::loadOBJ(string filename)
 {
     vector<unsigned short> verticesIndices, uvIndices, normalsIndices;
     vector<vec3> readVertices, readNormals;
     vector<vec2> readUV;
+    vector<Material*> materialsOut;
     vector<Vertex> vertices;
 
-    string mtlFilename;
+    map<string, Material*> materials;
+    string currentMaterialName;
 
     cout << "Otwieranie pliku: " << filename << endl;
     QFile objFile((BASE_PATH + filename).c_str());
@@ -23,7 +31,7 @@ void LoadedModel::createModel()
     if (!objFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         cout << "Blad otwarcia pliku." << endl;
-        return;
+        return vector<Vertex>();
     }
     QTextStream stream(&objFile);
     QString line;
@@ -33,8 +41,10 @@ void LoadedModel::createModel()
         string lineHeader = words.value(0).toUtf8().constData();
 
         if (lineHeader.compare("mtllib") == 0)
-            mtlFilename = words.value(1).toUtf8().constData();
-
+        {
+            string mtlFilename = words.value(1).toUtf8().constData();
+            materials = loadMTL(mtlFilename);
+        }
         else if (lineHeader.compare("v") == 0)
         {
             vec3 vertex;
@@ -58,6 +68,9 @@ void LoadedModel::createModel()
             uv.y = words.value(2).toFloat();
             readUV.push_back(uv);
         }
+        else if (lineHeader.compare("usemtl") == 0)
+            currentMaterialName = words.value(1).toUtf8().constData();
+
         else if (lineHeader.compare("f") == 0)
         {
             QStringList indicesWords[3];
@@ -79,6 +92,7 @@ void LoadedModel::createModel()
                 verticesIndices.push_back(vertexIndex[i]);
                 uvIndices.push_back(uvIndex[i]);
                 normalsIndices.push_back(normalIndex[i]);
+                materialsOut.push_back(materials[currentMaterialName]);
             }
         }
     }
@@ -100,10 +114,84 @@ void LoadedModel::createModel()
         Vertex vertex = Vertex(vertexPosition);
         vertex.setNormal(vertexNormal);
         vertex.setUV(vertexUV);
+        vertex.setMaterial(materialsOut[i]);
         vertices.push_back(vertex);
     }
 
-    material->loadMTL(mtlFilename);
+    return vertices;
+}
 
-    loadDataToBuffers(vertices);
+map<string, Material*> LoadedModel::loadMTL(string filename)
+{
+    map<string, Material*> materials;
+    string currentMaterialName;
+
+    cout << "Otwieranie pliku: " << filename << endl;
+    QFile mtlFile((BASE_PATH + filename).c_str());
+    string fileContent;
+    if (!mtlFile.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        cout << "Blad otwarcia pliku." << endl;
+        return map<string, Material*>();
+    }
+    QTextStream stream(&mtlFile);
+    QString line;
+    while (stream.readLineInto(&line))
+    {
+        QStringList words = line.split(" ");
+        string lineHeader = words.value(0).toUtf8().constData();
+
+        if (lineHeader.compare("newmtl") == 0)
+        {
+            currentMaterialName = words.value(1).toUtf8().constData();
+            materials[currentMaterialName] = new Material();
+        }
+        else if (lineHeader.compare("Ka") == 0)
+        {
+            float r, g, b;
+            r = words.value(1).toFloat();
+            g = words.value(2).toFloat();
+            b = words.value(3).toFloat();
+            materials[currentMaterialName]->setAmbient(vec3(r, g, b));
+        }
+
+        else if (lineHeader.compare("Kd") == 0)
+        {
+            float r, g, b;
+            r = words.value(1).toFloat();
+            g = words.value(2).toFloat();
+            b = words.value(3).toFloat();
+            materials[currentMaterialName]->setDiffuse(vec3(r, g, b));
+        }
+
+        else if (lineHeader.compare("Ks") == 0)
+        {
+            float r, g, b;
+            r = words.value(1).toFloat();
+            g = words.value(2).toFloat();
+            b = words.value(3).toFloat();
+            materials[currentMaterialName]->setSpecular(vec3(r, g, b));
+        }
+
+        else if (lineHeader.compare("Ke") == 0)
+        {
+            float r, g, b;
+            r = words.value(1).toFloat();
+            g = words.value(2).toFloat();
+            b = words.value(3).toFloat();
+            materials[currentMaterialName]->setEmission(vec3(r, g, b));
+        }
+
+        else if (lineHeader.compare("map_Kd") == 0)
+        {
+            string textureFilename = words.value(1).toUtf8().constData();
+            texture = new Texture();
+            texture->init();
+            texture->loadTexture(textureFilename);
+            materials[currentMaterialName]->setTexture(texture);
+        }
+    }
+
+    mtlFile.close();
+    return materials;
 }

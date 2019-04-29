@@ -81,57 +81,81 @@ void MyGLWidget::rotateZ(int value)
     update();
 }
 
-void MyGLWidget::switchToRandomShader()
+void MyGLWidget::switchToRandomShader(bool checked)
 {
-    scene->switchShaderProgram("randomshader");
-    update();
+    if (checked)
+    {
+        scene->switchShaderProgram("randomshader");
+        update();
+    }
 }
 
-void MyGLWidget::switchToPositionShader()
+void MyGLWidget::switchToPositionShader(bool checked)
 {
-    scene->switchShaderProgram("positionshader");
-    update();
+    if (checked)
+    {
+        scene->switchShaderProgram("positionshader");
+        update();
+    }
 }
 
-void MyGLWidget::switchToNormalShader()
+void MyGLWidget::switchToNormalShader(bool checked)
 {
-    scene->switchShaderProgram("normalshader");
-    update();
+    if (checked)
+    {
+        scene->switchShaderProgram("normalshader");
+        update();
+    }
 }
 
-void MyGLWidget::switchToLambertShader()
+void MyGLWidget::switchToLambertShader(bool checked)
 {
-    scene->switchShaderProgram("lambertshader");
-    update();
+    if (checked)
+    {
+        scene->switchShaderProgram("lambertshader");
+        update();
+    }
 }
 
-void MyGLWidget::switchToPhongShader()
+void MyGLWidget::switchToPhongShader(bool checked)
 {
-    scene->switchShaderProgram("phongshader");
-    update();
+    if (checked)
+    {
+        scene->switchShaderProgram("phongshader");
+        update();
+    }
 }
 
-void MyGLWidget::switchToTextureShader()
+void MyGLWidget::switchToTextureShader(bool checked)
 {
-    scene->switchShaderProgram("textureshader");
-    update();
+    if (checked)
+    {
+        scene->switchShaderProgram("textureshader");
+        update();
+    }
 }
 
-void MyGLWidget::switchToCombinedShader()
+void MyGLWidget::switchToCombinedShader(bool checked)
 {
-    scene->switchShaderProgram("combinedshader");
-    update();
+    if (checked)
+    {
+        scene->switchShaderProgram("combinedshader");
+        update();
+    }
 }
 
-void MyGLWidget::switchToMTLShader()
+void MyGLWidget::switchToMTLShader(bool checked)
 {
-    scene->switchShaderProgram("mtlshader");
-    update();
+    if (checked)
+    {
+        scene->switchShaderProgram("mtlshader");
+        update();
+    }
 }
 
-void MyGLWidget::switchToCylinderModel(bool value)
+void MyGLWidget::switchToCylinderModel(bool checked)
 {
-    if (value)
+    if (checked)
     {
         Model* model = new Cylinder(72, 2.0, 8.0);
         scene->switchModel(model);
@@ -139,9 +163,9 @@ void MyGLWidget::switchToCylinderModel(bool value)
     }
 }
 
-void MyGLWidget::switchToLoadedModel(bool value)
+void MyGLWidget::switchToLoadedModel(bool checked)
 {
-    if (value)
+    if (checked)
     {
         Model* model = new LoadedModel(currentLoadedModelName);
         scene->switchModel(model);
@@ -217,7 +241,7 @@ void MyGLWidget::recompileShader()
 
 void MyGLWidget::switchTexture(QString value)
 {
-    scene->getModel()->getMaterial()->switchTexture(value.toUtf8().constData());
+    scene->getModel()->switchTexture(value.toUtf8().constData());
     update();
 }
 

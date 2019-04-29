@@ -10,6 +10,7 @@ private:
     int n;
     float radius, height, uvScale;
 
+    vector<Vertex> generateVertices(int n, float radius, float height, float uvScale);
     void calculateNormals(vector<Vertex> &vertices, vector<Triangle> triangles);
 
 public:

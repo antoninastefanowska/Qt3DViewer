@@ -41,6 +41,7 @@ void Scene::init()
     createAllShaderPrograms();
 
     model->init();
+
     switchShaderProgram("positionshader");
 }
 

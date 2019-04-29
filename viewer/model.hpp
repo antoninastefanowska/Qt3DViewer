@@ -31,12 +31,12 @@ class Model : public QOpenGLFunctions
 {
 private:
     mat4 model;
-    GLuint modelMatrixHandle, colorsHandle, indicesHandle, verticesHandle, normalsHandle, uvHandle;
+    GLuint modelMatrixHandle, colorsHandle, indicesHandle, verticesHandle, normalsHandle, uvHandle, ambientHandle, diffuseHandle, specularHandle, emissionHandle;
     ShaderProgram* shaderProgram;
 
 protected:
-    int indicesNumber;
-    Material* material;
+    int vertexNumber, indicesNumber;
+    Texture* texture;
 
     virtual void createModel() = 0;
     void loadDataToBuffers(vector<Vertex> vertices);
@@ -48,11 +48,14 @@ public:
 
     void init();
     void draw();
-    Material* getMaterial();
     ShaderProgram* getShaderProgram();
     void setShaderProgram(ShaderProgram* shaderProgram);
+    void createHandles(ShaderProgram* shaderProgram);
+
     mat4 getModelMatrix();
     void setModelMatrix(mat4 model);
+
+    void switchTexture(string filename);
 
     void rotateX(float angle);
     void rotateY(float angle);

@@ -8,16 +8,17 @@ Model::~Model()
     glDeleteBuffers(1, &normalsHandle);
     glDeleteBuffers(1, &uvHandle);
     glDeleteBuffers(1, &colorsHandle);
+    glDeleteBuffers(1, &ambientHandle);
+    glDeleteBuffers(1, &diffuseHandle);
+    glDeleteBuffers(1, &specularHandle);
+    glDeleteBuffers(1, &emissionHandle);
 
-    delete material;
+    delete texture;
 }
 
 void Model::init()
 {
     initializeOpenGLFunctions();
-
-    material = new Material();
-    material->init();
 
     createModel();
     generateColors();
@@ -28,7 +29,7 @@ void Model::init()
 void Model::loadDataToBuffers(vector<Vertex> vertices)
 {
     vector<Vertex> verticesOut;
-    vector<vec3> verticesData, normalsData;
+    vector<vec3> verticesData, normalsData, ambientData, diffuseData, specularData, emissionData;
     vector<vec2> uvData;
     vector<unsigned short> indicesData;
 
@@ -44,11 +45,17 @@ void Model::loadDataToBuffers(vector<Vertex> vertices)
             verticesData.push_back(vertex.getPosition());
             normalsData.push_back(vertex.getNormal());
             uvData.push_back(vertex.getUV());
+            ambientData.push_back(vertex.getMaterial()->getAmbient());
+            diffuseData.push_back(vertex.getMaterial()->getDiffuse());
+            specularData.push_back(vertex.getMaterial()->getSpecular());
+            emissionData.push_back(vertex.getMaterial()->getEmission());
+
             verticesOut.push_back(vertex);
-            indicesData.push_back((unsigned short)verticesOut.size() - 1);
+            indicesData.push_back((unsigned short)verticesData.size() - 1);
         }
     }
     indicesNumber = indicesData.size();
+    vertexNumber = verticesData.size();
 
     glGenBuffers(1, &verticesHandle);
     glBindBuffer(GL_ARRAY_BUFFER, verticesHandle);
@@ -62,19 +69,34 @@ void Model::loadDataToBuffers(vector<Vertex> vertices)
     glBindBuffer(GL_ARRAY_BUFFER, uvHandle);
     glBufferData(GL_ARRAY_BUFFER, uvData.size() * sizeof(vec2), &uvData[0], GL_STATIC_DRAW);
 
+    glGenBuffers(1, &ambientHandle);
+    glBindBuffer(GL_ARRAY_BUFFER, ambientHandle);
+    glBufferData(GL_ARRAY_BUFFER, ambientData.size() * sizeof(vec3), &ambientData[0], GL_STATIC_DRAW);
+
+    glGenBuffers(1, &diffuseHandle);
+    glBindBuffer(GL_ARRAY_BUFFER, diffuseHandle);
+    glBufferData(GL_ARRAY_BUFFER, diffuseData.size() * sizeof(vec3), &diffuseData[0], GL_STATIC_DRAW);
+
+    glGenBuffers(1, &specularHandle);
+    glBindBuffer(GL_ARRAY_BUFFER, specularHandle);
+    glBufferData(GL_ARRAY_BUFFER, specularData.size() * sizeof(vec3), &specularData[0], GL_STATIC_DRAW);
+
+    glGenBuffers(1, &emissionHandle);
+    glBindBuffer(GL_ARRAY_BUFFER, emissionHandle);
+    glBufferData(GL_ARRAY_BUFFER, normalsData.size() * sizeof(vec3), &emissionData[0], GL_STATIC_DRAW);
+
     glGenBuffers(1, &indicesHandle);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesHandle);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesData.size() * sizeof(unsigned short), &indicesData[0], GL_STATIC_DRAW);
-
 }
 
 void Model::generateColors()
 {
     vector<vec3> colorsData;
-    colorsData.reserve(indicesNumber);
+    colorsData.reserve(vertexNumber);
     srand(time(NULL));
 
-    for (int i = 0; i < indicesNumber; i++)
+    for (int i = 0; i < vertexNumber; i++)
     {
         float r1 = ((double)rand() / RAND_MAX), r2 = ((double)rand() / RAND_MAX), r3 = ((double)rand() / RAND_MAX);
         colorsData.push_back(vec3(r1, r2, r3));
@@ -105,7 +127,23 @@ void Model::draw()
     glBindBuffer(GL_ARRAY_BUFFER, uvHandle);
     glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-    material->draw();
+    glEnableVertexAttribArray(4);
+    glBindBuffer(GL_ARRAY_BUFFER, ambientHandle);
+    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+    glEnableVertexAttribArray(5);
+    glBindBuffer(GL_ARRAY_BUFFER, diffuseHandle);
+    glVertexAttribPointer(5, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+    glEnableVertexAttribArray(6);
+    glBindBuffer(GL_ARRAY_BUFFER, specularHandle);
+    glVertexAttribPointer(6, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+    glEnableVertexAttribArray(7);
+    glBindBuffer(GL_ARRAY_BUFFER, emissionHandle);
+    glVertexAttribPointer(7, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+    texture->draw();
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesHandle);
     glDrawElements(GL_TRIANGLES, indicesNumber, GL_UNSIGNED_SHORT, (void*)0);
@@ -114,11 +152,10 @@ void Model::draw()
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(2);
     glDisableVertexAttribArray(3);
-}
-
-Material* Model::getMaterial()
-{
-    return material;
+    glDisableVertexAttribArray(4);
+    glDisableVertexAttribArray(5);
+    glDisableVertexAttribArray(6);
+    glDisableVertexAttribArray(7);
 }
 
 ShaderProgram* Model::getShaderProgram()
@@ -129,8 +166,13 @@ ShaderProgram* Model::getShaderProgram()
 void Model::setShaderProgram(ShaderProgram* shaderProgram)
 {
     this->shaderProgram = shaderProgram;
+    createHandles(shaderProgram);
+}
+
+void Model::createHandles(ShaderProgram* shaderProgram)
+{
     modelMatrixHandle = glGetUniformLocation(shaderProgram->getProgramHandle(), "model");
-    material->createHandles(shaderProgram);
+    texture->createHandles(shaderProgram);
 }
 
 mat4 Model::getModelMatrix()
@@ -141,6 +183,11 @@ mat4 Model::getModelMatrix()
 void Model::setModelMatrix(mat4 model)
 {
     this->model = model;
+}
+
+void Model::switchTexture(string filename)
+{
+    texture->loadTexture(filename);
 }
 
 void Model::rotateX(float angle)

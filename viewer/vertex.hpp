@@ -6,6 +6,8 @@
 #include <glm/glm.hpp>
 #include <QOpenGLFunctions>
 
+#include "material.hpp"
+
 using namespace std;
 
 using glm::vec2;
@@ -16,6 +18,7 @@ class Vertex
 private:
     vec3 position, normal;
     vec2 uv;
+    Material* material;
 
     bool isSimilar(Vertex vertex);
 
@@ -33,6 +36,9 @@ public:
 
     vec2 getUV();
     void setUV(vec2 uv);
+
+    Material* getMaterial();
+    void setMaterial(Material* material);
 
     int getSimilarVertexIndex(vector<Vertex> vertices);
 };

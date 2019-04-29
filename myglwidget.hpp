@@ -39,18 +39,18 @@ public slots:
     void rotateY(int value);
     void rotateZ(int value);
 
-    void switchToRandomShader();
-    void switchToPositionShader();
-    void switchToNormalShader();
-    void switchToLambertShader();
-    void switchToPhongShader();
-    void switchToTextureShader();
-    void switchToCombinedShader();
-    void switchToMTLShader();
+    void switchToRandomShader(bool checked);
+    void switchToPositionShader(bool checked);
+    void switchToNormalShader(bool checked);
+    void switchToLambertShader(bool checked);
+    void switchToPhongShader(bool checked);
+    void switchToTextureShader(bool checked);
+    void switchToCombinedShader(bool checked);
+    void switchToMTLShader(bool checked);
     void recompileShader();
 
-    void switchToCylinderModel(bool value);
-    void switchToLoadedModel(bool value);
+    void switchToCylinderModel(bool checked);
+    void switchToLoadedModel(bool checked);
     void changeLoadedModel(QString value);
 
     void moveLightX(int value);

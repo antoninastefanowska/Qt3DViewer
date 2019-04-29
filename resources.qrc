@@ -25,5 +25,7 @@
     <qresource prefix="/models">
         <file>resources/models/monkey.mtl</file>
         <file>resources/models/monkey.obj</file>
+        <file>resources/models/starwitch.mtl</file>
+        <file>resources/models/starwitch.obj</file>
     </qresource>
 </RCC>

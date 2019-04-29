@@ -49,9 +49,19 @@ void Vertex::setUV(vec2 uv)
     this->uv = uv;
 }
 
+Material* Vertex::getMaterial()
+{
+    return material;
+}
+
+void Vertex::setMaterial(Material* material)
+{
+    this->material = material;
+}
+
 bool Vertex::isSimilar(Vertex vertex)
 {
-    if (distance(this->position, vertex.position) < 0.01f && distance(this->normal, vertex.normal) < 0.01f && distance(this->uv, vertex.uv) < 0.01f)
+    if (this->position == vertex.position && this->normal == vertex.normal && this->uv == vertex.uv)
         return true;
     else
         return false;

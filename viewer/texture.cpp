@@ -17,6 +17,8 @@ void Texture::init()
 void Texture::loadTexture(string filename)
 {
     QImage image;
+
+    cout << "Otwieranie pliku tekstury: " << filename << endl;
     image.load((BASE_PATH + filename).c_str());
 
     data = image.bits();
