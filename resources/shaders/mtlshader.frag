@@ -19,7 +19,7 @@ void main()
     vec3 texture = texture2D(textureSampler, uv).rgb;
     vec3 material = diffuseColor + texture;
     vec3 ambient = ambientColor * material * vec3(0.2);
-    vec3 specular = specularColor;
+    vec3 specular = specularColor * material;
     vec3 emit = emitColor;
 
     vec3 n = normalize(normal);
