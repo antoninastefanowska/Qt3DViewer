@@ -9,6 +9,18 @@ Vertex::Vertex(vec3 coords)
     this->uv = vec2(0.0f);
 }
 
+bool Vertex::operator<(Vertex that) const
+{
+    return memcmp((void*)this, (void*)&that, sizeof(Vertex))>0;
+}
+
+bool Vertex::operator==(Vertex that) const
+{
+    return (this->position == that.position &&
+            this->normal == that.normal &&
+            this->uv == that.uv);
+}
+
 vec3 Vertex::getPosition()
 {
     return position;
@@ -67,12 +79,19 @@ bool Vertex::isSimilar(Vertex vertex)
         return false;
 }
 
-int Vertex::getSimilarVertexIndex(vector<Vertex> vertices)
+int Vertex::getSimilarVertexIndexFast(map<Vertex, unsigned short> &vertices)
+{
+    map<Vertex, unsigned short>::iterator it = vertices.find(*this);
+    if (it == vertices.end())
+        return -1;
+    else
+       return it->second;
+}
+
+int Vertex::getSimilarVertexIndexSlow(vector<Vertex> &vertices)
 {
     for (unsigned int i = 0; i < vertices.size(); i++)
-    {
-        if (isSimilar(vertices[i]))
+        if (*this == vertices[i])
             return i;
-    }
     return -1;
 }

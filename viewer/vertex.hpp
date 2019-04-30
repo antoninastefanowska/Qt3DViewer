@@ -25,6 +25,8 @@ private:
 public:
     Vertex();
     Vertex(vec3 position);
+    bool operator<(Vertex that) const;
+    bool operator==(Vertex that) const;
 
     vec3 getPosition();
 
@@ -40,7 +42,8 @@ public:
     Material* getMaterial();
     void setMaterial(Material* material);
 
-    int getSimilarVertexIndex(vector<Vertex> vertices);
+    int getSimilarVertexIndexFast(map<Vertex, unsigned short> &vertices);
+    int getSimilarVertexIndexSlow(vector<Vertex> &vertices);
 };
 
 #endif // VERTEX_HPP

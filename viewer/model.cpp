@@ -26,20 +26,22 @@ void Model::init()
     model = mat4(1.0f);
 }
 
-void Model::loadDataToBuffers(vector<Vertex> vertices)
+void Model::loadDataToBuffers(vector<Vertex> &vertices)
 {
-    vector<Vertex> verticesOut;
+    map<Vertex, unsigned short> verticesOut;
     vector<vec3> verticesData, normalsData, ambientData, diffuseData, specularData, emissionData;
     vector<vec2> uvData;
     vector<unsigned short> indicesData;
 
     indicesData.reserve(vertices.size());
 
+    clock_t start, end;
+    start = clock();
     for (Vertex vertex : vertices)
     {
-        int foundIndex = vertex.getSimilarVertexIndex(verticesOut);
+        int foundIndex = vertex.getSimilarVertexIndexFast(verticesOut);
         if (foundIndex != -1)
-            indicesData.push_back(foundIndex);
+            indicesData.push_back((unsigned short)foundIndex);
         else
         {
             verticesData.push_back(vertex.getPosition());
@@ -50,10 +52,14 @@ void Model::loadDataToBuffers(vector<Vertex> vertices)
             specularData.push_back(vertex.getMaterial()->getSpecular());
             emissionData.push_back(vertex.getMaterial()->getEmission());
 
-            verticesOut.push_back(vertex);
-            indicesData.push_back((unsigned short)verticesData.size() - 1);
+            unsigned short index = (unsigned short)verticesData.size() - 1;
+            verticesOut[vertex] = index;
+            indicesData.push_back(index);
         }
     }
+    end = clock();
+    cout << "Czas indeksowania: " << ((double)(end - start)) / CLOCKS_PER_SEC << "s" << endl;
+
     indicesNumber = indicesData.size();
     vertexNumber = verticesData.size();
 

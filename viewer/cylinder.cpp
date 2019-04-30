@@ -92,7 +92,7 @@ void Cylinder::createModel()
     delete material;
 }
 
-void Cylinder::calculateNormals(vector<Vertex> &vertices, vector<Triangle> triangles)
+void Cylinder::calculateNormals(vector<Vertex> &vertices, vector<Triangle> &triangles)
 {
     for (Vertex &vertex : vertices)
     {

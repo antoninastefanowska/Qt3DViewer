@@ -39,7 +39,7 @@ protected:
     Texture* texture;
 
     virtual void createModel() = 0;
-    void loadDataToBuffers(vector<Vertex> vertices);
+    void loadDataToBuffers(vector<Vertex> &vertices);
     void generateColors();
 
 public:
