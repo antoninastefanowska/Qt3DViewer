@@ -71,14 +71,6 @@ void Vertex::setMaterial(Material* material)
     this->material = material;
 }
 
-bool Vertex::isSimilar(Vertex vertex)
-{
-    if (this->position == vertex.position && this->normal == vertex.normal && this->uv == vertex.uv)
-        return true;
-    else
-        return false;
-}
-
 int Vertex::getSimilarVertexIndexFast(map<Vertex, unsigned short> &vertices)
 {
     map<Vertex, unsigned short>::iterator it = vertices.find(*this);

@@ -20,8 +20,6 @@ private:
     vec2 uv;
     Material* material;
 
-    bool isSimilar(Vertex vertex);
-
 public:
     Vertex();
     Vertex(vec3 position);
