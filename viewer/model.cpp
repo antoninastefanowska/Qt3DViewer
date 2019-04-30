@@ -7,7 +7,7 @@ Model::~Model()
     glDeleteBuffers(1, &verticesHandle);
     glDeleteBuffers(1, &normalsHandle);
     glDeleteBuffers(1, &uvHandle);
-    glDeleteBuffers(1, &colorsHandle);
+    glDeleteBuffers(1, &randomColorsHandle);
     glDeleteBuffers(1, &ambientHandle);
     glDeleteBuffers(1, &diffuseHandle);
     glDeleteBuffers(1, &specularHandle);
@@ -21,7 +21,7 @@ void Model::init()
     initializeOpenGLFunctions();
 
     createModel();
-    generateColors();
+    generateRandomColors();
 
     model = mat4(1.0f);
 }
@@ -96,7 +96,7 @@ void Model::loadDataToBuffers(vector<Vertex> &vertices)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesData.size() * sizeof(unsigned short), &indicesData[0], GL_STATIC_DRAW);
 }
 
-void Model::generateColors()
+void Model::generateRandomColors()
 {
     vector<vec3> colorsData;
     colorsData.reserve(vertexNumber);
@@ -108,8 +108,8 @@ void Model::generateColors()
         colorsData.push_back(vec3(r1, r2, r3));
     }
 
-    glGenBuffers(1, &colorsHandle);
-    glBindBuffer(GL_ARRAY_BUFFER, colorsHandle);
+    glGenBuffers(1, &randomColorsHandle);
+    glBindBuffer(GL_ARRAY_BUFFER, randomColorsHandle);
     glBufferData(GL_ARRAY_BUFFER, colorsData.size() * sizeof(vec3), &colorsData[0], GL_STATIC_DRAW);
 }
 
@@ -126,7 +126,7 @@ void Model::draw()
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
     glEnableVertexAttribArray(2);
-    glBindBuffer(GL_ARRAY_BUFFER, colorsHandle);
+    glBindBuffer(GL_ARRAY_BUFFER, randomColorsHandle);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
     glEnableVertexAttribArray(3);

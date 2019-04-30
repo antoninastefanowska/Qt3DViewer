@@ -31,7 +31,7 @@ class Model : public QOpenGLFunctions
 {
 private:
     mat4 model;
-    GLuint modelMatrixHandle, colorsHandle, indicesHandle, verticesHandle, normalsHandle, uvHandle, ambientHandle, diffuseHandle, specularHandle, emissionHandle;
+    GLuint modelMatrixHandle, randomColorsHandle, indicesHandle, verticesHandle, normalsHandle, uvHandle, ambientHandle, diffuseHandle, specularHandle, emissionHandle;
     ShaderProgram* shaderProgram;
 
 protected:
@@ -40,7 +40,7 @@ protected:
 
     virtual void createModel() = 0;
     void loadDataToBuffers(vector<Vertex> &vertices);
-    void generateColors();
+    void generateRandomColors();
 
 public:
     Model();

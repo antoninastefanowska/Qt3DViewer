@@ -111,7 +111,7 @@ void Cylinder::changeN(int n)
 {
     this->n = n;
     createModel();
-    generateColors();
+    generateRandomColors();
 }
 
 void Cylinder::changeRadius(float radius)
