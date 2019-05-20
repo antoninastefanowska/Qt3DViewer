@@ -1,6 +1,8 @@
 #ifndef LOADEDMODEL_HPP
 #define LOADEDMODEL_HPP
 
+#include <iostream>
+
 #include "model.hpp"
 #include "material.hpp"
 #include "vertex.hpp"
@@ -8,6 +10,8 @@
 #include <QFile>
 #include <QTextStream>
 #include <QString>
+
+using namespace std;
 
 class LoadedModel : public Model
 {

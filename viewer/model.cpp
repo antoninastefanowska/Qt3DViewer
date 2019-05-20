@@ -1,6 +1,9 @@
 #include "model.hpp"
 
-Model::Model() { }
+Model::Model()
+{
+    texture = NULL;
+}
 
 Model::~Model()
 {
@@ -22,8 +25,6 @@ void Model::init()
 
     createModel();
     generateRandomColors();
-
-    model = mat4(1.0f);
 }
 
 void Model::loadDataToBuffers(vector<Vertex> &vertices)
@@ -104,7 +105,7 @@ void Model::generateRandomColors()
 
     for (int i = 0; i < vertexNumber; i++)
     {
-        float r1 = ((double)rand() / RAND_MAX), r2 = ((double)rand() / RAND_MAX), r3 = ((double)rand() / RAND_MAX);
+        double r1 = ((double)rand() / RAND_MAX), r2 = ((double)rand() / RAND_MAX), r3 = ((double)rand() / RAND_MAX);
         colorsData.push_back(vec3(r1, r2, r3));
     }
 
@@ -115,8 +116,6 @@ void Model::generateRandomColors()
 
 void Model::draw()
 {
-    glUniformMatrix4fv(modelMatrixHandle, 1, GL_FALSE, &model[0][0]);
-
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, verticesHandle);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
@@ -149,7 +148,8 @@ void Model::draw()
     glBindBuffer(GL_ARRAY_BUFFER, emissionHandle);
     glVertexAttribPointer(7, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-    texture->draw();
+    if (texture != NULL)
+        texture->draw();
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesHandle);
     glDrawElements(GL_TRIANGLES, indicesNumber, GL_UNSIGNED_SHORT, (void*)0);
@@ -164,64 +164,13 @@ void Model::draw()
     glDisableVertexAttribArray(7);
 }
 
-ShaderProgram* Model::getShaderProgram()
-{
-    return shaderProgram;
-}
-
-void Model::setShaderProgram(ShaderProgram* shaderProgram)
-{
-    this->shaderProgram = shaderProgram;
-    createHandles(shaderProgram);
-}
-
 void Model::createHandles(ShaderProgram* shaderProgram)
 {
-    modelMatrixHandle = glGetUniformLocation(shaderProgram->getProgramHandle(), "model");
-    texture->createHandles(shaderProgram);
-}
-
-mat4 Model::getModelMatrix()
-{
-    return model;
-}
-
-void Model::setModelMatrix(mat4 model)
-{
-    this->model = model;
+    if (texture != NULL)
+        texture->createHandles(shaderProgram);
 }
 
 void Model::switchTexture(string filename)
 {
     texture->loadTexture(filename);
-}
-
-void Model::rotateX(float angle)
-{
-    model = rotate(model, radians(angle), vec3(1.0f, 0.0f, 0.0f));
-}
-
-void Model::rotateY(float angle)
-{
-    model = rotate(model, radians(angle), vec3(0.0f, 1.0f, 0.0f));
-}
-
-void Model::rotateZ(float angle)
-{
-    model = rotate(model, radians(angle), vec3(0.0f, 0.0f, 1.0f));
-}
-
-void Model::translateX(float distance)
-{
-    model = translate(model, vec3(distance, 0.0f, 0.0f));
-}
-
-void Model::translateY(float distance)
-{
-    model = translate(model, vec3(0.0f, distance, 0.0f));
-}
-
-void Model::translateZ(float distance)
-{
-    model = translate(model, vec3(0.0f, 0.0f, distance));
 }

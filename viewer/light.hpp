@@ -7,6 +7,7 @@
 
 #include <QOpenGLFunctions>
 
+#include "node.hpp"
 #include "shaderprogram.hpp"
 
 using namespace std;
@@ -16,22 +17,16 @@ using glm::vec4;
 using glm::mat4;
 using glm::translate;
 
-class Light : QOpenGLFunctions
+class Light : public Node
 {
 private:
-    vec3 position, color;
+    vec3 color;
     GLuint positionHandle, colorHandle;
 
 public:
-    Light();
-    Light(vec3 position);
-
+    using Node::Node;
     void init();
     void createHandles(ShaderProgram* shaderProgram);
-
-    void translateX(float distance);
-    void translateY(float distance);
-    void translateZ(float distance);
 
     void changeColorRed(float value);
     void changeColorGreen(float value);

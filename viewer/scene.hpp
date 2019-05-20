@@ -3,34 +3,33 @@
 
 #include <QOpenGLFunctions>
 
-#include "model.hpp"
+#include "camera.hpp"
+#include "light.hpp"
+#include "cylinder.hpp"
+#include "loadedmodel.hpp"
 
-class Scene : QOpenGLFunctions
+class Scene : public Node
 {
 private:
-    Model* model;
-    mat4 view, projection;
-    GLuint viewMatrixHandle, projectionMatrixHandle;
     Light* light;
+    Camera* camera;
     map<string, ShaderProgram*> shaderPrograms;
+    ShaderProgram* shaderProgram;
 
     void createShaderProgram(string name);
     void createAllShaderPrograms();
 
 public:
-    Scene();
-    Scene(Model* model);
+    using Node::Node;
     ~Scene();
     void init();
     void draw();
 
     Light* getLight();
-    Model* getModel();
-    void setModel(Model* model);
+    Camera* getCamera();
 
     void switchShaderProgram(string name);
-    void switchModel(Model* model);
-    void changePerspectiveRatio(float ratio);
+    ShaderProgram* getShaderProgram();
 };
 
 #endif // SCENE_HPP

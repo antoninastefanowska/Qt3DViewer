@@ -31,11 +31,13 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     myglwidget.cpp \
+    viewer/camera.cpp \
     viewer/cylinder.cpp \
     viewer/light.cpp \
     viewer/loadedmodel.cpp \
     viewer/material.cpp \
     viewer/model.cpp \
+    viewer/node.cpp \
     viewer/scene.cpp \
     viewer/shaderprogram.cpp \
     viewer/texture.cpp \
@@ -45,11 +47,13 @@ SOURCES += \
 HEADERS += \
     mainwindow.hpp \
     myglwidget.hpp \
+    viewer/camera.hpp \
     viewer/cylinder.hpp \
     viewer/light.hpp \
     viewer/loadedmodel.hpp \
     viewer/material.hpp \
     viewer/model.hpp \
+    viewer/node.hpp \
     viewer/scene.hpp \
     viewer/shaderprogram.hpp \
     viewer/texture.hpp \
@@ -65,6 +69,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
+    resources/models/lowpolybush.mtl \
+    resources/models/lowpolybush.obj \
+    resources/models/lowpolytree.mtl \
+    resources/models/lowpolytree.obj \
     resources/models/monkey.mtl \
     resources/models/monkey.obj \
     resources/models/starwitch.mtl \

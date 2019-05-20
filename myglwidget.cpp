@@ -4,8 +4,7 @@ MyGLWidget::MyGLWidget(QWidget *parent) : QOpenGLWidget(parent) { }
 
 void MyGLWidget::initializeGL()
 {
-    Model* model = new Cylinder(72, 2.0, 8.0);
-    scene = new Scene(model);
+    scene = new Scene(vec3(0.0f));
     scene->init();
 
     prevTransX = 0;
@@ -30,13 +29,13 @@ void MyGLWidget::paintGL()
 
 void MyGLWidget::resizeGL(int width, int height)
 {
-    scene->changePerspectiveRatio((float)width / (float)height);
+    scene->getCamera()->changePerspectiveRatio((float)width / (float)height);
 }
 
 void MyGLWidget::translateX(int value)
 {
     int distance = value - prevTransX;
-    scene->getModel()->translateX((float)distance);
+    scene->translateX((float)distance);
     prevTransX = value;
     update();
 }
@@ -44,7 +43,7 @@ void MyGLWidget::translateX(int value)
 void MyGLWidget::translateY(int value)
 {
     int distance = value - prevTransY;
-    scene->getModel()->translateY((float)distance);
+    scene->translateY((float)distance);
     prevTransY = value;
     update();
 }
@@ -52,7 +51,7 @@ void MyGLWidget::translateY(int value)
 void MyGLWidget::translateZ(int value)
 {
     int distance = value - prevTransZ;
-    scene->getModel()->translateZ((float)distance);
+    scene->translateZ((float)distance);
     prevTransZ = value;
     update();
 }
@@ -60,7 +59,7 @@ void MyGLWidget::translateZ(int value)
 void MyGLWidget::rotateX(int value)
 {
     int angle = value - prevRotX;
-    scene->getModel()->rotateX((float)angle);
+    scene->rotateX((float)angle);
     prevRotX = value;
     update();
 }
@@ -68,7 +67,7 @@ void MyGLWidget::rotateX(int value)
 void MyGLWidget::rotateY(int value)
 {
     int angle = value - prevRotY;
-    scene->getModel()->rotateY((float)angle);
+    scene->rotateY((float)angle);
     prevRotY = value;
     update();
 }
@@ -76,7 +75,7 @@ void MyGLWidget::rotateY(int value)
 void MyGLWidget::rotateZ(int value)
 {
     int angle = value - prevRotZ;
-    scene->getModel()->rotateZ((float)angle);
+    scene->rotateZ((float)angle);
     prevRotZ = value;
     update();
 }
@@ -158,7 +157,6 @@ void MyGLWidget::switchToCylinderModel(bool checked)
     if (checked)
     {
         Model* model = new Cylinder(72, 2.0, 8.0);
-        scene->switchModel(model);
         update();
     }
 }
@@ -168,7 +166,6 @@ void MyGLWidget::switchToLoadedModel(bool checked)
     if (checked)
     {
         Model* model = new LoadedModel(currentLoadedModelName);
-        scene->switchModel(model);
         update();
     }
 }
@@ -256,7 +253,7 @@ void MyGLWidget::changeHeight(int value)
 
 void MyGLWidget::recompileShader()
 {
-    scene->getModel()->getShaderProgram()->reloadProgram();
+    scene->getShaderProgram()->reloadProgram();
     update();
 }
 

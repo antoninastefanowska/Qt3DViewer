@@ -14,7 +14,6 @@
 #include <QOpenGLFunctions>
 
 #include "shaderprogram.hpp"
-#include "light.hpp"
 #include "material.hpp"
 #include "vertex.hpp"
 
@@ -30,9 +29,7 @@ using glm::perspective;
 class Model : public QOpenGLFunctions
 {
 private:
-    mat4 model;
-    GLuint modelMatrixHandle, randomColorsHandle, indicesHandle, verticesHandle, normalsHandle, uvHandle, ambientHandle, diffuseHandle, specularHandle, emissionHandle;
-    ShaderProgram* shaderProgram;
+    GLuint randomColorsHandle, indicesHandle, verticesHandle, normalsHandle, uvHandle, ambientHandle, diffuseHandle, specularHandle, emissionHandle;
 
 protected:
     int vertexNumber, indicesNumber;
@@ -48,22 +45,9 @@ public:
 
     void init();
     void draw();
-    ShaderProgram* getShaderProgram();
-    void setShaderProgram(ShaderProgram* shaderProgram);
     void createHandles(ShaderProgram* shaderProgram);
 
-    mat4 getModelMatrix();
-    void setModelMatrix(mat4 model);
-
     void switchTexture(string filename);
-
-    void rotateX(float angle);
-    void rotateY(float angle);
-    void rotateZ(float angle);
-
-    void translateX(float distance);
-    void translateY(float distance);
-    void translateZ(float distance);
 };
 
-#endif // MODEL_HPP
+#endif //MODEL_HPP

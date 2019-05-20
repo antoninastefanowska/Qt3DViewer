@@ -1,12 +1,5 @@
 #include "scene.hpp"
 
-Scene::Scene() { }
-
-Scene::Scene(Model* model)
-{
-    this->model = model;
-}
-
 Scene::~Scene()
 {
     for (pair<string, ShaderProgram*> shaderPair : shaderPrograms)
@@ -17,8 +10,11 @@ Scene::~Scene()
     }
     shaderPrograms.clear();
 
-    delete model;
+    delete camera;
     delete light;
+
+    for (Node* child : children)
+        delete child;
 }
 
 void Scene::init()
@@ -28,21 +24,50 @@ void Scene::init()
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
-    light = new Light(vec3(0.0f, 0.0f, 0.0f));
+    light = new Light(vec3(0.0f));
     light->init();
+    light->setName("Light");
 
-    view = lookAt(
-        vec3(0, 0, 15),
-        vec3(0, 0, 0),
-        vec3(0, 1, 0)
-    );
-    projection = perspective(radians(45.0f), 1.0f, 0.1f, 100.0f);
+    camera = new Camera(vec3(0.0f));
+    camera->init();
+    camera->setName("Camera");
 
     createAllShaderPrograms();
-
-    model->init();
-
     switchShaderProgram("positionshader");
+
+    this->setName("Scene");
+
+    Model *treeModel = new LoadedModel("lowpolytree.obj"), *bushModel = new LoadedModel("lowpolybush.obj");
+    treeModel->init();
+    bushModel->init();
+
+    srand(time(NULL));
+    for (int i = 0; i < 200; i++)
+    {
+        double x = (double)(rand() % 81 - 40), y = 0.0f, z = (double)(rand() % 81 - 40), angle = (double)(rand() % 360);
+        int bushes = (int)rand() % 10;
+        vec3 position = vec3(x, y, z);
+
+        Node* tree = new Node(position, treeModel);
+        tree->init();
+        tree->createHandles(shaderProgram);
+        tree->setName("Tree " + to_string(i));
+        tree->rotateY(angle);
+        this->addChild(tree);
+
+        for (int j = 0; j < bushes; j++)
+        {
+            double xb = (double)(rand() % 11 - 5), yb = -10.0f, zb = (double)(rand() % 11 - 5), angleb = (double)(rand() % 360);
+            vec3 positionb = vec3(xb, yb, zb);
+
+            Node* bush = new Node(position + positionb, bushModel);
+            bush->init();
+            bush->createHandles(shaderProgram);
+            bush->setName("Bush " + to_string(j));
+            bush->rotateY(angleb);
+            tree->addChild(bush);
+        }
+    }
 }
 
 void Scene::createShaderProgram(string name)
@@ -70,13 +95,11 @@ void Scene::draw()
     glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glUseProgram(model->getShaderProgram()->getProgramHandle());
-
-    glUniformMatrix4fv(viewMatrixHandle, 1, GL_FALSE, &view[0][0]);
-    glUniformMatrix4fv(projectionMatrixHandle, 1, GL_FALSE, &projection[0][0]);
+    glUseProgram(shaderProgram->getProgramHandle());
 
     light->draw();
-    model->draw();
+    camera->draw();
+    drawChildren();
 }
 
 Light* Scene::getLight()
@@ -84,38 +107,21 @@ Light* Scene::getLight()
     return light;
 }
 
-Model* Scene::getModel()
+Camera* Scene::getCamera()
 {
-    return model;
-}
-
-void Scene::setModel(Model* model)
-{
-    this->model = model;
+    return camera;
 }
 
 void Scene::switchShaderProgram(string name)
 {
-    ShaderProgram* shaderProgram = shaderPrograms[name];
-    viewMatrixHandle = glGetUniformLocation(shaderProgram->getProgramHandle(), "view");
-    projectionMatrixHandle = glGetUniformLocation(shaderProgram->getProgramHandle(), "projection");
-    model->setShaderProgram(shaderProgram);
+    shaderProgram = shaderPrograms[name];
+    camera->createHandles(shaderProgram);
     light->createHandles(shaderProgram);
+    for (Node* child : children)
+        child->createHandles(shaderProgram);
 }
 
-void Scene::switchModel(Model* model)
+ShaderProgram* Scene::getShaderProgram()
 {
-    ShaderProgram* shaderProgram = this->model->getShaderProgram();
-    mat4 modelMatrix = this->model->getModelMatrix();
-
-    delete this->model;
-    this->model = model;
-    this->model->init();
-    this->model->setShaderProgram(shaderProgram);
-    this->model->setModelMatrix(modelMatrix);
-}
-
-void Scene::changePerspectiveRatio(float ratio)
-{
-    projection = perspective(radians(45.0f), ratio, 0.1f, 100.0f);
+    return shaderProgram;
 }

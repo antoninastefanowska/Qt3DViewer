@@ -17,7 +17,20 @@
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="7,4">
+   <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,9,4">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_25">
+      <item>
+       <widget class="QTreeWidget" name="objectTree">
+        <column>
+         <property name="text">
+          <string notr="true">1</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+     </layout>
+    </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
