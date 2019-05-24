@@ -29,10 +29,10 @@ void Model::init()
 
 void Model::loadDataToBuffers(vector<Vertex> &vertices)
 {
-    map<Vertex, unsigned short> verticesOut;
+    map<Vertex, unsigned int> verticesOut;
     vector<vec3> verticesData, normalsData, ambientData, diffuseData, specularData, emissionData;
     vector<vec2> uvData;
-    vector<unsigned short> indicesData;
+    vector<unsigned int> indicesData;
 
     indicesData.reserve(vertices.size());
 
@@ -42,7 +42,7 @@ void Model::loadDataToBuffers(vector<Vertex> &vertices)
     {
         int foundIndex = vertex.getSimilarVertexIndexFast(verticesOut);
         if (foundIndex != -1)
-            indicesData.push_back((unsigned short)foundIndex);
+            indicesData.push_back((unsigned int)foundIndex);
         else
         {
             verticesData.push_back(vertex.getPosition());
@@ -53,7 +53,7 @@ void Model::loadDataToBuffers(vector<Vertex> &vertices)
             specularData.push_back(vertex.getMaterial()->getSpecular());
             emissionData.push_back(vertex.getMaterial()->getEmission());
 
-            unsigned short index = (unsigned short)verticesData.size() - 1;
+            unsigned int index = (unsigned int)verticesData.size() - 1;
             verticesOut[vertex] = index;
             indicesData.push_back(index);
         }
@@ -94,7 +94,7 @@ void Model::loadDataToBuffers(vector<Vertex> &vertices)
 
     glGenBuffers(1, &indicesHandle);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesHandle);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesData.size() * sizeof(unsigned short), &indicesData[0], GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesData.size() * sizeof(unsigned int), &indicesData[0], GL_STATIC_DRAW);
 }
 
 void Model::generateRandomColors()
@@ -152,7 +152,7 @@ void Model::draw()
         texture->draw();
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesHandle);
-    glDrawElements(GL_TRIANGLES, indicesNumber, GL_UNSIGNED_SHORT, (void*)0);
+    glDrawElements(GL_TRIANGLES, indicesNumber, GL_UNSIGNED_INT, (void*)0);
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);

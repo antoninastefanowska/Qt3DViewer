@@ -7,6 +7,8 @@
 #include "light.hpp"
 #include "cylinder.hpp"
 #include "loadedmodel.hpp"
+#include "translateanimation.hpp"
+#include "rotateanimation.hpp"
 
 class Scene : public Node
 {
@@ -18,6 +20,7 @@ private:
 
     void createShaderProgram(string name);
     void createAllShaderPrograms();
+    void generateForest();
 
 public:
     using Node::Node;

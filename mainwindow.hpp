@@ -17,13 +17,17 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void updateTree();
+    void generateObjectTree();
+    void setTimer();
 
 private:
     Ui::MainWindow *ui;
     QStandardItemModel *treeViewModel;
 
-    void populateTree(Node* node, QStandardItem* parent);
+    void populateObjectTree(Node* node, QStandardItem* parent);
+
+public slots:
+    void frame();
 };
 
 #endif // MAINWINDOW_HPP

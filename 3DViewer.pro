@@ -31,6 +31,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     myglwidget.cpp \
+    viewer/animation.cpp \
     viewer/camera.cpp \
     viewer/cylinder.cpp \
     viewer/light.cpp \
@@ -38,15 +39,18 @@ SOURCES += \
     viewer/material.cpp \
     viewer/model.cpp \
     viewer/node.cpp \
+    viewer/rotateanimation.cpp \
     viewer/scene.cpp \
     viewer/shaderprogram.cpp \
     viewer/texture.cpp \
+    viewer/translateanimation.cpp \
     viewer/triangle.cpp \
     viewer/vertex.cpp
 
 HEADERS += \
     mainwindow.hpp \
     myglwidget.hpp \
+    viewer/animation.hpp \
     viewer/camera.hpp \
     viewer/cylinder.hpp \
     viewer/light.hpp \
@@ -54,9 +58,11 @@ HEADERS += \
     viewer/material.hpp \
     viewer/model.hpp \
     viewer/node.hpp \
+    viewer/rotateanimation.hpp \
     viewer/scene.hpp \
     viewer/shaderprogram.hpp \
     viewer/texture.hpp \
+    viewer/translateanimation.hpp \
     viewer/triangle.hpp \
     viewer/vertex.hpp
 
@@ -69,14 +75,20 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
+    resources/models/bush.mtl \
+    resources/models/bush.obj \
     resources/models/lowpolybush.mtl \
     resources/models/lowpolybush.obj \
     resources/models/lowpolytree.mtl \
     resources/models/lowpolytree.obj \
     resources/models/monkey.mtl \
     resources/models/monkey.obj \
+    resources/models/star.mtl \
+    resources/models/star.obj \
     resources/models/starwitch.mtl \
     resources/models/starwitch.obj \
+    resources/models/tree.mtl \
+    resources/models/tree.obj \
     resources/shaders/combinedshader.frag \
     resources/shaders/combinedshader.vert \
     resources/shaders/lambertshader.frag \

@@ -1,0 +1,12 @@
+# Blender MTL File: 'gra.blend'
+# Material Count: 1
+
+newmtl swiecacy
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 0.791298 0.152926
+Ks 0.000000 1.000000 0.887264
+Ke 1.809774 1.432071 0.276762
+Ni 1.000000
+d 1.000000
+illum 2

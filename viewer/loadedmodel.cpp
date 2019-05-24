@@ -9,7 +9,7 @@ LoadedModel::LoadedModel(string filename)
 
 void LoadedModel::createModel()
 {   
-    vector<unsigned short> verticesIndices, uvIndices, normalsIndices;
+    vector<unsigned int> verticesIndices, uvIndices, normalsIndices;
     vector<vec3> readVertices, readNormals;
     vector<vec2> readUV;
     vector<Material*> materialsOut;
@@ -18,7 +18,7 @@ void LoadedModel::createModel()
     map<string, Material*> materials;
     string currentMaterialName;
 
-    //cout << "Otwieranie pliku: " << filename << endl;
+    cout << "Otwieranie pliku: " << filename << endl;
     QFile objFile((BASE_PATH + filename).c_str());
     string fileContent;
 

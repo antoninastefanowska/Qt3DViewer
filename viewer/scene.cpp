@@ -37,37 +37,28 @@ void Scene::init()
 
     this->setName("Scene");
 
-    Model *treeModel = new LoadedModel("lowpolytree.obj"), *bushModel = new LoadedModel("lowpolybush.obj");
-    treeModel->init();
-    bushModel->init();
+    Model* starModel = new LoadedModel("star.obj");
+    starModel->init();
 
     srand(time(NULL));
-    for (int i = 0; i < 200; i++)
+    for (int i = 0; i < 100; i++)
     {
-        double x = (double)(rand() % 81 - 40), y = 0.0f, z = (double)(rand() % 81 - 40), angle = (double)(rand() % 360);
-        int bushes = (int)rand() % 10;
-        vec3 position = vec3(x, y, z);
+        double x = (double)(rand() % 81 - 40), y = 0.0f, z = (double)(rand() % 81 - 40);
+        unsigned int duration = rand() % 1000;
 
-        Node* tree = new Node(position, treeModel);
-        tree->init();
-        tree->createHandles(shaderProgram);
-        tree->setName("Tree " + to_string(i));
-        tree->rotateY(angle);
-        this->addChild(tree);
+        Node* star = new Node(vec3(0.0f), starModel);
+        star->init();
+        star->createHandles(shaderProgram);
+        star->setName("Star " + to_string(i));
 
-        for (int j = 0; j < bushes; j++)
-        {
-            double xb = (double)(rand() % 11 - 5), yb = -1.0f, zb = (double)(rand() % 11 - 5), angleb = (double)(rand() % 360);
-            vec3 positionb = vec3(xb, yb, zb);
+        Animation *animation1 = new TranslateAnimation(vec3(x - 5, 0, z), vec3(x + 5, 0, z), duration), *animation2 = new TranslateAnimation(vec3(0, 20, 0), vec3(0, -20, 0), duration), *animation3 = new RotateAnimation(0.0f, -360.0f, vec3(0.0f, 0.0f, 1.0f), duration);
+        star->addAnimation(animation1);
+        star->addAnimation(animation2);
+        star->addAnimation(animation3);
 
-            Node* bush = new Node(positionb, bushModel);
-            bush->init();
-            bush->createHandles(shaderProgram);
-            bush->setName("Bush " + to_string(j));
-            bush->rotateY(angleb);
-            tree->addChild(bush);
-        }
+        this->addChild(star);
     }
+
     camera->update();
 }
 
@@ -134,4 +125,39 @@ void Scene::switchShaderProgram(string name)
 ShaderProgram* Scene::getShaderProgram()
 {
     return shaderProgram;
+}
+
+void Scene::generateForest()
+{
+    Model *treeModel = new LoadedModel("lowpolytree.obj"), *bushModel = new LoadedModel("lowpolybush.obj");
+    treeModel->init();
+    bushModel->init();
+
+    srand(time(NULL));
+    for (int i = 0; i < 200; i++)
+    {
+        double x = (double)(rand() % 81 - 40), y = 0.0f, z = (double)(rand() % 81 - 40), angle = (double)(rand() % 360);
+        int bushes = (int)rand() % 10;
+        vec3 position = vec3(x, y, z);
+
+        Node* tree = new Node(position, treeModel);
+        tree->init();
+        tree->createHandles(shaderProgram);
+        tree->setName("Tree " + to_string(i));
+        tree->rotateY(angle);
+        this->addChild(tree);
+
+        for (int j = 0; j < bushes; j++)
+        {
+            double xb = (double)(rand() % 11 - 5), yb = 0.0f, zb = (double)(rand() % 11 - 5), angleb = (double)(rand() % 360);
+            vec3 positionb = vec3(xb, yb, zb);
+
+            Node* bush = new Node(positionb, bushModel);
+            bush->init();
+            bush->createHandles(shaderProgram);
+            bush->setName("Bush " + to_string(j));
+            bush->rotateY(angleb);
+            tree->addChild(bush);
+        }
+    }
 }

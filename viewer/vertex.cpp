@@ -71,9 +71,9 @@ void Vertex::setMaterial(Material* material)
     this->material = material;
 }
 
-int Vertex::getSimilarVertexIndexFast(map<Vertex, unsigned short> &vertices)
+int Vertex::getSimilarVertexIndexFast(map<Vertex, unsigned int> &vertices)
 {
-    map<Vertex, unsigned short>::iterator it = vertices.find(*this);
+    map<Vertex, unsigned int>::iterator it = vertices.find(*this);
     if (it == vertices.end())
         return -1;
     else

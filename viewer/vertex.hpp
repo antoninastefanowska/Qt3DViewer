@@ -40,7 +40,7 @@ public:
     Material* getMaterial();
     void setMaterial(Material* material);
 
-    int getSimilarVertexIndexFast(map<Vertex, unsigned short> &vertices);
+    int getSimilarVertexIndexFast(map<Vertex, unsigned int> &vertices);
     int getSimilarVertexIndexSlow(vector<Vertex> &vertices);
 };
 

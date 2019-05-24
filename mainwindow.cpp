@@ -13,7 +13,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::updateTree()
+void MainWindow::generateObjectTree()
 {
     treeViewModel = new QStandardItemModel(ui->objectTreeView);
     treeViewModel->setColumnCount(1);
@@ -24,14 +24,14 @@ void MainWindow::updateTree()
     QStandardItem *itemScene = new QStandardItem;
     itemScene->setText(QString(scene->getName().c_str()));
 
-    populateTree(scene, itemScene);
+    populateObjectTree(scene, itemScene);
 
     treeViewModel->setItem(0, 0, itemScene);
     ui->objectTreeView->setModel(treeViewModel);
     ui->objectTreeView->expandAll();
 }
 
-void MainWindow::populateTree(Node* node, QStandardItem* parent)
+void MainWindow::populateObjectTree(Node* node, QStandardItem* parent)
 {
     int i = 0;
     for (Node* child : node->getChildren())
@@ -40,6 +40,18 @@ void MainWindow::populateTree(Node* node, QStandardItem* parent)
         item->setText(QString(child->getName().c_str()));
         parent->setChild(i, 0, item);
         i++;
-        populateTree(child, item);
+        populateObjectTree(child, item);
     }
+}
+
+void MainWindow::setTimer()
+{
+    QTimer* timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(frame()));
+    timer->start(10);
+}
+
+void MainWindow::frame()
+{
+    ui->myGLWidget->update();
 }

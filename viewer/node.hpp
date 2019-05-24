@@ -2,6 +2,7 @@
 #define NODE_HPP
 
 #include "model.hpp"
+#include "animation.hpp"
 
 #include <list>
 
@@ -13,6 +14,7 @@ private:
     Model* model;
     bool visibility;
     string name;
+    list<Animation*> animations;
 
 protected:
     mat4 localTransformationMatrix, globalTransformationMatrix;
@@ -24,9 +26,12 @@ protected:
     void drawChildren();
     int getChildIndex(Node* child);
 
+    void playAnimation();
+
 public:
     Node(vec3 position);
     Node(vec3 position, Model* model);
+    ~Node();
 
     void setModel(Model *model);
     Model* getModel();
@@ -60,6 +65,8 @@ public:
     void translateX(float distance);
     void translateY(float distance);
     void translateZ(float distance);
+
+    void addAnimation(Animation* animation);
 
     virtual vec3 getPosition();
 };

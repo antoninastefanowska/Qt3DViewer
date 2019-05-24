@@ -18,6 +18,15 @@ Node::Node(vec3 position, Model *model)
     update();
 }
 
+Node::~Node()
+{
+    delete model;
+    for (Animation* animation : animations)
+        delete animation;
+    for (Node* child : children)
+        delete child;
+}
+
 void Node::init()
 {
     initializeOpenGLFunctions();
@@ -134,9 +143,13 @@ void Node::drawChildren()
 
 void Node::draw()
 {
+    if (!animations.empty())
+        playAnimation();
+
     glUniformMatrix4fv(globalModelMatrixHandle, 1, GL_FALSE, &globalTransformationMatrix[0][0]);
     if (model != NULL)
         model->draw();
+
     drawChildren();
 }
 
@@ -166,7 +179,7 @@ void Node::checkVisibility(Node* camera)
 {
     for (Node* child : children)
     {
-        if (distance(child->getPosition(), camera->getPosition()) > 40.0f)
+        if (distance(child->getPosition(), camera->getPosition()) > 100.0f)
             child->hide();
         else
         {
@@ -226,4 +239,26 @@ vec3 Node::getPosition()
     position.z = globalTransformationMatrix[3][2];
 
     return position;
+}
+
+void Node::addAnimation(Animation* animation)
+{
+    animations.push_back(animation);
+}
+
+void Node::playAnimation()
+{
+    mat4 transformationMatrix = mat4(1.0f);
+
+    for (Animation* animation : animations)
+    {
+        if (!animation->isFinished())
+        {
+            transformationMatrix = transformationMatrix * animation->calculateFrameMatrix();
+            localTransformationMatrix = transformationMatrix;
+        }
+        else
+            animation->restart();
+    }
+    update();
 }

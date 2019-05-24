@@ -16,7 +16,8 @@ int main(int argc, char *argv[])
     QObject::connect(&app, SIGNAL(aboutToQuit()), glWidget, SLOT(close()));
 
     window.show();
-    window.updateTree();
+    window.generateObjectTree();
+    window.setTimer();
 
     return app.exec();
 }
