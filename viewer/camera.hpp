@@ -6,7 +6,7 @@
 class Camera : public Node
 {
 private:
-    mat4 viewMatrix, projectionMatrix;
+    mat4 projectionMatrix;
     GLuint viewMatrixHandle, projectionMatrixHandle;
 
 public:
@@ -16,6 +16,10 @@ public:
     void draw();
     void createHandles(ShaderProgram* shaderProgram);
     void changePerspectiveRatio(float ratio);
+
+    void hide();
+    void update();
+    vec3 getPosition();
 };
 
 #endif // CAMERA_HPP

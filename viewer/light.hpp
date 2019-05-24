@@ -32,6 +32,7 @@ public:
     void changeColorGreen(float value);
     void changeColorBlue(float value);
 
+    void hide();
     void draw();
 };
 

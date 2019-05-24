@@ -21,13 +21,7 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_25">
       <item>
-       <widget class="QTreeWidget" name="objectTree">
-        <column>
-         <property name="text">
-          <string notr="true">1</string>
-         </property>
-        </column>
-       </widget>
+       <widget class="QTreeView" name="objectTreeView"/>
       </item>
      </layout>
     </item>
@@ -997,6 +991,7 @@
     <slot>changeLightColorRed(int)</slot>
     <slot>changeLightColorGreen(int)</slot>
     <slot>changeLightColorBlue(int)</slot>
+    <slot>changeCurrentModel(QModelIndex)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -1009,7 +1004,7 @@
    <slot>translateX(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>712</x>
+     <x>904</x>
      <y>103</y>
     </hint>
     <hint type="destinationlabel">
@@ -1025,7 +1020,7 @@
    <slot>translateY(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>724</x>
+     <x>916</x>
      <y>167</y>
     </hint>
     <hint type="destinationlabel">
@@ -1041,7 +1036,7 @@
    <slot>translateZ(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>724</x>
+     <x>916</x>
      <y>214</y>
     </hint>
     <hint type="destinationlabel">
@@ -1057,7 +1052,7 @@
    <slot>rotateX(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>724</x>
+     <x>916</x>
      <y>296</y>
     </hint>
     <hint type="destinationlabel">
@@ -1073,7 +1068,7 @@
    <slot>rotateY(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>724</x>
+     <x>916</x>
      <y>343</y>
     </hint>
     <hint type="destinationlabel">
@@ -1089,7 +1084,7 @@
    <slot>rotateZ(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>724</x>
+     <x>916</x>
      <y>390</y>
     </hint>
     <hint type="destinationlabel">
@@ -1153,7 +1148,7 @@
    <slot>changeRadius(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>848</x>
+     <x>1008</x>
      <y>218</y>
     </hint>
     <hint type="destinationlabel">
@@ -1169,7 +1164,7 @@
    <slot>changeHeight(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>964</x>
+     <x>1064</x>
      <y>218</y>
     </hint>
     <hint type="destinationlabel">
@@ -1185,7 +1180,7 @@
    <slot>scaleTexture(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>722</x>
+     <x>914</x>
      <y>181</y>
     </hint>
     <hint type="destinationlabel">
@@ -1217,7 +1212,7 @@
    <slot>switchTexture(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>712</x>
+     <x>904</x>
      <y>103</y>
     </hint>
     <hint type="destinationlabel">
@@ -1233,7 +1228,7 @@
    <slot>changeN(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>732</x>
+     <x>912</x>
      <y>218</y>
     </hint>
     <hint type="destinationlabel">
@@ -1249,12 +1244,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>644</x>
-     <y>106</y>
+     <x>904</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
-     <x>679</x>
-     <y>216</y>
+     <x>912</x>
+     <y>218</y>
     </hint>
    </hints>
   </connection>
@@ -1265,12 +1260,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>744</x>
-     <y>106</y>
+     <x>904</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
-     <x>783</x>
-     <y>213</y>
+     <x>1008</x>
+     <y>218</y>
     </hint>
    </hints>
   </connection>
@@ -1281,12 +1276,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>888</x>
-     <y>114</y>
+     <x>904</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
-     <x>907</x>
-     <y>210</y>
+     <x>1064</x>
+     <y>218</y>
     </hint>
    </hints>
   </connection>
@@ -1297,12 +1292,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>758</x>
-     <y>132</y>
+     <x>916</x>
+     <y>138</y>
     </hint>
     <hint type="destinationlabel">
-     <x>745</x>
-     <y>268</y>
+     <x>916</x>
+     <y>279</y>
     </hint>
    </hints>
   </connection>
@@ -1313,8 +1308,8 @@
    <slot>changeLoadedModel(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>653</x>
-     <y>267</y>
+     <x>916</x>
+     <y>279</y>
     </hint>
     <hint type="destinationlabel">
      <x>530</x>
@@ -1329,12 +1324,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>794</x>
-     <y>107</y>
+     <x>904</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
-     <x>794</x>
-     <y>170</y>
+     <x>914</x>
+     <y>181</y>
     </hint>
    </hints>
   </connection>
@@ -1345,8 +1340,8 @@
    <slot>switchToCylinderModel(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>642</x>
-     <y>101</y>
+     <x>904</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
      <x>546</x>
@@ -1361,8 +1356,8 @@
    <slot>switchToLoadedModel(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>789</x>
-     <y>132</y>
+     <x>916</x>
+     <y>138</y>
     </hint>
     <hint type="destinationlabel">
      <x>248</x>
@@ -1377,8 +1372,8 @@
    <slot>switchToPositionShader(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>673</x>
-     <y>103</y>
+     <x>936</x>
+     <y>116</y>
     </hint>
     <hint type="destinationlabel">
      <x>471</x>
@@ -1393,8 +1388,8 @@
    <slot>switchToRandomShader(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>682</x>
-     <y>131</y>
+     <x>936</x>
+     <y>139</y>
     </hint>
     <hint type="destinationlabel">
      <x>542</x>
@@ -1409,8 +1404,8 @@
    <slot>switchToLambertShader(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>712</x>
-     <y>182</y>
+     <x>936</x>
+     <y>185</y>
     </hint>
     <hint type="destinationlabel">
      <x>551</x>
@@ -1489,8 +1484,8 @@
    <slot>switchToNormalShader(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>680</x>
-     <y>152</y>
+     <x>936</x>
+     <y>162</y>
     </hint>
     <hint type="destinationlabel">
      <x>514</x>
@@ -1505,8 +1500,8 @@
    <slot>changeLightColorRed(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>720</x>
-     <y>482</y>
+     <x>1064</x>
+     <y>489</y>
     </hint>
     <hint type="destinationlabel">
      <x>557</x>
@@ -1521,8 +1516,8 @@
    <slot>changeLightColorGreen(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>691</x>
-     <y>523</y>
+     <x>1064</x>
+     <y>536</y>
     </hint>
     <hint type="destinationlabel">
      <x>553</x>
@@ -1537,12 +1532,28 @@
    <slot>changeLightColorBlue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>633</x>
-     <y>567</y>
+     <x>1064</x>
+     <y>583</y>
     </hint>
     <hint type="destinationlabel">
      <x>567</x>
      <y>569</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>objectTreeView</sender>
+   <signal>clicked(QModelIndex)</signal>
+   <receiver>myGLWidget</receiver>
+   <slot>changeCurrentModel(QModelIndex)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>86</x>
+     <y>141</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>368</x>
+     <y>143</y>
     </hint>
    </hints>
   </connection>

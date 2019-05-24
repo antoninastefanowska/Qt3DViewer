@@ -10,9 +10,6 @@ Scene::~Scene()
     }
     shaderPrograms.clear();
 
-    delete camera;
-    delete light;
-
     for (Node* child : children)
         delete child;
 }
@@ -31,6 +28,9 @@ void Scene::init()
     camera = new Camera(vec3(0.0f));
     camera->init();
     camera->setName("Camera");
+
+    addChild(light);
+    addChild(camera);
 
     createAllShaderPrograms();
     switchShaderProgram("positionshader");
@@ -57,16 +57,28 @@ void Scene::init()
 
         for (int j = 0; j < bushes; j++)
         {
-            double xb = (double)(rand() % 11 - 5), yb = -10.0f, zb = (double)(rand() % 11 - 5), angleb = (double)(rand() % 360);
+            double xb = (double)(rand() % 11 - 5), yb = -1.0f, zb = (double)(rand() % 11 - 5), angleb = (double)(rand() % 360);
             vec3 positionb = vec3(xb, yb, zb);
 
-            Node* bush = new Node(position + positionb, bushModel);
+            Node* bush = new Node(positionb, bushModel);
             bush->init();
             bush->createHandles(shaderProgram);
             bush->setName("Bush " + to_string(j));
             bush->rotateY(angleb);
             tree->addChild(bush);
         }
+    }
+    camera->update();
+}
+
+void Scene::update()
+{
+    globalTransformationMatrix = localTransformationMatrix;
+
+    for (Node* child : children)
+    {
+        if (child != light && child != camera && child->isVisible())
+            child->update();
     }
 }
 
@@ -97,8 +109,6 @@ void Scene::draw()
 
     glUseProgram(shaderProgram->getProgramHandle());
 
-    light->draw();
-    camera->draw();
     drawChildren();
 }
 

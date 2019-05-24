@@ -33,3 +33,5 @@ void Light::draw()
     glUniform3f(positionHandle, position.x, position.y, position.z);
     glUniform3f(colorHandle, color.r, color.g, color.b);
 }
+
+void Light::hide() { }

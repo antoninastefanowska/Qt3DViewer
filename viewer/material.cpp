@@ -6,6 +6,7 @@ Material::Material()
     diffuse = vec3(0.0f);
     specular = vec3(0.0f);
     emission = vec3(0.0f);
+    texture = NULL;
 }
 
 Material::Material(vec3 ambient, vec3 diffuse, vec3 specular, vec3 emission)
@@ -14,11 +15,13 @@ Material::Material(vec3 ambient, vec3 diffuse, vec3 specular, vec3 emission)
     this->diffuse = diffuse;
     this->specular = specular;
     this->emission = emission;
+    texture = NULL;
 }
 
 Material::~Material()
 {
-    //delete texture;
+    if (texture != NULL)
+        delete texture;
 }
 
 void Material::setTexture(Texture* texture)

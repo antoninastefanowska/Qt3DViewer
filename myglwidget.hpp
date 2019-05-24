@@ -2,6 +2,7 @@
 #define MYGLWIDGET_HPP
 
 #include <iostream>
+#include <deque>
 
 #include <QtOpenGL>
 #include <QOpenGLWidget>
@@ -20,6 +21,7 @@ class MyGLWidget : public QOpenGLWidget
 
 private:
     Scene* scene;
+    Node* currentObject;
     int prevTransX, prevTransY, prevTransZ, prevRotX, prevRotY, prevRotZ, prevLightX, prevLightY, prevLightZ;
     string currentLoadedModelName;
 
@@ -29,6 +31,8 @@ private:
 
 public:
     explicit MyGLWidget(QWidget *parent = 0);
+    Scene* getScene();
+    Node* getCurrentObject();
 
 public slots:
     void translateX(int value);
@@ -69,6 +73,8 @@ public slots:
     void scaleTexture(int value);
 
     void close();
+
+    void changeCurrentModel(QModelIndex index);
 };
 
 #endif // MYGLWIDGET_HPP

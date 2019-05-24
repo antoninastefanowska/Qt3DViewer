@@ -6,6 +6,7 @@ void MyGLWidget::initializeGL()
 {
     scene = new Scene(vec3(0.0f));
     scene->init();
+    currentObject = scene;
 
     prevTransX = 0;
     prevTransY = 0;
@@ -32,10 +33,20 @@ void MyGLWidget::resizeGL(int width, int height)
     scene->getCamera()->changePerspectiveRatio((float)width / (float)height);
 }
 
+Scene* MyGLWidget::getScene()
+{
+    return scene;
+}
+
+Node* MyGLWidget::getCurrentObject()
+{
+    return currentObject;
+}
+
 void MyGLWidget::translateX(int value)
 {
     int distance = value - prevTransX;
-    scene->translateX((float)distance);
+    currentObject->translateX((float)distance);
     prevTransX = value;
     update();
 }
@@ -43,7 +54,7 @@ void MyGLWidget::translateX(int value)
 void MyGLWidget::translateY(int value)
 {
     int distance = value - prevTransY;
-    scene->translateY((float)distance);
+    currentObject->translateY((float)distance);
     prevTransY = value;
     update();
 }
@@ -51,7 +62,7 @@ void MyGLWidget::translateY(int value)
 void MyGLWidget::translateZ(int value)
 {
     int distance = value - prevTransZ;
-    scene->translateZ((float)distance);
+    currentObject->translateZ((float)distance);
     prevTransZ = value;
     update();
 }
@@ -59,7 +70,7 @@ void MyGLWidget::translateZ(int value)
 void MyGLWidget::rotateX(int value)
 {
     int angle = value - prevRotX;
-    scene->rotateX((float)angle);
+    currentObject->rotateX((float)angle);
     prevRotX = value;
     update();
 }
@@ -67,7 +78,7 @@ void MyGLWidget::rotateX(int value)
 void MyGLWidget::rotateY(int value)
 {
     int angle = value - prevRotY;
-    scene->rotateY((float)angle);
+    currentObject->rotateY((float)angle);
     prevRotY = value;
     update();
 }
@@ -75,7 +86,7 @@ void MyGLWidget::rotateY(int value)
 void MyGLWidget::rotateZ(int value)
 {
     int angle = value - prevRotZ;
-    scene->rotateZ((float)angle);
+    currentObject->rotateZ((float)angle);
     prevRotZ = value;
     update();
 }
@@ -223,7 +234,7 @@ void MyGLWidget::changeLightColorBlue(int value)
 
 void MyGLWidget::changeN(int value)
 {
-    Cylinder* cylinder = dynamic_cast<Cylinder*>(scene->getModel());
+    Cylinder* cylinder = dynamic_cast<Cylinder*>(currentObject->getModel());
     if (cylinder)
     {
         cylinder->changeN(value);
@@ -233,7 +244,7 @@ void MyGLWidget::changeN(int value)
 
 void MyGLWidget::changeRadius(int value)
 {
-    Cylinder* cylinder = dynamic_cast<Cylinder*>(scene->getModel());
+    Cylinder* cylinder = dynamic_cast<Cylinder*>(currentObject->getModel());
     if (cylinder)
     {
         cylinder->changeRadius((float)value);
@@ -243,7 +254,7 @@ void MyGLWidget::changeRadius(int value)
 
 void MyGLWidget::changeHeight(int value)
 {
-    Cylinder* cylinder = dynamic_cast<Cylinder*>(scene->getModel());
+    Cylinder* cylinder = dynamic_cast<Cylinder*>(currentObject->getModel());
     if (cylinder)
     {
         cylinder->changeHeight((float)value);
@@ -265,7 +276,7 @@ void MyGLWidget::switchTexture(QString value)
 
 void MyGLWidget::scaleTexture(int value)
 {
-    Cylinder* cylinder = dynamic_cast<Cylinder*>(scene->getModel());
+    Cylinder* cylinder = dynamic_cast<Cylinder*>(currentObject->getModel());
     if (cylinder)
     {
         cylinder->changeUVScale((float)value / 10.0);
@@ -276,4 +287,24 @@ void MyGLWidget::scaleTexture(int value)
 void MyGLWidget::close()
 {
     delete scene;
+}
+
+void MyGLWidget::changeCurrentModel(QModelIndex index)
+{
+    Node* node = scene;
+
+    if (index.parent().isValid())
+    {
+        deque<int> rows;
+        rows.push_front(index.row());
+        while (index.parent().parent().isValid())
+        {
+            index = index.parent();
+            rows.push_front(index.row());
+        }
+
+        for (int row : rows)
+            node = node->getChild(row);
+    }
+    currentObject = node;
 }

@@ -10,19 +10,19 @@ using glm::mat4;
 class Node : public QOpenGLFunctions
 {
 private:
-    GLuint globalModelMatrixHandle;
     Model* model;
     bool visibility;
     string name;
 
 protected:
-    mat4 localModelMatrix, globalModelMatrix;
+    mat4 localTransformationMatrix, globalTransformationMatrix;
+    GLuint globalModelMatrixHandle;
     list<Node*> children;
     Node* parent;
 
-    mat4 getGlobalModelMatrix();
-    void drawChildren();  
-    void setParent(Node* parent);
+    mat4 getGlobalTransformationMatrix();
+    void drawChildren();
+    int getChildIndex(Node* child);
 
 public:
     Node(vec3 position);
@@ -37,14 +37,21 @@ public:
     virtual void createHandles(ShaderProgram* shaderProgram);
     void addChild(Node *child);
     void removeChild(Node *child);
+    Node* getChild(int index);
+    list<Node*> getChildren();
+    void setParent(Node* parent);
+    Node* getParent();
+    int getIndex();
+    int childCount();
 
     virtual void init();
     virtual void draw();
-    void update();
+    virtual void update();
 
     void show();
-    void hide();
+    virtual void hide();
     bool isVisible();
+    void checkVisibility(Node* camera);
 
     void rotateX(float angle);
     void rotateY(float angle);
@@ -54,7 +61,7 @@ public:
     void translateY(float distance);
     void translateZ(float distance);
 
-    vec3 getPosition();
+    virtual vec3 getPosition();
 };
 
 #endif //NODE_HPP

@@ -4,7 +4,7 @@ Node::Node(vec3 position)
 {
     model = NULL;
     visibility = true;
-    localModelMatrix = translate(mat4(1.0f), position);
+    localTransformationMatrix = translate(mat4(1.0f), position);
     parent = NULL;
     update();
 }
@@ -13,7 +13,7 @@ Node::Node(vec3 position, Model *model)
 {
     this->model = model;
     visibility = true;
-    localModelMatrix = translate(mat4(1.0f), position);
+    localTransformationMatrix = translate(mat4(1.0f), position);
     parent = NULL;
     update();
 }
@@ -53,6 +53,7 @@ void Node::addChild(Node* child)
 {
     children.push_back(child);
     child->setParent(this);
+    child->update();
 }
 
 void Node::removeChild(Node* child)
@@ -62,15 +63,58 @@ void Node::removeChild(Node* child)
     delete child;
 }
 
+Node* Node::getChild(int index)
+{
+    if (children.size() > index)
+    {
+        list<Node*>::iterator it = children.begin();
+        advance(it, index);
+        return *it;
+    }
+    return NULL;
+}
+
+list<Node*> Node::getChildren()
+{
+    return children;
+}
+
+Node* Node::getParent()
+{
+    return parent;
+}
+
+int Node::getIndex()
+{
+    return parent->getChildIndex(this);
+}
+
+int Node::getChildIndex(Node* child)
+{
+    int index = 0;
+    for (Node* foundChild : children)
+    {
+        if (foundChild == child)
+            return index;
+        index++;
+    }
+    return -1;
+}
+
+int Node::childCount()
+{
+    return children.size();
+}
+
 void Node::update()
 {
     if (parent != NULL)
     {
-        mat4 parentMatrix = parent->getGlobalModelMatrix();
-        globalModelMatrix = parentMatrix * localModelMatrix;
+        mat4 parentMatrix = parent->getGlobalTransformationMatrix();
+        globalTransformationMatrix = parentMatrix * localTransformationMatrix;
     }
     else
-        globalModelMatrix = localModelMatrix;
+        globalTransformationMatrix = localTransformationMatrix;
 
     for (Node* child : children)
     {
@@ -90,11 +134,10 @@ void Node::drawChildren()
 
 void Node::draw()
 {
-    glUniformMatrix4fv(globalModelMatrixHandle, 1, GL_FALSE, &globalModelMatrix[0][0]);
-
-    drawChildren();
+    glUniformMatrix4fv(globalModelMatrixHandle, 1, GL_FALSE, &globalTransformationMatrix[0][0]);
     if (model != NULL)
         model->draw();
+    drawChildren();
 }
 
 void Node::createHandles(ShaderProgram* shaderProgram)
@@ -107,7 +150,6 @@ void Node::createHandles(ShaderProgram* shaderProgram)
 void Node::show()
 {
     visibility = true;
-    update();
 }
 
 void Node::hide()
@@ -120,49 +162,68 @@ bool Node::isVisible()
     return visibility;
 }
 
-mat4 Node::getGlobalModelMatrix()
+void Node::checkVisibility(Node* camera)
 {
-    return globalModelMatrix;
+    for (Node* child : children)
+    {
+        if (distance(child->getPosition(), camera->getPosition()) > 40.0f)
+            child->hide();
+        else
+        {
+            child->show();
+            child->checkVisibility(camera);
+        }
+    }
+}
+
+mat4 Node::getGlobalTransformationMatrix()
+{
+    return globalTransformationMatrix;
 }
 
 void Node::rotateX(float angle)
 {
-    localModelMatrix = rotate(localModelMatrix, radians(angle), vec3(1.0f, 0.0f, 0.0f));
+    localTransformationMatrix = rotate(localTransformationMatrix, radians(angle), vec3(1.0f, 0.0f, 0.0f));
     update();
 }
 
 void Node::rotateY(float angle)
 {
-    localModelMatrix = rotate(localModelMatrix, radians(angle), vec3(0.0f, 1.0f, 0.0f));
+    localTransformationMatrix = rotate(localTransformationMatrix, radians(angle), vec3(0.0f, 1.0f, 0.0f));
     update();
 }
 
 void Node::rotateZ(float angle)
 {
-    localModelMatrix = rotate(localModelMatrix, radians(angle), vec3(0.0f, 0.0f, 1.0f));
+    localTransformationMatrix = rotate(localTransformationMatrix, radians(angle), vec3(0.0f, 0.0f, 1.0f));
     update();
 }
 
 void Node::translateX(float distance)
 {
-    localModelMatrix = translate(localModelMatrix, vec3(distance, 0.0f, 0.0f));
+    localTransformationMatrix = translate(localTransformationMatrix, vec3(distance, 0.0f, 0.0f));
     update();
 }
 
 void Node::translateY(float distance)
 {
-    localModelMatrix = translate(localModelMatrix, vec3(0.0f, distance, 0.0f));
+    localTransformationMatrix = translate(localTransformationMatrix, vec3(0.0f, distance, 0.0f));
     update();
 }
 
 void Node::translateZ(float distance)
 {
-    localModelMatrix = translate(localModelMatrix, vec3(0.0f, 0.0f, distance));
+    localTransformationMatrix = translate(localTransformationMatrix, vec3(0.0f, 0.0f, distance));
     update();
 }
 
 vec3 Node::getPosition()
 {
-    vec3 position = vec3(globalModelMatrix * vec4(vec3(0.0f), 1.0f));
+    vec3 position;
+
+    position.x = globalTransformationMatrix[3][0];
+    position.y = globalTransformationMatrix[3][1];
+    position.z = globalTransformationMatrix[3][2];
+
     return position;
 }

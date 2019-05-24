@@ -172,5 +172,6 @@ void Model::createHandles(ShaderProgram* shaderProgram)
 
 void Model::switchTexture(string filename)
 {
-    texture->loadTexture(filename);
+    if (texture != NULL)
+        texture->loadTexture(filename);
 }

@@ -24,6 +24,7 @@ public:
     ~Scene();
     void init();
     void draw();
+    void update();
 
     Light* getLight();
     Camera* getCamera();
