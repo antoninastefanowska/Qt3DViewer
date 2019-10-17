@@ -33,6 +33,7 @@ SOURCES += \
     myglwidget.cpp \
     viewer/animation.cpp \
     viewer/camera.cpp \
+    viewer/cube.cpp \
     viewer/cylinder.cpp \
     viewer/light.cpp \
     viewer/loadedmodel.cpp \
@@ -52,6 +53,7 @@ HEADERS += \
     myglwidget.hpp \
     viewer/animation.hpp \
     viewer/camera.hpp \
+    viewer/cube.hpp \
     viewer/cylinder.hpp \
     viewer/light.hpp \
     viewer/loadedmodel.hpp \

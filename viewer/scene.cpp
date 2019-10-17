@@ -37,27 +37,15 @@ void Scene::init()
 
     this->setName("Scene");
 
-    Model* starModel = new LoadedModel("star.obj");
-    starModel->init();
+    Model* cubeModel = new Cube();
+    cubeModel->init();
 
-    srand(time(NULL));
-    for (int i = 0; i < 100; i++)
-    {
-        double x = (double)(rand() % 81 - 40), y = 0.0f, z = (double)(rand() % 81 - 40);
-        unsigned int duration = rand() % 1000;
+    Node* cube = new Node(vec3(0.0f), cubeModel);
+    cube->init();
+    cube->createHandles(shaderProgram);
+    cube->setName("Cube");
 
-        Node* star = new Node(vec3(0.0f), starModel);
-        star->init();
-        star->createHandles(shaderProgram);
-        star->setName("Star " + to_string(i));
-
-        Animation *animation1 = new TranslateAnimation(vec3(x - 5, 0, z), vec3(x + 5, 0, z), duration), *animation2 = new TranslateAnimation(vec3(0, 20, 0), vec3(0, -20, 0), duration), *animation3 = new RotateAnimation(0.0f, -360.0f, vec3(0.0f, 0.0f, 1.0f), duration);
-        star->addAnimation(animation1);
-        star->addAnimation(animation2);
-        star->addAnimation(animation3);
-
-        this->addChild(star);
-    }
+    addChild(cube);
 
     camera->update();
 }
@@ -159,5 +147,30 @@ void Scene::generateForest()
             bush->rotateY(angleb);
             tree->addChild(bush);
         }
+    }
+}
+
+void Scene::generateStars()
+{
+    Model* starModel = new LoadedModel("star.obj");
+    starModel->init();
+
+    srand(time(NULL));
+    for (int i = 0; i < 100; i++)
+    {
+        double x = (double)(rand() % 81 - 40), y = 0.0f, z = (double)(rand() % 81 - 40);
+        unsigned int duration = rand() % 951 + 50;
+
+        Node* star = new Node(vec3(0.0f), starModel);
+        star->init();
+        star->createHandles(shaderProgram);
+        star->setName("Star " + to_string(i));
+
+        Animation *animation1 = new TranslateAnimation(vec3(x - 5, 0, z), vec3(x + 5, 0, z), duration), *animation2 = new TranslateAnimation(vec3(0, 20, 0), vec3(0, -20, 0), duration), *animation3 = new RotateAnimation(0.0f, -360.0f, vec3(0.0f, 0.0f, 1.0f), duration);
+        star->addAnimation(animation1);
+        star->addAnimation(animation2);
+        star->addAnimation(animation3);
+
+        this->addChild(star);
     }
 }

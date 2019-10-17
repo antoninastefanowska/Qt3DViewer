@@ -6,6 +6,7 @@
 #include "camera.hpp"
 #include "light.hpp"
 #include "cylinder.hpp"
+#include "cube.hpp"
 #include "loadedmodel.hpp"
 #include "translateanimation.hpp"
 #include "rotateanimation.hpp"
@@ -21,6 +22,7 @@ private:
     void createShaderProgram(string name);
     void createAllShaderPrograms();
     void generateForest();
+    void generateStars();
 
 public:
     using Node::Node;

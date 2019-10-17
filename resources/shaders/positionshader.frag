@@ -5,5 +5,5 @@ out vec3 color;
 
 void main()
 {
-    color = normalize(vertexPosition).rgb;
+    color = vertexPosition.rgb;
 }

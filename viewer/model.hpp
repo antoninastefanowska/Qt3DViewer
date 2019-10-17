@@ -16,6 +16,7 @@
 #include "shaderprogram.hpp"
 #include "material.hpp"
 #include "vertex.hpp"
+#include "triangle.hpp"
 
 using namespace std;
 
@@ -37,6 +38,7 @@ protected:
 
     virtual void createModel() = 0;
     void loadDataToBuffers(vector<Vertex> &vertices);
+    void calculateNormals(vector<Vertex> &vertices, vector<Triangle> &triangles);
     void generateRandomColors();
 
 public:

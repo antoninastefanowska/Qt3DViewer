@@ -175,3 +175,18 @@ void Model::switchTexture(string filename)
     if (texture != NULL)
         texture->loadTexture(filename);
 }
+
+void Model::calculateNormals(vector<Vertex> &vertices, vector<Triangle> &triangles)
+{
+    for (Vertex &vertex : vertices)
+    {
+        vec3 normal = vec3(0.0f);
+        for (Triangle triangle : triangles)
+        {
+            if (triangle.contains(vertex))
+                normal += triangle.getNormal();
+        }
+        normal = normalize(normal);
+        vertex.setNormal(normal);
+    }
+}

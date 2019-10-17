@@ -10,8 +10,6 @@ private:
     int n;
     float radius, height, uvScale;
 
-    void calculateNormals(vector<Vertex> &vertices, vector<Triangle> &triangles);
-
 public:
     Cylinder();
     Cylinder(int n, float radius, float height);

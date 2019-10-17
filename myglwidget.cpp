@@ -234,7 +234,7 @@ void MyGLWidget::changeLightColorBlue(int value)
 
 void MyGLWidget::changeN(int value)
 {
-    Cylinder* cylinder = dynamic_cast<Cylinder*>(currentObject->getModel());
+    Cylinder* cylinder = dynamic_cast<Cylinder*>(currentObject->getChild(2)->getModel());
     if (cylinder)
     {
         cylinder->changeN(value);
@@ -244,7 +244,7 @@ void MyGLWidget::changeN(int value)
 
 void MyGLWidget::changeRadius(int value)
 {
-    Cylinder* cylinder = dynamic_cast<Cylinder*>(currentObject->getModel());
+    Cylinder* cylinder = dynamic_cast<Cylinder*>(currentObject->getChild(2)->getModel());
     if (cylinder)
     {
         cylinder->changeRadius((float)value);
@@ -254,7 +254,7 @@ void MyGLWidget::changeRadius(int value)
 
 void MyGLWidget::changeHeight(int value)
 {
-    Cylinder* cylinder = dynamic_cast<Cylinder*>(currentObject->getModel());
+    Cylinder* cylinder = dynamic_cast<Cylinder*>(currentObject->getChild(2)->getModel());
     if (cylinder)
     {
         cylinder->changeHeight((float)value);
@@ -276,7 +276,7 @@ void MyGLWidget::switchTexture(QString value)
 
 void MyGLWidget::scaleTexture(int value)
 {
-    Cylinder* cylinder = dynamic_cast<Cylinder*>(currentObject->getModel());
+    Cylinder* cylinder = dynamic_cast<Cylinder*>(currentObject->getChild(2)->getModel());
     if (cylinder)
     {
         cylinder->changeUVScale((float)value / 10.0);
