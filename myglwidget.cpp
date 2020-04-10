@@ -6,7 +6,18 @@ void MyGLWidget::initializeGL()
 {
     scene = new Scene(vec3(0.0f));
     scene->init();
-    currentObject = scene;
+
+    Model* cubeModel = new Cube();
+    cubeModel->init();
+
+    Node* cube = new Node(vec3(0.0f), cubeModel);
+    cube->init();
+    cube->createHandles(scene->getShaderProgram());
+    cube->setName("Cube");
+    currentObject = cube;
+
+    scene->addChild(cube);
+    scene->update();
 
     prevTransX = 0;
     prevTransY = 0;
@@ -38,9 +49,27 @@ Scene* MyGLWidget::getScene()
     return scene;
 }
 
+void MyGLWidget::populateObjectTree(Node* node, QStandardItem* parent)
+{
+    int i = 0;
+    for (Node* child : node->getChildren())
+    {
+        QStandardItem *item = new QStandardItem;
+        item->setText(QString(child->getName().c_str()));
+        parent->setChild(i, 0, item);
+        i++;
+        populateObjectTree(child, item);
+    }
+}
+
 Node* MyGLWidget::getCurrentObject()
 {
     return currentObject;
+}
+
+void MyGLWidget::setTreeControl(QStandardItem *treeControl)
+{
+    this->treeControl = treeControl;
 }
 
 void MyGLWidget::translateX(int value)
@@ -163,12 +192,45 @@ void MyGLWidget::switchToMTLShader(bool checked)
     }
 }
 
+void MyGLWidget::switchToCubeModel(bool checked)
+{
+    if (checked)
+    {
+        Model* model = new Cube();
+        model->init();
+        Node* modelNode = new Node(vec3(0.0f), model);
+        modelNode->init();
+        modelNode->createHandles(scene->getShaderProgram());
+        modelNode->setName("Cube");
+
+        scene->removeChild(currentObject);
+        currentObject = modelNode;
+        scene->addChild(modelNode);
+        scene->update();
+        update();
+
+        populateObjectTree(scene, treeControl);
+    }
+}
+
 void MyGLWidget::switchToCylinderModel(bool checked)
 {
     if (checked)
     {
         Model* model = new Cylinder(72, 2.0, 8.0);
+        model->init();
+        Node* modelNode = new Node(vec3(0.0f), model);
+        modelNode->init();
+        modelNode->createHandles(scene->getShaderProgram());
+        modelNode->setName("Cylinder");
+
+        scene->removeChild(currentObject);
+        currentObject = modelNode;
+        scene->addChild(modelNode);
+        scene->update();
         update();
+
+        populateObjectTree(scene, treeControl);
     }
 }
 
@@ -177,7 +239,19 @@ void MyGLWidget::switchToLoadedModel(bool checked)
     if (checked)
     {
         Model* model = new LoadedModel(currentLoadedModelName);
+        model->init();
+        Node* modelNode = new Node(vec3(0.0f), model);
+        modelNode->init();
+
+        modelNode->createHandles(scene->getShaderProgram());
+        modelNode->setName(currentLoadedModelName);
+        scene->removeChild(currentObject);
+        currentObject = modelNode;
+        scene->addChild(modelNode);
+        scene->update();
         update();
+
+        populateObjectTree(scene, treeControl);
     }
 }
 

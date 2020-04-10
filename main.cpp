@@ -15,6 +15,7 @@ int main(int argc, char *argv[])
     glWidget = window.findChild<MyGLWidget*>("myGLWidget");
     QObject::connect(&app, SIGNAL(aboutToQuit()), glWidget, SLOT(close()));
 
+    window.setGLWidget(glWidget);
     window.show();
     window.generateObjectTree();
     window.setTimer();

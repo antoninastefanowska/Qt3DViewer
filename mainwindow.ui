@@ -762,12 +762,22 @@
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout_11">
                  <item>
+                  <widget class="QRadioButton" name="radioButton_11">
+                   <property name="text">
+                    <string>Kostka</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
                   <widget class="QRadioButton" name="radioButton_9">
                    <property name="text">
                     <string>Walec</string>
                    </property>
                    <property name="checked">
-                    <bool>true</bool>
+                    <bool>false</bool>
                    </property>
                   </widget>
                  </item>
@@ -992,6 +1002,7 @@
     <slot>changeLightColorGreen(int)</slot>
     <slot>changeLightColorBlue(int)</slot>
     <slot>changeCurrentModel(QModelIndex)</slot>
+    <slot>switchToCubeModel(bool)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -1149,7 +1160,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>1008</x>
-     <y>218</y>
+     <y>241</y>
     </hint>
     <hint type="destinationlabel">
      <x>535</x>
@@ -1165,7 +1176,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>1064</x>
-     <y>218</y>
+     <y>241</y>
     </hint>
     <hint type="destinationlabel">
      <x>520</x>
@@ -1229,7 +1240,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>912</x>
-     <y>218</y>
+     <y>241</y>
     </hint>
     <hint type="destinationlabel">
      <x>545</x>
@@ -1244,12 +1255,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>904</x>
-     <y>103</y>
+     <x>1064</x>
+     <y>138</y>
     </hint>
     <hint type="destinationlabel">
      <x>912</x>
-     <y>218</y>
+     <y>241</y>
     </hint>
    </hints>
   </connection>
@@ -1260,12 +1271,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>904</x>
-     <y>103</y>
+     <x>1064</x>
+     <y>138</y>
     </hint>
     <hint type="destinationlabel">
      <x>1008</x>
-     <y>218</y>
+     <y>241</y>
     </hint>
    </hints>
   </connection>
@@ -1276,12 +1287,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>904</x>
-     <y>103</y>
+     <x>1064</x>
+     <y>138</y>
     </hint>
     <hint type="destinationlabel">
      <x>1064</x>
-     <y>218</y>
+     <y>241</y>
     </hint>
    </hints>
   </connection>
@@ -1292,12 +1303,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>916</x>
-     <y>138</y>
+     <x>1064</x>
+     <y>161</y>
     </hint>
     <hint type="destinationlabel">
-     <x>916</x>
-     <y>279</y>
+     <x>1064</x>
+     <y>302</y>
     </hint>
    </hints>
   </connection>
@@ -1308,8 +1319,8 @@
    <slot>changeLoadedModel(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>916</x>
-     <y>279</y>
+     <x>1064</x>
+     <y>302</y>
     </hint>
     <hint type="destinationlabel">
      <x>530</x>
@@ -1324,8 +1335,8 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>904</x>
-     <y>103</y>
+     <x>1064</x>
+     <y>138</y>
     </hint>
     <hint type="destinationlabel">
      <x>914</x>
@@ -1340,8 +1351,8 @@
    <slot>switchToCylinderModel(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>904</x>
-     <y>103</y>
+     <x>1064</x>
+     <y>138</y>
     </hint>
     <hint type="destinationlabel">
      <x>546</x>
@@ -1356,8 +1367,8 @@
    <slot>switchToLoadedModel(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>916</x>
-     <y>138</y>
+     <x>1064</x>
+     <y>161</y>
     </hint>
     <hint type="destinationlabel">
      <x>248</x>
@@ -1554,6 +1565,22 @@
     <hint type="destinationlabel">
      <x>368</x>
      <y>143</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButton_11</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>myGLWidget</receiver>
+   <slot>switchToCubeModel(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>855</x>
+     <y>110</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>756</x>
+     <y>192</y>
     </hint>
    </hints>
   </connection>

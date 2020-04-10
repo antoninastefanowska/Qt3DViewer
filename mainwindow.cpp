@@ -13,6 +13,10 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::setGLWidget(MyGLWidget* glWidget) {
+    this->glWidget = glWidget;
+}
+
 void MainWindow::generateObjectTree()
 {
     treeViewModel = new QStandardItemModel(ui->objectTreeView);
@@ -24,24 +28,12 @@ void MainWindow::generateObjectTree()
     QStandardItem *itemScene = new QStandardItem;
     itemScene->setText(QString(scene->getName().c_str()));
 
-    populateObjectTree(scene, itemScene);
+    glWidget->setTreeControl(itemScene);
+    glWidget->populateObjectTree(scene, itemScene);
 
     treeViewModel->setItem(0, 0, itemScene);
     ui->objectTreeView->setModel(treeViewModel);
     ui->objectTreeView->expandAll();
-}
-
-void MainWindow::populateObjectTree(Node* node, QStandardItem* parent)
-{
-    int i = 0;
-    for (Node* child : node->getChildren())
-    {
-        QStandardItem *item = new QStandardItem;
-        item->setText(QString(child->getName().c_str()));
-        parent->setChild(i, 0, item);
-        i++;
-        populateObjectTree(child, item);
-    }
 }
 
 void MainWindow::setTimer()

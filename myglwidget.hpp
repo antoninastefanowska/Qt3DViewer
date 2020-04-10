@@ -7,8 +7,10 @@
 #include <QtOpenGL>
 #include <QOpenGLWidget>
 #include <QOpenGLContext>
+#include <QStandardItemModel>
 #include <QPoint>
 
+#include "viewer/cube.hpp"
 #include "viewer/cylinder.hpp"
 #include "viewer/loadedmodel.hpp"
 #include "viewer/scene.hpp"
@@ -24,6 +26,7 @@ private:
     Node* currentObject;
     int prevTransX, prevTransY, prevTransZ, prevRotX, prevRotY, prevRotZ, prevLightX, prevLightY, prevLightZ;
     string currentLoadedModelName;
+    QStandardItem* treeControl;
 
     void initializeGL();
     void paintGL();
@@ -33,6 +36,9 @@ public:
     explicit MyGLWidget(QWidget *parent = 0);
     Scene* getScene();
     Node* getCurrentObject();
+
+    void setTreeControl(QStandardItem* treeControl);
+    void populateObjectTree(Node* node, QStandardItem* parent);
 
 public slots:
     void translateX(int value);
@@ -53,6 +59,7 @@ public slots:
     void switchToMTLShader(bool checked);
     void recompileShader();
 
+    void switchToCubeModel(bool checked);
     void switchToCylinderModel(bool checked);
     void switchToLoadedModel(bool checked);
     void changeLoadedModel(QString value);

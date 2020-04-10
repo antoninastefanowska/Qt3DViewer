@@ -36,18 +36,6 @@ void Scene::init()
     switchShaderProgram("positionshader");
 
     this->setName("Scene");
-
-    Model* cubeModel = new Cube();
-    cubeModel->init();
-
-    Node* cube = new Node(vec3(0.0f), cubeModel);
-    cube->init();
-    cube->createHandles(shaderProgram);
-    cube->setName("Cube");
-
-    addChild(cube);
-
-    camera->update();
 }
 
 void Scene::update()

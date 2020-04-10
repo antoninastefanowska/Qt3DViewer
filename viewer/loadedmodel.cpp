@@ -184,7 +184,7 @@ map<string, Material*> LoadedModel::loadMTL(string filename)
             texture = new Texture();
             texture->init();
             texture->loadTexture(textureFilename);
-            materials[currentMaterialName]->setTexture(texture);
+            materials[currentMaterialName] = new Material();
         }
     }
 

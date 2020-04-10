@@ -5,6 +5,7 @@
 #include <QStandardItemModel>
 
 #include "viewer/node.hpp"
+#include "myglwidget.hpp"
 
 namespace Ui {
 class MainWindow;
@@ -20,11 +21,12 @@ public:
     void generateObjectTree();
     void setTimer();
 
+    void setGLWidget(MyGLWidget* glWidget);
+
 private:
     Ui::MainWindow *ui;
     QStandardItemModel *treeViewModel;
-
-    void populateObjectTree(Node* node, QStandardItem* parent);
+    MyGLWidget *glWidget;
 
 public slots:
     void frame();
