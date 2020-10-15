@@ -117,5 +117,5 @@ DEPENDPATH += $$PWD/dependencies/include
 
 LIBS += -lOpenGL32
 
-#RESOURCES += \
-    #resources.qrc
+RESOURCES += \
+    resources.qrc

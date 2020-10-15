@@ -1,6 +1,6 @@
 #include "loadedmodel.hpp"
 
-const string LoadedModel::BASE_PATH = "C:/Users/HP/Documents/Qt/Projects/3DViewer/resources/models/";
+const string LoadedModel::BASE_PATH = ":/models/resources/models/";
 
 LoadedModel::LoadedModel(string filename)
 {

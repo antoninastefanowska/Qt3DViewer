@@ -1,6 +1,6 @@
 #include "shaderprogram.hpp"
 
-const string ShaderProgram::BASE_PATH = "C:/Users/HP/Documents/Qt/Projects/3DViewer/resources/shaders/";
+const string ShaderProgram::BASE_PATH = ":/shaders/resources/shaders/";
 
 ShaderProgram::ShaderProgram() { }
 
@@ -19,6 +19,7 @@ void ShaderProgram::loadShader(string filename, GLenum type)
     GLuint shaderID = glCreateShader(type);
     string shaderCode;
 
+    cout << BASE_PATH + filename << endl;
     QFile shaderFile((BASE_PATH + filename).c_str());
 
     if (shaderFile.open(QIODevice::ReadOnly | QIODevice::Text))

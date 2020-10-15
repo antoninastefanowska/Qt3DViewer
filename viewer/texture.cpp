@@ -1,6 +1,6 @@
 #include "texture.hpp"
 
-const string Texture::BASE_PATH = "C:/Users/HP/Documents/Qt/Projects/3DViewer/resources/textures/";
+const string Texture::BASE_PATH = ":/textures/resources/textures/";
 
 Texture::Texture() { }
 
